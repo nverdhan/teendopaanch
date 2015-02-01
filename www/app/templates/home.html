@@ -1,0 +1,31 @@
+<div class="container text-center">
+<div class="row">
+	<a ng-if="loading == false" class="btn btn-success btn-large text-center" ng-click="twitterAuth()">
+		<h3>Login with <i class="fa fa-twitter"></i> twitter</h3>
+	</a>
+	
+</div>
+<div class="row">
+	<div class="col-md-6 col-xs-12">
+		<h4>Join A Random Game</h4>
+		
+    	<!--div ng-if="loading == true">Starting Game</div-->
+    	<a class="btn btn-success btn-lg text-center" href="/start">start</a>
+	</div>
+	<div class="col-md-6 col-xs-12">
+		<div>
+			<h4>Create a Private Room and invite your friends to join</h4>
+			<a class="btn btn-success btn-lg text-center" href="/create">Create Room</a>
+		</div>
+		<div>
+			<h4>Enter Room Id to join the Game</h4>
+			<form class="inline-form">
+				
+			</form>
+			<a class="btn btn-success btn-lg text-center" href="/join">Join Game</a>
+		</div>
+		
+	</div>
+</div>
+    
+</div>

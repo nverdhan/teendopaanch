@@ -1,0 +1,130 @@
+<!--nav id="body-nav"></nav-->
+<div class="push-wrap" id="homepage">
+    <div class="" style="background-color: #fff">
+        <div ng-show="ready">
+            <div class="game-body">
+                <div ng-if="gameState == 'playCard'" class="play-info">
+                    Player {{activePlayerId}} Play
+                </div>
+                <div ng-if="gameState == 'withdrawCard'" class="play-info">
+                    {{activePlayerId}} to withdraw card from {{otherPlayerId}}
+                </div>
+                <div ng-if="gameState == 'returnCard'" class="play-info">
+                    {{activePlayerId}} returning card to {{otherPlayerId}}
+                </div>
+                <div ng-if="gameState == 'setTrump'" class="play-info">
+                    Player {{activePlayerId}} Set Trump
+                </div>
+                <div class="left-player playingCards" ng-style="getWidth(1);">
+                    <h6>{{ arrPlayers[1].name }}</h6>
+                    <div class="card-to-play"></div>
+                    <ul class="hand">
+                        <li ng-repeat="card in leftPlayerCards" class="" id="{{ card.id }}" ng-class="card.id" ng-click="play($index, leftPlayerId, $event)">
+                            <a class="card back"></a>
+                        </li>
+                    </ul>
+                    <!--move card from left for exchange-->
+                    <div class="statistics">{{ arrPlayers[1].handsToMake }} / {{ arrPlayers[1].handsMade }}</div>
+                </div>
+                <div class="right-player playingCards" ng-style="getWidth(2);">
+                    <h6>{{ arrPlayers[2].name }}</h6>
+                    <div class="card-to-play"></div>
+                    <ul class="hand">
+                        <li ng-repeat="card in rightPlayerCards" class="" id="{{ card.id }}" ng-class="card.id" ng-click="play($index, rightPlayerId, $event)">
+                            <a class="card back"></a>
+                        </li>
+                    </ul>
+                    <div class="statistics">{{ arrPlayers[2].handsToMake }} / {{ arrPlayers[2].handsMade }}</div>
+                </div>
+                <!--by NV-->
+                <div class="bottom-player playingCards simpleCards firstperson" ng-style="getWidth(0);">
+                    <h6>{{ arrPlayers[0].name }}</h6>
+                    <div class="card-to-play"></div>
+                    <ul class="hand">
+                        <li ng-repeat = "card in bottomPlayerCards">
+                            <a class="card" ng-class = "assignClass(card)" ng-click="play(card, playerId, $event)">
+                                <span class="rank">{{ getRankForHTML(card) }}</span>
+                                <span class="suit" ng-bind-html="'&'+getSuitForHTML(card)+';' | unsafe"></span>
+                            </a>
+                        </li>
+                    </ul>
+                    <div class="statistics">{{ arrPlayers[0].handsToMake }} / {{ arrPlayers[0].handsMade }}</div>
+                </div>
+                <!--by NV-->
+                <div class="card movingCard" ng-if="movingCard">{{ movingCard[0].suit }} {{ movingCard[0].rank }}</div>
+                <div class="set-trump playingCards simpleCards" ng-show="gameState == 'setTrump' && playerId == activePlayerId" style="width:{{trumps.length*59}}px;">
+                    <ul class="table">
+                        <li class="card" ng-repeat="trump in trumps" ng-click="setTrumpCard(trump)">
+                            <a class="card {{ trump }}">
+                                <span class="suit"></span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="played-cards playingCards simpleCards" ng-style="getMargin()">
+                    <ul class="played-cards-ul table">
+                        <li ng-repeat = "player in arrPlayers" class="{{ getPosition(player.position) }}" ng-class="{true : 'moveCard'}[player.position == 0]"  ng-if="player.cardPlayed" style="position: absolute; width:{{getCardWidth()}}">
+                            <a class="card" ng-class="assignClass2(player.cardPlayed, player.position);" style="position:absolute;">
+                                    <span class="rank">{{ getRankForHTML(player.cardPlayed) }}</span>
+                                    <span class="suit" ng-bind-html="'&'+getSuitForHTML(player.cardPlayed)+';' | unsafe"></span>
+                            </a>
+                            <a ng-if="player.position != 0" class="card back" style="position:absolute;"></a>
+                            <!--{{ player.cardPlayed.suit }}  {{ player.cardPlayed.rank }}-->
+                        </li>
+                    </ul>
+                </div>
+                <div class="trump-card" ng-if="trump">
+                    <ul><li class="card">{{ trump }}</li></ul>
+                </div>
+            </div>
+            <button class="btn btn-success btn-lg text-center" ng-click="toggleScores()">score</button>
+            <div class="chat-container">
+                <div class="chat-box"></div>
+                <form class="form-inline form-horizontal">
+                    <input type="text" ng-model="chatMsg" contenteditable="true" class="form-control"/>
+                    <button type="button" class="btn btn-sm" ng-click="sendChat()">send</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<div ng-if="waiting && gameType == 0" class="waiting" >
+    <div>share room with our friends you want to join {{ gameId }}</div>
+</div>
+<div ng-if="waiting" class="waiting" ><div>Waiting for other player to connect</div></div>
+<div class="overlay" ng-show = "showScores">
+    <div ng-click="closeScores()" class="close-overlay"><i class="fa fa-times"></i></div>
+    <div class="container">
+    <div class="row">
+            <div class="col-md-3">
+                <div class="text-center h5" ng-repeat="score in arrPlayers[0].scores">#{{ $index + 1 }}</div>
+            </div>
+            <show-scores ng-if="arrPlayers[0]" content="arrPlayers[0]"></show-scores>
+            <show-scores ng-if="arrPlayers[1]" content="arrPlayers[1]"></show-scores>
+            <show-scores ng-if="arrPlayers[2]" content="arrPlayers[2]"></show-scores>
+        </div>
+    </div>
+</div>
+<style type="text/css">
+</style>
+<!--script type="text/javascript" src="/socket.io/socket.io.js"></script-->
+<script>
+/*
+var scaleX = canvas.width / window.innerWidth;
+var scaleY = canvas.height / window.innerHeight;
+var scaleToFit = Math.min(scaleX, scaleY);
+ 
+stage.style.transformOrigin = "0 0";
+stage.style.transform = "scale("+scaleToFit+")";
+*/
+$(document).ready(function(){
+    $('.options').addClass('active');
+    $('.toggle li').click(function(){
+        $('.playingCards').toggleClass($(this).text());
+    });
+    $('.lang li').click(function(){
+        $('html').attr('lang', $(this).text());
+        $('html').attr('xml:lang', $(this).text());
+    });
+});
+</script>

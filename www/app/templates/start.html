@@ -1,0 +1,14 @@
+<div class="container text-center">
+    <div ng-show="showStartGame" ng-if="loading == false" class="btn btn-success btn-large text-center" ng-click="startGame()">Start Game</div>
+    <div ng-show="showCreateGame" ng-if="loading == false" class="btn btn-success btn-large text-center" ng-click="createGame()">Create Game</div>
+    <div ng-show="showJoinGame" ng-if="loading == false" >
+    <form class="form-horizontal">
+    	<div class="form-group col-lg-12 col-xs-12 col-md-12">
+    			<input id="joinGameId" type="text" class="form-control solid-bdr overlay-input" ng-model="joinGameRoomId" name="joinGameRoomId" placeholder="room id" required>
+		</div>
+		<buttton class="btn btn-success btn-large text-center" ng-click="joinGame()">Join Game</button>
+    </form>
+    </div>
+    </div>
+    <div ng-if="loading == true">Starting Game</div>
+</div>

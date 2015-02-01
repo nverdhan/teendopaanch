@@ -1,0 +1,256 @@
+body {
+    background-color: #222;
+}
+.inner {
+    position: absolute;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+    top: 6%;
+}
+.card-x{
+    background: #fff;
+        width: 40px;
+        height: 40px;
+        list-style: none;
+        cursor: pointer;
+        border: 1px dotted #3c3c3c;
+        display: inline-block;
+    }
+    .left-player{
+        position: absolute;
+        left: 100px;
+        top: 100px;
+    }
+    .right-player{
+        position: absolute;
+        right: 100px;
+        top: 100px;   
+    }
+    .myself{
+        position: absolute;
+        vertical-align: middle;
+        bottom: 0px;
+        left: 0;
+        right: 0;
+        margin: 0 auto;
+    }
+    .set-trump, .played-cards{
+        position: absolute;
+        vertical-align: middle;
+        bottom: 300px;
+        left: 0;
+        right: 0;
+        margin: 0 auto;   
+    }
+    .zeroInitial{
+        position: absolute;
+        bottom: -190px;
+        left: 0px;
+        right: 0px;
+        margin: 0 auto;
+        -webkit-transition: all 500ms cubic-bezier(0.000, 0.980, 0.405, 0.990);
+        -moz-transition: all 500ms cubic-bezier(0.000, 0.980, 0.405, 0.990);
+        -o-transition: all 500ms cubic-bezier(0.000, 0.980, 0.405, 0.990);
+        transition: all 500ms cubic-bezier(0.000, 0.980, 0.405, 0.990); /* custom */
+
+        -webkit-transition-timing-function: cubic-bezier(0.000, 0.980, 0.405, 0.990);
+        -moz-transition-timing-function: cubic-bezier(0.000, 0.980, 0.405, 0.990);
+        -o-transition-timing-function: cubic-bezier(0.000, 0.980, 0.405, 0.990);
+        transition-timing-function: cubic-bezier(0.000, 0.980, 0.405, 0.990); /* custom */
+    }
+    .zeroFinal{
+        position: absolute;
+        bottom: 0;
+        -webkit-transition: all 500ms cubic-bezier(0.000, 0.980, 0.405, 0.990);
+        -moz-transition: all 500ms cubic-bezier(0.000, 0.980, 0.405, 0.990);
+        -o-transition: all 500ms cubic-bezier(0.000, 0.980, 0.405, 0.990);
+        transition: all 500ms cubic-bezier(0.000, 0.980, 0.405, 0.990); /* custom */
+
+        -webkit-transition-timing-function: cubic-bezier(0.000, 0.980, 0.405, 0.990);
+        -moz-transition-timing-function: cubic-bezier(0.000, 0.980, 0.405, 0.990);
+        -o-transition-timing-function: cubic-bezier(0.000, 0.980, 0.405, 0.990);
+        transition-timing-function: cubic-bezier(0.000, 0.980, 0.405, 0.990); /* custom */
+    }
+    .leftInitial{
+        position: absolute;
+        left: 100px;
+        top: 100px;
+        margin: 0 auto;
+        -webkit-transition: all 500ms cubic-bezier(0.000, 0.980, 0.405, 0.990);
+        -moz-transition: all 500ms cubic-bezier(0.000, 0.980, 0.405, 0.990);
+        -o-transition: all 500ms cubic-bezier(0.000, 0.980, 0.405, 0.990);
+        transition: all 500ms cubic-bezier(0.000, 0.980, 0.405, 0.990); /* custom */
+
+        -webkit-transition-timing-function: cubic-bezier(0.000, 0.980, 0.405, 0.990);
+        -moz-transition-timing-function: cubic-bezier(0.000, 0.980, 0.405, 0.990);
+        -o-transition-timing-function: cubic-bezier(0.000, 0.980, 0.405, 0.990);
+        transition-timing-function: cubic-bezier(0.000, 0.980, 0.405, 0.990); /* custom */
+
+    }
+    .leftFinal{
+        position: absolute;
+        left: 400px;
+        top : 150px;
+        -webkit-transition: all 500ms cubic-bezier(0.000, 0.980, 0.405, 0.990);
+        -moz-transition: all 500ms cubic-bezier(0.000, 0.980, 0.405, 0.990);
+        -o-transition: all 500ms cubic-bezier(0.000, 0.980, 0.405, 0.990);
+        transition: all 500ms cubic-bezier(0.000, 0.980, 0.405, 0.990); /* custom */
+
+        -webkit-transition-timing-function: cubic-bezier(0.000, 0.980, 0.405, 0.990);
+        -moz-transition-timing-function: cubic-bezier(0.000, 0.980, 0.405, 0.990);
+        -o-transition-timing-function: cubic-bezier(0.000, 0.980, 0.405, 0.990);
+        transition-timing-function: cubic-bezier(0.000, 0.980, 0.405, 0.990); /* custom */
+    }
+    .rightInitial{
+        position: absolute;
+        right: 100px;
+        top: 100px;
+        margin: 0 auto;
+        -webkit-transition: all 500ms cubic-bezier(0.000, 0.980, 0.405, 0.990);
+        -moz-transition: all 500ms cubic-bezier(0.000, 0.980, 0.405, 0.990);
+        -o-transition: all 500ms cubic-bezier(0.000, 0.980, 0.405, 0.990);
+        transition: all 500ms cubic-bezier(0.000, 0.980, 0.405, 0.990); /* custom */
+
+        -webkit-transition-timing-function: cubic-bezier(0.000, 0.980, 0.405, 0.990);
+        -moz-transition-timing-function: cubic-bezier(0.000, 0.980, 0.405, 0.990);
+        -o-transition-timing-function: cubic-bezier(0.000, 0.980, 0.405, 0.990);
+        transition-timing-function: cubic-bezier(0.000, 0.980, 0.405, 0.990); /* custom */
+
+    }
+    .rightFinal{
+        position: absolute;
+        right: 400px;
+        top : 150px;
+        -webkit-transition: all 500ms cubic-bezier(0.000, 0.980, 0.405, 0.990);
+        -moz-transition: all 500ms cubic-bezier(0.000, 0.980, 0.405, 0.990);
+        -o-transition: all 500ms cubic-bezier(0.000, 0.980, 0.405, 0.990);
+        transition: all 500ms cubic-bezier(0.000, 0.980, 0.405, 0.990); /* custom */
+
+        -webkit-transition-timing-function: cubic-bezier(0.000, 0.980, 0.405, 0.990);
+        -moz-transition-timing-function: cubic-bezier(0.000, 0.980, 0.405, 0.990);
+        -o-transition-timing-function: cubic-bezier(0.000, 0.980, 0.405, 0.990);
+        transition-timing-function: cubic-bezier(0.000, 0.980, 0.405, 0.990); /* custom */
+
+    }
+    .6{
+        margin-top: 45px;
+    }
+    ul{
+        padding: 0;
+        -webkit-transition: all 500ms cubic-bezier(0.000, 0.980, 0.405, 0.990);
+        -moz-transition: all 500ms cubic-bezier(0.000, 0.980, 0.405, 0.990);
+        -o-transition: all 500ms cubic-bezier(0.000, 0.980, 0.405, 0.990);
+        transition: all 500ms cubic-bezier(0.000, 0.980, 0.405, 0.990); /* custom */
+
+        -webkit-transition-timing-function: cubic-bezier(0.000, 0.980, 0.405, 0.990);
+        -moz-transition-timing-function: cubic-bezier(0.000, 0.980, 0.405, 0.990);
+        -o-transition-timing-function: cubic-bezier(0.000, 0.980, 0.405, 0.990);
+        transition-timing-function: cubic-bezier(0.000, 0.980, 0.405, 0.990); /* custom */
+    }
+    .played-cards-ul{
+
+    }
+    .card{
+        -webkit-transition: all 500ms cubic-bezier(0.000, 0.980, 0.405, 0.990);
+        -moz-transition: all 500ms cubic-bezier(0.000, 0.980, 0.405, 0.990);
+        -o-transition: all 500ms cubic-bezier(0.000, 0.980, 0.405, 0.990);
+        transition: all 500ms cubic-bezier(0.000, 0.980, 0.405, 0.990); /* custom */
+
+        -webkit-transition-timing-function: cubic-bezier(0.000, 0.980, 0.405, 0.990);
+        -moz-transition-timing-function: cubic-bezier(0.000, 0.980, 0.405, 0.990);
+        -o-transition-timing-function: cubic-bezier(0.000, 0.980, 0.405, 0.990);
+        transition-timing-function: cubic-bezier(0.000, 0.980, 0.405, 0.990); /* custom */
+    }
+    .leftOut{
+        position: absolute;
+        left: -290px;
+        top: 0px;
+        -webkit-transition: all 500ms cubic-bezier(0.000, 0.980, 0.405, 0.990);
+        -moz-transition: all 500ms cubic-bezier(0.000, 0.980, 0.405, 0.990);
+        -o-transition: all 500ms cubic-bezier(0.000, 0.980, 0.405, 0.990);
+        transition: all 500ms cubic-bezier(0.000, 0.980, 0.405, 0.990); /* custom */
+
+        -webkit-transition-timing-function: cubic-bezier(0.000, 0.980, 0.405, 0.990);
+        -moz-transition-timing-function: cubic-bezier(0.000, 0.980, 0.405, 0.990);
+        -o-transition-timing-function: cubic-bezier(0.000, 0.980, 0.405, 0.990);
+        transition-timing-function: cubic-bezier(0.000, 0.980, 0.405, 0.990); /* custom */
+    }
+    .rightOut{
+        position: absolute;
+        right: -290px;
+        top: 0px;
+        -webkit-transition: all 500ms cubic-bezier(0.000, 0.980, 0.405, 0.990);
+        -moz-transition: all 500ms cubic-bezier(0.000, 0.980, 0.405, 0.990);
+        -o-transition: all 500ms cubic-bezier(0.000, 0.980, 0.405, 0.990);
+        transition: all 500ms cubic-bezier(0.000, 0.980, 0.405, 0.990); /* custom */
+
+        -webkit-transition-timing-function: cubic-bezier(0.000, 0.980, 0.405, 0.990);
+        -moz-transition-timing-function: cubic-bezier(0.000, 0.980, 0.405, 0.990);
+        -o-transition-timing-function: cubic-bezier(0.000, 0.980, 0.405, 0.990);
+        transition-timing-function: cubic-bezier(0.000, 0.980, 0.405, 0.990); /* custom */
+    }
+    .bottomOut{
+        position: absolute;
+        bottom: -190px;
+        left: 0px;
+        right: 0px;
+        margin: 0 auto;
+        -webkit-transition: all 500ms cubic-bezier(0.000, 0.980, 0.405, 0.990);
+        -moz-transition: all 500ms cubic-bezier(0.000, 0.980, 0.405, 0.990);
+        -o-transition: all 500ms cubic-bezier(0.000, 0.980, 0.405, 0.990);
+        transition: all 500ms cubic-bezier(0.000, 0.980, 0.405, 0.990); /* custom */
+
+        -webkit-transition-timing-function: cubic-bezier(0.000, 0.980, 0.405, 0.990);
+        -moz-transition-timing-function: cubic-bezier(0.000, 0.980, 0.405, 0.990);
+        -o-transition-timing-function: cubic-bezier(0.000, 0.980, 0.405, 0.990);
+        transition-timing-function: cubic-bezier(0.000, 0.980, 0.405, 0.990); /* custom */
+    }
+    .leftMovingCard,  .leftMovedCard{
+        position: absolute;
+        left: -290px;
+        top: 0px;
+        -webkit-transition: all 500ms cubic-bezier(0.000, 0.980, 0.405, 0.990);
+        -moz-transition: all 500ms cubic-bezier(0.000, 0.980, 0.405, 0.990);
+        -o-transition: all 500ms cubic-bezier(0.000, 0.980, 0.405, 0.990);
+        transition: all 500ms cubic-bezier(0.000, 0.980, 0.405, 0.990); /* custom */
+
+        -webkit-transition-timing-function: cubic-bezier(0.000, 0.980, 0.405, 0.990);
+        -moz-transition-timing-function: cubic-bezier(0.000, 0.980, 0.405, 0.990);
+        -o-transition-timing-function: cubic-bezier(0.000, 0.980, 0.405, 0.990);
+        transition-timing-function: cubic-bezier(0.000, 0.980, 0.405, 0.990); /* custom */
+    }
+    .rightMovingCard, .rightMovedCard{
+        position: absolute;
+        right: -290px;
+        top: 0px;
+        -webkit-transition: all 500ms cubic-bezier(0.000, 0.980, 0.405, 0.990);
+        -moz-transition: all 500ms cubic-bezier(0.000, 0.980, 0.405, 0.990);
+        -o-transition: all 500ms cubic-bezier(0.000, 0.980, 0.405, 0.990);
+        transition: all 500ms cubic-bezier(0.000, 0.980, 0.405, 0.990); /* custom */
+
+        -webkit-transition-timing-function: cubic-bezier(0.000, 0.980, 0.405, 0.990);
+        -moz-transition-timing-function: cubic-bezier(0.000, 0.980, 0.405, 0.990);
+        -o-transition-timing-function: cubic-bezier(0.000, 0.980, 0.405, 0.990);
+        transition-timing-function: cubic-bezier(0.000, 0.980, 0.405, 0.990); /* custom */
+    }
+    .bottomMovingCard, .bottomMovedCard{
+        position: absolute;
+        vertical-align: middle;
+        bottom: 100px;
+        left: 0;
+        right: 0;
+        margin: 0 auto;
+        -webkit-transition: all 500ms cubic-bezier(0.000, 0.980, 0.405, 0.990);
+        -moz-transition: all 500ms cubic-bezier(0.000, 0.980, 0.405, 0.990);
+        -o-transition: all 500ms cubic-bezier(0.000, 0.980, 0.405, 0.990);
+        transition: all 500ms cubic-bezier(0.000, 0.980, 0.405, 0.990); /* custom */
+
+        -webkit-transition-timing-function: cubic-bezier(0.000, 0.980, 0.405, 0.990);
+        -moz-transition-timing-function: cubic-bezier(0.000, 0.980, 0.405, 0.990);
+        -o-transition-timing-function: cubic-bezier(0.000, 0.980, 0.405, 0.990);
+        transition-timing-function: cubic-bezier(0.000, 0.980, 0.405, 0.990); /* custom */
+    }
+    .bottomMovedCard{
+
+    }

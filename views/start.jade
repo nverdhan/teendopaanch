@@ -1,0 +1,14 @@
+extends layout
+
+block content
+	.container
+	h1= title
+	p Welcome to #{title}
+
+	a(class='btn btn-default btn-primary btn-lg', href='/auth/twitter') Login with Twitter
+
+	script(src="/socket.io/socket.io.js")
+
+	script(src="/javascripts/socket-client.js")
+//		var io = socket('http://localhost:3000')
+
