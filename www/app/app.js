@@ -1,8 +1,8 @@
-var game325 = angular.module('game325', ['ui.router', 'btford.socket-io','ngAnimate']);
+var game325 = angular.module('game325', ['ng','ui.router','ngAria','ngMaterial','ngAnimate','btford.socket-io','ngAnimate']);
 
-game325.config(['$httpProvider', '$locationProvider', function ($httpProvider, $locationProvider) {
-    $locationProvider.html5Mode(true).hashPrefix('!');
-}]);
+// game325.config(['$httpProvider', '$locationProvider', function ($httpProvider, $locationProvider) {
+//     $locationProvider.html5Mode(true).hashPrefix('!');
+// }]);
 game325.filter('unsafe', function($sce) {
     return function(val) {
         return $sce.trustAsHtml(val);
@@ -12,7 +12,7 @@ game325.filter('unsafe', function($sce) {
 game325.factory('socket', function(socketFactory){
     return socketFactory({ioSocket : io.connect('http://127.0.0.1:3000')});
 });
-game325.run(['$rootScope', '$state', '$location', 'socket', function($rootScope, $state, $location, socket){
+game325.run(['$rootScope', '$state', 'socket', function($rootScope, $state, socket){
     $rootScope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams){
         if(fromState.name == 'game/:id'){
             console.log(fromParams.id);
@@ -155,3 +155,7 @@ $(document).keyup(function(e) {
         $('body').toggleClass('show-nav');
     }
 });
+
+game325.controller('loginController',['$rootScope', '$scope', '$http', function($rootScope, $scope, $http){
+
+}]);
