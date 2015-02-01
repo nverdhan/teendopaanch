@@ -25,6 +25,7 @@
 	<script type="text/javascript" src="public/js/angular-ui-router.min.js"></script>
     <script type="text/javascript" src="public/js/socket.min.js"></script>
     <!--script type="text/javascript" src="public/js/angular-animate.min.js"></script-->
+    <link href='http://fonts.googleapis.com/css?family=Merriweather' rel='stylesheet' type='text/css'>
     <script type="text/javascript" src="app/app.js"></script>
     <script type="text/javascript" src="app/config.js"></script>
     <script type="text/javascript" src="app/controllers/startController.js"></script>
@@ -37,7 +38,9 @@
     </head>
 </html>
 <body>
-    <nav class="navbar navbar-inverse" role="navigation">
+    <div class='bckimg'> </div>
+    <div class="content" ui-view></div>
+<!--     <nav class="navbar navbar-inverse" role="navigation">
         <div class="navbar-header">
     	<span class="pull-left menu-brand">
             <!--i class="fa fa-bars pointer fa-2x color-6"></i-->
@@ -52,5 +55,5 @@
       <a class="navbar-brand" class="toggle-nav" href="/">GameApp</a>
     </div>
     </nav>
-    <div class="view-main" ui-view></div>
+    <div class="view-main" ></div> -->
 </body>

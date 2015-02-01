@@ -156,7 +156,10 @@ $(document).keyup(function(e) {
     }
 });
 
-game325.controller('loginController',['$rootScope', '$location', '$scope', '$http', function($rootScope, $location ,$scope, $http){
+game325.controller('loginController',['$rootScope', '$location', '$scope', '$http','$window', function($rootScope, $location ,$scope, $http,$window){
+    $scope.twitterAuth = function(){
+        $window.location.href = "http://127.0.0.1:3000/auth/twitter"
+    }
 
     $scope.homepage = function(){
         $location.path('home');

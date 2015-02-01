@@ -23,9 +23,9 @@ game325.controller('startController', ['$http', '$scope', 'startGameService','$s
         $scope.showJoinGame = true;
     }
     $scope.loading = false;
-    $scope.twitterAuth = function(){
-        $window.location.href = "http://127.0.0.1:3000/auth/twitter"
-    }
+    // $scope.twitterAuth = function(){
+    //     $window.location.href = "http://127.0.0.1:3000/auth/twitter"
+    // }
     $scope.startGame = function(){
         var req = {};
         startGameService.start(req).then(function(res){

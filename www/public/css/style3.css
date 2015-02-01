@@ -1,0 +1,161 @@
+.bckimg{
+	 position: fixed;
+  left: 0;
+  right: 0;
+  z-index: 1;
+
+  display: block;
+  /*background-image: url('../../assets/img/card-bck.jpg');*/
+  background-image: url('http://www.hdwallpapersinn.com/wp-content/uploads/2014/11/ace-playing-cards-3000x2000-wallpaper_www.vehiclehi.com_73.jpg');
+  background-size: cover;
+  width: 100%;
+  height: 100%;
+  /*width: 1200px;*/
+  /*height: 800px;*/
+
+  -webkit-filter: blur(8px);
+  -moz-filter: blur(8px);
+  -o-filter: blur(8px);
+  -ms-filter: blur(8px);
+  filter: blur(8px);
+}
+.content {
+  position: fixed;
+  left: 0;
+  right: 0;
+  z-index: 9999;
+  margin-left: 20px;
+  margin-right: 20px;
+}
+.flogin{
+	background: rgb(81,112,173);
+	background: -moz-radial-gradient(center, ellipse cover,  rgba(81,112,173,1) 0%, rgba(53,84,147,1) 100%);
+	background: -webkit-gradient(radial, center center, 0px, center center, 100%, color-stop(0%,rgba(81,112,173,1)), color-stop(100%,rgba(53,84,147,1)));
+	background: -webkit-radial-gradient(center, ellipse cover,  rgba(81,112,173,1) 0%,rgba(53,84,147,1) 100%);
+	background: -o-radial-gradient(center, ellipse cover,  rgba(81,112,173,1) 0%,rgba(53,84,147,1) 100%);
+	background: -ms-radial-gradient(center, ellipse cover,  rgba(81,112,173,1) 0%,rgba(53,84,147,1) 100%);
+	background: radial-gradient(ellipse at center,  rgba(81,112,173,1) 0%,rgba(53,84,147,1) 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#5170ad', endColorstr='#355493',GradientType=1 );
+	border:1px solid #2d416d;
+	box-shadow: 0 1px #5670A4 inset,
+				0 0 10px 5px rgba(0, 0, 0, 0.1);
+	border-radius: 5px;
+	position: relative;
+	width: 300px;
+	height: 380px;
+	/*margin-top: 90px;*/
+	margin-left: 100px;
+	margin-right: 100px;
+	padding: 50px 30px 0 30px;
+	text-align: center;
+
+	backface-visibility: hidden;
+    display: inline-block;
+    transform: translateZ(0px);
+    transition-duration: 0.3s;
+    transition-property: transform;
+    vertical-align: middle;
+    cursor: pointer;
+}
+
+.flogin:hover{
+	transform: translateY(-5px);
+}
+
+.flogin:hover:before{
+	opacity: 1;
+    transform: translateY(5px);
+}
+.flogin:before{
+	background: radial-gradient(ellipse at center center , rgba(0, 0, 0, 0.35) 0%, rgba(0, 0, 0, 0) 80%) repeat scroll 0 0 rgba(0, 0, 0, 0);
+    content: "";
+    height: 10px;
+    left: 5%;
+    opacity: 0;
+    pointer-events: none;
+    position: absolute;
+    top: 100%;
+    transition-duration: 0.3s;
+    transition-property: transform, opacity;
+    width: 90%;
+    z-index: -1;
+}
+/*.tlogin{
+	border:1px solid #67bcd1; -webkit-border-radius: 3px; -moz-border-radius: 3px;border-radius: 3px;font-size:12px;font-family:arial, helvetica, sans-serif; padding: 10px 10px 10px 10px; text-decoration:none; display:inline-block;text-shadow: -1px -1px 0 rgba(0,0,0,0.3);font-weight:bold; color: #FFFFFF;
+ background-color: #92cfde; background-image: -webkit-gradient(linear, left top, left bottom, from(#92cfde), to(#76bdd1));
+ background-image: -webkit-linear-gradient(top, #92cfde, #76bdd1);
+ background-image: -moz-linear-gradient(top, #92cfde, #76bdd1);
+ background-image: -ms-linear-gradient(top, #92cfde, #76bdd1);
+ background-image: -o-linear-gradient(top, #92cfde, #76bdd1);
+ background-image: linear-gradient(to bottom, #92cfde, #76bdd1);filter:progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#92cfde, endColorstr=#76bdd1);
+
+	box-shadow: 0 1px #5670A4 inset,
+				0 0 10px 5px rgba(0, 0, 0, 0.1);
+	border-radius: 5px;
+	position: relative;
+	width: 300px;
+	height: 380px;
+	margin: 60px auto;
+	padding: 50px 30px 0 30px;
+	text-align: center;
+}
+
+.glogin{
+	border:1px solid #ff6262; -webkit-border-radius: 3px; -moz-border-radius: 3px;border-radius: 3px;font-size:12px;font-family:arial, helvetica, sans-serif; padding: 10px 10px 10px 10px; text-decoration:none; display:inline-block;text-shadow: -1px -1px 0 rgba(0,0,0,0.3);font-weight:bold; color: #FFFFFF;
+ background-color: #ff9a9a; background-image: -webkit-gradient(linear, left top, left bottom, from(#ff9a9a), to(#ff4040));
+ background-image: -webkit-linear-gradient(top, #ff9a9a, #ff4040);
+ background-image: -moz-linear-gradient(top, #ff9a9a, #ff4040);
+ background-image: -ms-linear-gradient(top, #ff9a9a, #ff4040);
+ background-image: -o-linear-gradient(top, #ff9a9a, #ff4040);
+ background-image: linear-gradient(to bottom, #ff9a9a, #ff4040);filter:progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#ff9a9a, endColorstr=#ff4040);
+	border-radius: 5px;
+	position: relative;
+	width: 300px;
+	height: 380px;
+	margin: 60px auto;
+	padding: 50px 30px 0 30px;
+	text-align: center;
+}*/
+
+.card-img-upper{
+	position: relative;
+	top: -29px;
+	left: -119px;
+	color:#fff; 
+	font-size:30pt;
+}
+.card-img-lower{
+	position: relative;
+	bottom: -100px;
+	right: -124px;
+	color:#fff; 
+	font-size:30pt;
+	-ms-transform: rotate(180deg); /* IE 9 */
+    -webkit-transform: rotate(180deg); /* Chrome, Safari, Opera */
+    transform: rotate(180deg);
+}
+
+.card-img{
+	position: relative;
+	top: 28px;
+}
+
+.welcome-text{
+	font-family: 'Merriweather';
+	margin-left: 100px;
+}
+.welcome-text>h1{
+	font-size: 30pt;
+
+}
+
+.flex-container{
+	margin-top: 90px;
+	display: flex;
+    display: -webkit-flex;
+    display: -moz-flex;
+    flex-flow: row wrap;
+    justify-content: space-around;
+    -webkit-justify-content: space-around;
+    -moz-justify-content: space-around;
+}
