@@ -156,6 +156,9 @@ $(document).keyup(function(e) {
     }
 });
 
-game325.controller('loginController',['$rootScope', '$scope', '$http', function($rootScope, $scope, $http){
+game325.controller('loginController',['$rootScope', '$location', '$scope', '$http', function($rootScope, $location ,$scope, $http){
 
+    $scope.homepage = function(){
+        $location.path('home');
+    };
 }]);
