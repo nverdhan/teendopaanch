@@ -131,7 +131,16 @@ game325.controller('gameController', ['$rootScope', '$http', '$scope', '$state',
         }
     }
     $scope.getWidth = function (n) {
-        var i = $scope.arrPlayers[n].cards.length;
+        if(n == 0){
+            var i = $scope.bottomPlayerCards.length;
+        }
+        if(n == 1){
+            var i = $scope.leftPlayerCards.length;
+        }
+        if(n == 2){
+            var i = $scope.rightPlayerCards.length;
+        }
+        console.log(i);
         var x = angular.element('.card').width();
         var c = ($scope.gameTurn%3)-1;
         var c = 0.5*(c)*x*0.6;
@@ -168,6 +177,7 @@ game325.controller('gameController', ['$rootScope', '$http', '$scope', '$state',
             'padding-right' : y+'px'
         }
     }
+    $scope.bottomPlayerWidth;
     $scope.assignPlayers = function(){
         $scope.arrPlayers = Array();
         while($scope.playerIds.indexOf($scope.playerId)!==0){
@@ -193,13 +203,77 @@ game325.controller('gameController', ['$rootScope', '$http', '$scope', '$state',
         for (var i = 0; i < $scope.playerIds.length; i++) {
             $scope.arrPlayers[i].cards = $scope.players[$scope.playerIds[i]]['cards'];
         }
-        $scope.bottomPlayerCards = $scope.arrPlayers[0].cards;
-        $scope.leftPlayerCards = $scope.arrPlayers[1].cards;
+        $scope.bottomPlayerCards = [];
+        // $scope.bottomPlayerCards = $scope.arrPlayers[0].cards;
+        $scope.bottomPlayerDeck  = $scope.arrPlayers[0].cards;
+
         $scope.leftPlayerId = $scope.arrPlayers[1].id;
-        $scope.rightPlayerCards = $scope.arrPlayers[2].cards;
+        // $scope.leftPlayerCards = $scope.arrPlayers[1].cards;
+        $scope.leftPlayerCards = [];
+        $scope.leftPlayerDeck = $scope.arrPlayers[1].cards;
         $scope.rightPlayerId = $scope.arrPlayers[2].id;
+        // $scope.rightPlayerCards = $scope.arrPlayers[2].cards;
+        $scope.rightPlayerCards = [];
+        $scope.rightPlayerDeck = $scope.arrPlayers[2].cards;
+        $scope.distributeCards();
+    }
+    $scope.distributeBottomPlayer = function(){
+        var a = $scope.bottomPlayerDeck.pop();
+        $scope.bottomPlayerCards.push(a);
+    }
+    $scope.distributeLeftPlayer = function(){
+        var a = $scope.leftPlayerDeck.pop();
+        $scope.leftPlayerCards.push(a);
+    }
+    $scope.distributeRightPlayer = function(){
+        var a = $scope.rightPlayerDeck.pop();
+        $scope.rightPlayerCards.push(a);
+    }
+    $scope.distributeCards = function(){
+        var m = 0;
+        var n = 0;
+        var o = 0;
+        for (var i = 1; i <= 15; i++){
+            if(i%3 == 0){
+                var x = function(){
+                    n++;
+                    var topY = $('.bottom-player').offset().top;
+                    var leftX = $('.bottom-player').offset().left;
+                    $('.bottomPlayerDeck:nth-child('+n+')').animate({
+                        'left' : leftX+'px',
+                        'top' : topY+'px'
+                    }, $scope.distributeBottomPlayer());
+                }
+                delayService.asyncTask(i*50, x);
+            }
+            if((i%3)-1 == 0){
+                var x = function(){
+                    m++;
+                    var topY = $('.left-player').offset().top;
+                    var leftX = $('.left-player').offset().left;
+                    $('.leftPlayerDeck:nth-child('+m+')').animate({
+                        'left' : leftX+'px',
+                        'top' : topY+'px'
+                    }, $scope.distributeLeftPlayer());
+                }
+                delayService.asyncTask(i*50, x);
+            }
+            if((i%3)-2 == 0){
+                var x = function(){
+                    o++;
+                    var topY = $('.right-player').offset().top;
+                    var leftX = $('.right-player').offset().left;
+                    $('.rightPlayerDeck:nth-child('+o+')').animate({
+                        'left' : leftX+'px',
+                        'top' : topY+'px'
+                    }, $scope.distributeRightPlayer());
+                }
+                delayService.asyncTask(i*50, x);
+            }
+        }
     }
     $scope.withDrawEnabled = false;
+
     
     $scope.moveWithdrawnCard = function(){
         for (var i = $scope.arrPlayers.length - 1; i >= 0; i--) {
@@ -261,7 +335,7 @@ game325.controller('gameController', ['$rootScope', '$http', '$scope', '$state',
     }
     $scope.getPosition = function(position){
         if(position == 0){
-            return 'zeroInitial';
+            // return 'zeroInitial';
         }if(position == 120){
             return 'leftInitial';
         }
@@ -383,6 +457,9 @@ game325.controller('gameController', ['$rootScope', '$http', '$scope', '$state',
         var card = $scope.cardsPlayed[lastPlayerId];
         $scope.allowedSuit = card['suit'];
     }
+    // $scope.deckBottom;
+    // $scope.deckLeft;
+    // $scope.deckRight;
     $scope.placeCardOnBoard = function(){
         //check for allowed suit 
         // if($scope.gameState == 'playedCard' && ($scope.gameTurn-2)%3 == 0){
@@ -395,11 +472,9 @@ game325.controller('gameController', ['$rootScope', '$http', '$scope', '$state',
                 var e = $scope.arrPlayers[i].position;
             }
         }
-
         var initialClass = $scope.getPosition(e);
         var finalClass = $scope.getPlayedPosition(e);
         if(e == 0){
-            $('.'+initialClass).removeClass('zeroInitial');
             $timeout(function (){
                 var a = $rootScope.left;
                 var b = '16em';
@@ -408,7 +483,6 @@ game325.controller('gameController', ['$rootScope', '$http', '$scope', '$state',
                     left : a,
                     top : '28em'
                 });
-                console.log($('.moveCard'));
                  $('.moveCard').animate({
                         left : '22em',
                         top : b
@@ -418,7 +492,6 @@ game325.controller('gameController', ['$rootScope', '$http', '$scope', '$state',
                             top : ''
                         });
                         $('.moveCard').addClass('zeroFinal');
-                        // $('.'+initialClass).removeClass('zeroInitial');
                     });
              }, 60);
         }

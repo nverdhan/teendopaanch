@@ -73,6 +73,35 @@
                         </li>
                     </ul>
                 </div>
+                <div class="allDeck">
+                    <ul class="playingCards">
+                        <li ng-repeat = "card in leftPlayerDeck" class="leftPlayerDeck">
+                            <a class="card" style="position:absolute;">
+                                    <span class="rank">{{ getRankForHTML(card) }}</span>
+                                    <span class="suit" ng-bind-html="'&'+getSuitForHTML(player.cardPlayed)+';' | unsafe"></span>
+                            </a>
+                            <a class="card back" style="position:absolute;"></a>
+                        </li>
+                    </ul>
+                    <ul class="playingCards">
+                        <li ng-repeat = "card in rightPlayerDeck" class="rightPlayerDeck">
+                            <a class="card" style="position:absolute;">
+                                    <span class="rank">{{ getRankForHTML(card) }}</span>
+                                    <span class="suit" ng-bind-html="'&'+getSuitForHTML(player.cardPlayed)+';' | unsafe"></span>
+                            </a>
+                            <a class="card back" style="position:absolute;"></a>
+                        </li>
+                    </ul>
+                    <ul class="playingCards">
+                        <li ng-repeat = "card in bottomPlayerDeck" class="bottomPlayerDeck">
+                            <a class="card" style="position:absolute;">
+                                    <span class="rank">{{ getRankForHTML(card) }}</span>
+                                    <span class="suit" ng-bind-html="'&'+getSuitForHTML(player.cardPlayed)+';' | unsafe"></span>
+                            </a>
+                            <a class="card back" style="position:absolute;"></a>
+                        </li>
+                    </ul>
+                </div>
                 <div class="trump-card" ng-if="trump">
                     <ul><li class="card">{{ trump }}</li></ul>
                 </div>
