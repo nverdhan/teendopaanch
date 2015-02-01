@@ -1,4 +1,4 @@
-game325.controller('startController', ['$http', '$scope', 'startGameService','$state', 'authService' ,'$window', function ($http, $scope, startGameService, $state, authService, $window){
+game325.controller('startController', ['$http', '$scope', 'startGameService','$state', 'authService' ,'$window' , '$mdDialog', function ($http, $scope, startGameService, $state, authService, $window, $mdDialog){
 //     authService.get().then(function(res){
 //        console.log(res);
 //         if(res.data.error == "401"){
@@ -43,11 +43,37 @@ game325.controller('startController', ['$http', '$scope', 'startGameService','$s
         var req = {
             roomId : $scope.joinGameRoomId
         };
+        console.log(req);
         startGameService.join(req).then(function(res){
             console.log(res.data)
-            if(res.data.error)
-                alert('invalid room');return false;
+            if(res.data.error){
+                $scope.roomerror();
+                return false;
+            }
           $state.go('game/:id/:type', {id : res.data.roomId, type : res.data.type});      
         });
+        $scope.roomerror = function(ev) {
+         $mdDialog.show({
+          template:
+            '<md-dialog>' +
+            '    <md-button style="background-color: rgba(241,103,103,1)!important" ng-click="closeDialog()">' +
+            '      <i class="fa fa-times" style="float:right;"></i>' +
+            '    </md-button>' +
+            '  <md-content>Invalid Room!' +
+            // '  <div class="md-actions">' +
+            
+            // '  </div>' +
+            '</md-content></md-dialog>',
+            controller: 'errDialogController'
+        });
+    }
+        
+
     }
 }]);
+
+game325.controller('errDialogController',['$scope', '$mdDialog', function($scope, $mdDialog){
+    $scope.closeDialog = function(){
+            $mdDialog.hide();
+        };
+}])
