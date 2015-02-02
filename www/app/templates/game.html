@@ -120,7 +120,16 @@
 <div ng-if="waiting && gameType == 0" class="waiting" >
     <div>share room with our friends you want to join {{ gameId }}</div>
 </div>
-<div ng-if="waiting" class="waiting" ><div>Waiting for other player to connect</div></div>
+<!-- *** Users Waiting to connect *** -->
+<div ng-if="waiting" class="waiting" >
+    <div>
+        <h1>
+        Waiting for other player(s) to connect
+        </h1>
+    </div>
+    <md-progress-circular class="md-warn md-hue-3" md-mode="indeterminate"></md-progress-circular>
+</div>
+<!-- Users waiting end -->
 <div class="overlay" ng-show = "showScores">
     <div ng-click="closeScores()" class="close-overlay"><i class="fa fa-times"></i></div>
     <div class="container">
