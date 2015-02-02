@@ -405,10 +405,10 @@ div.clear {
     top: 19em;
     left: 0em;
     list-style: none;
-    -webkit-transition: all 500ms cubic-bezier(0.000, 0.980, 0.405, 0.990);
-        -moz-transition: all 500ms cubic-bezier(0.000, 0.980, 0.405, 0.990);
-        -o-transition: all 500ms cubic-bezier(0.000, 0.980, 0.405, 0.990);
-        transition: all 500ms cubic-bezier(0.000, 0.980, 0.405, 0.990); /* custom */
+    -webkit-transition: all 100ms cubic-bezier(0.000, 0.980, 0.405, 0.990);
+        -moz-transition: all 100ms cubic-bezier(0.000, 0.980, 0.405, 0.990);
+        -o-transition: all 100ms cubic-bezier(0.000, 0.980, 0.405, 0.990);
+        transition: all 100ms cubic-bezier(0.000, 0.980, 0.405, 0.990); /* custom */
 
         -webkit-transition-timing-function: cubic-bezier(0.000, 0.980, 0.405, 0.990);
         -moz-transition-timing-function: cubic-bezier(0.000, 0.980, 0.405, 0.990);

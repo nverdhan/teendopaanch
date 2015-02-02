@@ -164,6 +164,7 @@ game325.controller('gameController', ['$rootScope', '$http', '$scope', '$state',
         }
         
     }
+    $scope.distributeCardsFlag = true;
     $scope.getCardWidth = function (){
         var w = angular.element('.card').width();
         return w+'px';
@@ -203,19 +204,51 @@ game325.controller('gameController', ['$rootScope', '$http', '$scope', '$state',
         for (var i = 0; i < $scope.playerIds.length; i++) {
             $scope.arrPlayers[i].cards = $scope.players[$scope.playerIds[i]]['cards'];
         }
-        $scope.bottomPlayerCards = [];
-        // $scope.bottomPlayerCards = $scope.arrPlayers[0].cards;
-        $scope.bottomPlayerDeck  = $scope.arrPlayers[0].cards;
+        if($scope.arrPlayers[0].cards.length == 5){
+            $scope.bottomPlayerCards = [];
+            // $scope.bottomPlayerCards = $scope.arrPlayers[0].cards;
+            $scope.bottomPlayerDeck  = $scope.arrPlayers[0].cards;
+        }else{
+            for (var i = 0; i < 5; i++) {
+                var s = $scope.arrPlayers[0].cards[i];
+                $scope.bottomPlayerDeck.push(s)
+            };
+        }
+
+        if($scope.arrPlayers[1].cards.length == 5){
+            $scope.leftPlayerCards = [];
+                $scope.leftPlayerDeck = $scope.arrPlayers[1].cards;
+        }else{
+            for (var i = 0; i < 5; i++) {
+                var s = $scope.arrPlayers[1].cards[i];
+                $scope.leftPlayerDeck.push(s)
+            };
+        }
+
+        if($scope.arrPlayers[2].cards.length == 5){
+            $scope.rightPlayerCards = [];
+                $scope.rightPlayerDeck = $scope.arrPlayers[2].cards;
+        }else{
+            for (var i = 0; i < 5; i++) {
+                var s = $scope.arrPlayers[2].cards[i];
+                $scope.rightPlayerDeck.push(s)
+            };
+        }
+        
 
         $scope.leftPlayerId = $scope.arrPlayers[1].id;
         // $scope.leftPlayerCards = $scope.arrPlayers[1].cards;
-        $scope.leftPlayerCards = [];
-        $scope.leftPlayerDeck = $scope.arrPlayers[1].cards;
+        
         $scope.rightPlayerId = $scope.arrPlayers[2].id;
         // $scope.rightPlayerCards = $scope.arrPlayers[2].cards;
-        $scope.rightPlayerCards = [];
-        $scope.rightPlayerDeck = $scope.arrPlayers[2].cards;
-        $scope.distributeCards();
+        if($scope.distributeCardsFlag){
+            $scope.distributeCards();    
+        }else{
+            $scope.bottomPlayerCards = $scope.arrPlayers[0].cards;
+            $scope.leftPlayerCards = $scope.arrPlayers[1].cards;
+            $scope.rightPlayerCards = $scope.arrPlayers[2].cards;
+        }
+        
     }
     $scope.distributeBottomPlayer = function(){
         var a = $scope.bottomPlayerDeck.pop();
@@ -237,38 +270,49 @@ game325.controller('gameController', ['$rootScope', '$http', '$scope', '$state',
             if(i%3 == 0){
                 var x = function(){
                     n++;
-                    var topY = $('.bottom-player').offset().top;
-                    var leftX = $('.bottom-player').offset().left;
-                    $('.bottomPlayerDeck:nth-child('+n+')').animate({
-                        'left' : leftX+'px',
-                        'top' : topY+'px'
+                    
+                    var topY = $('.bottom-player ul').offset().top;
+                    console.log(topY);
+                    var x = $('.bottom-player ul').height();
+                    console.log(x);
+                    topY = topY - x;
+                    topY = 205;
+                    var leftX = $('.bottom-player ul').offset().left;
+                    leftX = leftX+(n-1)*25;
+                    $('.bottomPlayerDeck:nth-child('+n+')').css({
+                        'transform' : 'translateX('+leftX+'px) translateY('+topY+'px)'
                     }, $scope.distributeBottomPlayer());
                 }
-                delayService.asyncTask(i*50, x);
+                delayService.asyncTask(100, x);
+                // delayService.asyncTask(i*50+101, $scope.distributeBottomPlayer);
             }
             if((i%3)-1 == 0){
                 var x = function(){
                     m++;
-                    var topY = $('.left-player').offset().top;
-                    var leftX = $('.left-player').offset().left;
-                    $('.leftPlayerDeck:nth-child('+m+')').animate({
-                        'left' : leftX+'px',
-                        'top' : topY+'px'
+                    var topY = $('.left-player ul').offset().top;
+                    var leftX = $('.left-player ul').offset().left;
+                    leftX = leftX+(m-1)*25;
+                    topY = -174;
+                    $('.leftPlayerDeck:nth-child('+m+')').css({
+                        'transform' : 'translateX('+leftX+'px) translateY('+topY+'px)'
                     }, $scope.distributeLeftPlayer());
                 }
-                delayService.asyncTask(i*50, x);
+                delayService.asyncTask(100, x);
+                // delayService.asyncTask(i*50+101, $scope.distributeLeftPlayer);
             }
             if((i%3)-2 == 0){
                 var x = function(){
                     o++;
-                    var topY = $('.right-player').offset().top;
-                    var leftX = $('.right-player').offset().left;
-                    $('.rightPlayerDeck:nth-child('+o+')').animate({
-                        'left' : leftX+'px',
-                        'top' : topY+'px'
+                    var topY = $('.right-player ul').offset().top;
+                    var leftX = $('.right-player ul').offset().left;
+                    leftX = leftX+(o-1)*25;
+                    topY = -174;
+                    $('.rightPlayerDeck:nth-child('+o+')').css({
+                        'transform' : 'translateX('+leftX+'px) translateY('+topY+'px)'
                     }, $scope.distributeRightPlayer());
                 }
-                delayService.asyncTask(i*50, x);
+                delayService.asyncTask(100, x);
+                // delayService.asyncTask(i*50+101,  $scope.distributeRightPlayer);
             }
         }
     }
@@ -590,6 +634,7 @@ game325.controller('gameController', ['$rootScope', '$http', '$scope', '$state',
             var data = {
                 gameState : 'endRound'
             }
+            $scope.distributeCardsFlag = true;
             GameStateService.play(data).success(function(data){
                 $scope.players = data['players'];
                 $scope.gameState = data['gameState'];
@@ -624,6 +669,7 @@ game325.controller('gameController', ['$rootScope', '$http', '$scope', '$state',
             });
         }
     $scope.play = function(card, player, $event){
+        $scope.distributeCardsFlag = false;
         $scope.cardLeft = angular.element($event.currentTarget.parentElement).css('left');
         console.log($scope.cardLeft);
         var q = $scope.cardLeft;
@@ -735,7 +781,6 @@ game325.controller('gameController', ['$rootScope', '$http', '$scope', '$state',
     });
     $scope.temp;
     socket.on('cardPlayed', function(data){
-        console.log(data);
         $scope.activePlayerId = data.data.activePlayerId;
         $scope.otherPlayerId = data.data.otherPlayerId;
         $scope.temp = $scope.activePlayerId;
