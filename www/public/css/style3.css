@@ -21,11 +21,13 @@
 }
 .content {
   position: absolute;
+  z-index: 5;
   left: 0;
   right: 0;
-  z-index: 5;
+  height: 100%;
+ /* z-index: 5;
   margin-left: 20px;
-  margin-right: 20px;
+  margin-right: 20px;*/
 }
 .flogin{
 	background: rgb(81,112,173);
@@ -157,5 +159,8 @@ div.profile h1{
 }
 /* Game Page */
 .waiting{
-	
+
+}
+.push-wrap{
+	height: 100%;
 }

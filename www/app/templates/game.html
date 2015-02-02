@@ -1,7 +1,8 @@
 <!--nav id="body-nav"></nav-->
 <div class="push-wrap" id="homepage">
-    <div class="">
+        <!-- <div class=""> -->
         <div ng-show="ready">
+        <!-- <div ng-show="true"> -->
             <div class="game-body">
                 <div ng-if="gameState == 'playCard'" class="play-info">
                     Player {{activePlayerId}} Play
@@ -107,26 +108,39 @@
                 </div>
             </div>
             <button class="btn btn-success btn-lg text-center" ng-click="toggleScores()">score</button>
-            <div class="chat-container">
+            <!-- Chat Container -->
+            
+        <!-- Chat Container End -->
+            
+        </div>
+        <md-sidenav class="md-sidenav-right md-whiteframe-z1" ng-hide="hideSideNav()" component-id="right" is-locked-open="$media('md')" ng-show="ready">
+         <!--    <div class="chat-container">
                 <div class="chat-box"></div>
                 <form class="form-inline form-horizontal">
                     <input type="text" ng-model="chatMsg" contenteditable="true" class="form-control"/>
                     <button type="button" class="btn btn-sm" ng-click="sendChat()">send</button>
                 </form>
+            </div> -->
+            <div>
+                Hello World!
             </div>
-        </div>
-    </div>
+        </md-sidenav>
+        <!-- <div ng-show="ready">
+            
+        <!- </div> -->
+
+    <!-- </div> -->
 </div>
 <div ng-if="waiting && gameType == 0" class="waiting" >
     <div>share room with our friends you want to join {{ gameId }}</div>
 </div>
 <!-- *** Users Waiting to connect *** -->
-<div ng-if="waiting" class="waiting" >
+<div ng-if="waiting" class="waiting" ng-hide="true">
     <div flex layout="vertical" layout-align="center center">
-        <h1>
+        <h2>
         Waiting for other player(s) to connect
-        </h1>
-        <md-progress-circular class="md-warn md-hue-3" mode="indeterminate"></md-progress-circular>
+        </h2>
+        <md-progress-circular mode="indeterminate"></md-progress-circular>
     </div>
     
 </div>
