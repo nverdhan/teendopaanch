@@ -122,12 +122,13 @@
 </div>
 <!-- *** Users Waiting to connect *** -->
 <div ng-if="waiting" class="waiting" >
-    <div>
+    <div flex layout="vertical" layout-align="center center">
         <h1>
         Waiting for other player(s) to connect
         </h1>
+        <md-progress-circular class="md-warn md-hue-3" mode="indeterminate"></md-progress-circular>
     </div>
-    <md-progress-circular class="md-warn md-hue-3" md-mode="indeterminate"></md-progress-circular>
+    
 </div>
 <!-- Users waiting end -->
 <div class="overlay" ng-show = "showScores">
