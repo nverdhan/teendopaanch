@@ -45,10 +45,24 @@ game325.controller('gameController', ['$rootScope', '$http', '$scope', '$state',
     }
     $scope.getMsgTemplate = function (content){
         console.log(content);
-        var x = '<div class="media comment-box"><a class="pull-left comment-body-pic" href="#"><img src="'+content.userPic+'" width="100%" height="100%"/></a>'+
-                '<div class="media-body" style="display:line-height:0px;"><h6 class="media-heading color-1 comment-body-h">'+
-                '<a class="comment-user-title" href="user/{{ comment.user.id }}">'+content.userId+'</a><small></small></h6>'+
-                '<p class="comment-body-p">'+content.body+'</p></div></div>';
+        // var x = '<div class="media comment-box"><a class="pull-left comment-body-pic" href="#"><img src="'+content.userPic+'" width="100%" height="100%"/></a>'+
+        //         '<div class="media-body" style="display:line-height:0px;"><h6 class="media-heading color-1 comment-body-h">'+
+        //         '<a class="comment-user-title" href="user/{{ comment.user.id }}">'+content.userId+'</a><small></small></h6>'+
+        //         '<p class="comment-body-p">'+content.body+'</p></div></div>';
+        var x ='<md-item>'+
+                    '<md-item-content>'+
+                      '<div class="md-tile-left">'+
+                        '<img ng-src="'+content.userPic +'" class="face" >'+
+                      '</div>'+
+                      '<div class="md-tile-content">'+
+                        '<h4>' + content.userId +'</h4>'+
+                        '<p>'+
+                          content.body+
+                        '</p>'+
+                      '</div>'+
+                    '</md-item-content>'+
+                  '  <md-divider md-inset ng-if="!$last"></md-divider>'+
+                  '</md-item>';             
         return x;
     }
     socket.on('msgRecieved', function (data) {
@@ -874,3 +888,16 @@ game325.controller('gameController', ['$rootScope', '$http', '$scope', '$state',
 //   };
 
 // }])
+game325.directive('ngEnter', function() {
+        return function(scope, element, attrs) {
+            element.bind("keydown keypress", function(event) {
+                if(event.which === 13) {
+                    scope.$apply(function(){
+                        scope.$eval(attrs.ngEnter, {'event': event});
+                    });
+
+                    event.preventDefault();
+                }
+            });
+        };
+    });

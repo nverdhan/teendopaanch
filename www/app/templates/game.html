@@ -115,16 +115,31 @@
             
         </div>
     <md-sidenav class="md-sidenav-right md-whiteframe-z2" component-id="right" is-locked-open="$media('md')" flex ng-show="ready">
-          <md-content class="md-padding" layout="vertical" flex layout-fill>
-          <div class="chat-box" flex></div>
-                <!-- <form class="form-inline form-horizontal">
-                    <input type="text" ng-model="chatMsg" contenteditable="true" class="form-control"/>
-                    <button type="button" class="btn btn-sm" ng-click="sendChat()">send</button>
-                </form> -->
-            <md-input-container>
-                <input type="text" ng-model="chatMsg" flex >
-            </md-input-container>
-            <md-button aria-label="sendChat" ng-click="sendChat()">Send</md-button>
+          <md-content class="md-padding chat-container" layout="vertical" flex layout-fill>
+            <md-content flex layout-fill class="chat-hist">
+                <md-list class='chat-box'>
+                  <!-- <md-item>
+                    <md-item-content>
+                      <div class="md-tile-left">
+                        <img ng-src="{{item.face}}" class="face" alt="{{item.who}}">
+                      </div>
+                      <div class="md-tile-content">
+                        <h3>{{item.what}}</h3>
+                        <h4>{{item.who}}</h4>
+                        <p>
+                          {{item.notes}}
+                        </p>
+                      </div>
+                    </md-item-content>
+                    <md-divider md-inset ng-if="!$last"></md-divider>
+                  </md-item> -->
+                </md-list>
+              </md-content>
+            <!-- <md-input-container>
+                <input type="text" ng-model="chatMsg">
+            </md-input-container> -->
+            <md-text-float ng-model="chatMsg" style="min-width:100%;" ng-enter="sendChat()"> </md-text-float>
+            <!-- <md-button aria-label="sendChat" ng-click="sendChat()">Send</md-button> -->
         <md-button ng-click="closeright()" class="md-primary" aria-label="closeChatBox">
           Close Chatbox
         </md-button>

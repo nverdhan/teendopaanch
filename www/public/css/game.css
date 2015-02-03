@@ -270,11 +270,11 @@ body {
     .bottomMovedCard{
 
     }
-    .chat-container{
+/*    .chat-container{
     position: absolute;
     padding: 10px;
     bottom: 0px;
-}
+}*/
 .back{
     transform : perspective(400px) rotateY(0deg);
     -webkit-transition: 0.5s all ease-in-out;
@@ -330,14 +330,14 @@ body {
     float: right;
     font-size: 20px;
 }
-.chat-container{
+/*.chat-container{
     position: fixed;
     right: 0;
     max-width: 60%;
     min-width: 320px !important;
     height: 100%;
     border: 1px solid #666;
-}
+}*/
 /*.chat-box{
     position: absolute;
     height: 80%;
@@ -345,11 +345,11 @@ body {
     border: 1px solid #eee;
     width: 100%;
 }*/
-.chat-container form {
+/*.chat-container form {
     position: absolute;
     padding: 10px;
     bottom: 0px;
-}
+}*/
 /*.waiting{
 position: relative;
     width: 100%;

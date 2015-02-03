@@ -180,10 +180,18 @@ md-sidenav.md-locked-open, md-sidenav.md-locked-open.md-closed, md-sidenav.md-lo
 	right: 0;
 	left:auto!important;
 }
+.chat-container{
+	width: 100%;
+	max-height: 100%!important;
+	overflow: auto;
+}
 .chat-box{
-    /*position: absolute;*/
-    /*height: 80%;*/
-    /*padding: 12px;*/
-    /*border: 1px solid #eee;*/
-    width: 100%;
+	max-width: 100%;
+}
+.md-tile-content{
+	max-width: 80%!important;
+	word-wrap: break-word;
+}
+.md-input-group input[type="text"]{
+	min-width: 100%;
 }
