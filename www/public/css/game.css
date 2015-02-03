@@ -338,13 +338,13 @@ body {
     height: 100%;
     border: 1px solid #666;
 }
-.chat-box{
+/*.chat-box{
     position: absolute;
     height: 80%;
     padding: 12px;
     border: 1px solid #eee;
     width: 100%;
-}
+}*/
 .chat-container form {
     position: absolute;
     padding: 10px;

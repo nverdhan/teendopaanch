@@ -1,0 +1,27 @@
+<div layout="horizontal" style="height:100%; max-width:100%;">
+
+
+    <md-content class="md-padding bcktrans">
+      <div layout="column" layout-fill layout-align="center center">
+        <div>
+          <md-button ng-click="toggleRight()"
+            class="md-primary">
+            Toggle right
+          </md-button>
+        </div>
+      </div>
+    </md-content>
+    	    <md-sidenav class="md-sidenav-right md-whiteframe-z2" component-id="right" is-locked-open="$media('md')" flex>
+      <md-toolbar>
+        <h1 class="md-toolbar-tools">Sidenav Right</h1>
+      </md-toolbar>
+      <md-content class="md-padding">
+        <md-button ng-click="closeright()" class="md-primary">
+          Close Sidenav Right
+        </md-button>
+      </md-content>
+    </md-sidenav>
+
+
+
+</div>

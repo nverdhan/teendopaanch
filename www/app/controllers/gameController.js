@@ -21,7 +21,7 @@
 //         }
 //     }
 // }]);
-game325.controller('gameController', ['$rootScope', '$http', '$scope', '$state', '$stateParams', 'gameService', 'socket', '$timeout', 'delayService', function ($rootScope, $http, $scope, $state, $stateParams, gameService, socket, $timeout ,delayService){
+game325.controller('gameController', ['$rootScope', '$http', '$scope', '$state', '$stateParams', 'gameService', 'socket', '$timeout', 'delayService','$timeout', '$mdSidenav', function ($rootScope, $http, $scope, $state, $stateParams, gameService, socket, $timeout ,delayService, $timeout, $mdSidenav){
     $scope.gameId = $stateParams.id;
     $scope.gameType = $stateParams.type;
     socket.removeAllListeners();
@@ -855,5 +855,22 @@ game325.controller('gameController', ['$rootScope', '$http', '$scope', '$state',
         angular.element('.chat-container').append(msg);
     });
     
+    $scope.closeright = function() {
+    $mdSidenav('right').close()
+    };
+
+    $scope.toggleRight = function() {
+    $mdSidenav('right').toggle();
+    };
 }]);
 
+// game325.controller('gamepageController', ['$rootScope', '$http', '$scope', '$state', '$stateParams', 'gameService', 'socket', '$timeout', 'delayService','$timeout', '$mdSidenav', function ($rootScope, $http, $scope, $state, $stateParams, gameService, socket, $timeout ,delayService, $timeout, $mdSidenav){
+//     $scope.toggleLeft = function() {
+//     $mdSidenav('left').toggle();
+//   };
+  
+//   $scope.closeleft = function() {
+//     $mdSidenav('left').close()
+//   };
+
+// }])

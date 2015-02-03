@@ -1,3 +1,4 @@
+/*.ng-scope { height: 100%; }*/
 .bckimg{
 	 position: fixed;
   left: 0;
@@ -163,4 +164,26 @@ div.profile h1{
 }
 .push-wrap{
 	height: 100%;
+	max-width: 100%;
+}
+.bcktrans{
+	background-color: rgba(0,0,0,0)!important;
+}
+.chatwindow{
+	width: 400px;
+}
+.md-sidenav-right{
+	max-width: 340px;
+}
+md-sidenav.md-locked-open, md-sidenav.md-locked-open.md-closed, md-sidenav.md-locked-open.md-closed.md-sidenav-left, md-sidenav.md-locked-open.md-closed.md-sidenav-right {
+	position: absolute!important;
+	right: 0;
+	left:auto!important;
+}
+.chat-box{
+    /*position: absolute;*/
+    /*height: 80%;*/
+    /*padding: 12px;*/
+    /*border: 1px solid #eee;*/
+    width: 100%;
 }

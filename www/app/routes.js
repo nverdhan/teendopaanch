@@ -59,6 +59,11 @@ game325.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', fun
                 data : {
                     requiresAuth : false
                 }
+        })
+        .state('game2',{
+            url: '/game2',
+            controller: 'gamepageController',
+            templateUrl: 'app/templates/game2.html'
         });
         
      $urlRouterProvider.otherwise("/");

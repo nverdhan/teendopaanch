@@ -1,7 +1,7 @@
 <!--nav id="body-nav"></nav-->
-<div class="push-wrap" id="homepage">
+<div class="push-wrap" id="homepage" ng-show="ready">
         <!-- <div class=""> -->
-        <div ng-show="ready">
+        <div ng-show="ready" class="bcktrans">
         <!-- <div ng-show="true"> -->
             <div class="game-body">
                 <div ng-if="gameState == 'playCard'" class="play-info">
@@ -108,34 +108,36 @@
                 </div>
             </div>
             <button class="btn btn-success btn-lg text-center" ng-click="toggleScores()">score</button>
-            <!-- Chat Container -->
-            
-        <!-- Chat Container End -->
+            <md-button ng-click="toggleRight()"
+            class="md-primary" aria-label="openChatBox">
+            Open Chatbox
+          </md-button>
             
         </div>
-        <md-sidenav class="md-sidenav-right md-whiteframe-z1" ng-hide="hideSideNav()" component-id="right" is-locked-open="$media('md')" ng-show="ready">
-         <!--    <div class="chat-container">
-                <div class="chat-box"></div>
-                <form class="form-inline form-horizontal">
+    <md-sidenav class="md-sidenav-right md-whiteframe-z2" component-id="right" is-locked-open="$media('md')" flex ng-show="ready">
+          <md-content class="md-padding" layout="vertical" flex layout-fill>
+          <div class="chat-box" flex></div>
+                <!-- <form class="form-inline form-horizontal">
                     <input type="text" ng-model="chatMsg" contenteditable="true" class="form-control"/>
                     <button type="button" class="btn btn-sm" ng-click="sendChat()">send</button>
-                </form>
-            </div> -->
-            <div>
-                Hello World!
-            </div>
-        </md-sidenav>
-        <!-- <div ng-show="ready">
-            
-        <!- </div> -->
-
-    <!-- </div> -->
+                </form> -->
+            <md-input-container>
+                <input type="text" ng-model="chatMsg" flex >
+            </md-input-container>
+            <md-button aria-label="sendChat" ng-click="sendChat()">Send</md-button>
+        <md-button ng-click="closeright()" class="md-primary" aria-label="closeChatBox">
+          Close Chatbox
+        </md-button>
+      </md-content>
+    </md-sidenav>
+               
+    
 </div>
 <div ng-if="waiting && gameType == 0" class="waiting" >
     <div>share room with our friends you want to join {{ gameId }}</div>
 </div>
 <!-- *** Users Waiting to connect *** -->
-<div ng-if="waiting" class="waiting" ng-hide="true">
+<div ng-if="waiting" class="waiting">
     <div flex layout="vertical" layout-align="center center">
         <h2>
         Waiting for other player(s) to connect
