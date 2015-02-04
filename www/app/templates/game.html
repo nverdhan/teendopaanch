@@ -138,15 +138,15 @@
                 <div id="bottomscroll"> </div>
             </md-content>
             <div layout="horizontal" class="chatsend">
-            <md-text-float ng-model="chatMsg" ng-enter="sendChat()" style="width:285px; margin-bottom:0px!important;"> 
-            </md-text-float>
-            <md-button ng-click = "sendChat()" style="position:absolute; right:0; bottom:0; margin-bottom:18px;">
-                <md-icon icon="assets/img/ic_send_24px.svg" style="width: 24px; height: 24px;">
-                </md-icon>
-            </md-button>
+                <md-text-float ng-model="chatMsg" ng-enter="sendChat()" style="width:285px; margin-bottom:0px!important;"> 
+                </md-text-float>
+                <md-button ng-click = "sendChat()" style="position:absolute; right:0; bottom:0; margin-bottom:18px;" aria-label="sendChat">
+                    <md-icon icon="assets/img/ic_send_24px.svg" style="width: 24px; height: 24px;">
+                    </md-icon>
+                </md-button>
             </div>
             <!-- <md-button aria-label="sendChat" ng-click="sendChat()">Send</md-button> -->
-      </md-content>
+        </md-content>
       <!-- </md-content> -->
     </md-sidenav>
                
@@ -179,8 +179,9 @@
         </div>
     </div>
 </div>
-<style type="text/css">
-</style>
+
+
+
 <!--script type="text/javascript" src="/socket.io/socket.io.js"></script-->
 <script>
 /*

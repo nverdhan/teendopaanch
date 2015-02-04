@@ -57,7 +57,7 @@ game325.controller('startController', ['$http', '$scope', 'startGameService','$s
          $mdDialog.show({
           template:
             '<md-dialog>' +
-            '    <md-button style="background-color: rgba(241,103,103,1)!important" ng-click="closeDialog()">' +
+            '    <md-button style="background-color: rgba(241,103,103,1)!important" ng-click="closeDialog()" aria-label="closedialog">' +
             '      <i class="fa fa-times" style="float:right;"></i>' +
             '    </md-button>' +
             '  <md-content>Invalid Room!' +

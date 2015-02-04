@@ -21,7 +21,7 @@
 //         }
 //     }
 // }]);
-game325.controller('gameController', ['$rootScope', '$http', '$scope', '$state', '$stateParams','authService', 'gameService', 'socket', '$timeout', 'delayService', '$mdSidenav', '$anchorScroll', '$location', function ($rootScope, $http, $scope, $state, $stateParams, authService, gameService, socket, $timeout ,delayService, $mdSidenav, $anchorScroll, $location){
+game325.controller('gameController', ['$rootScope', '$http', '$scope', '$state', '$stateParams','authService', 'gameService', 'socket', '$timeout', 'delayService', '$mdSidenav', '$anchorScroll', '$location', '$mdDialog', function ($rootScope, $http, $scope, $state, $stateParams, authService, gameService, socket, $timeout ,delayService, $mdSidenav, $anchorScroll, $location, $mdDialog){
     $scope.gameId = $stateParams.id;
     $scope.gameType = $stateParams.type;
     socket.removeAllListeners();
@@ -224,6 +224,7 @@ game325.controller('gameController', ['$rootScope', '$http', '$scope', '$state',
             player.position = i*pos;
             $scope.arrPlayers.push(player);
         }
+        $rootScope.arrPlayers = $scope.arrPlayers;
     }
     $scope.updateCards = function(){
         for (var i = 0; i < $scope.playerIds.length; i++){
@@ -423,13 +424,28 @@ game325.controller('gameController', ['$rootScope', '$http', '$scope', '$state',
         }   
     }
     $scope.showScores = false;
-    $scope.toggleScores = function(){
-        if($scope.showScores == false){
-            $scope.showScores = true;
-        }else{
-            $scope.showScores = false;
-        }
+    $scope.toggleScores = function(ev){
+        // if($scope.showScores == false){
+        //     $scope.showScores = true;
+        // }else{
+        //     $scope.showScores = false;
+        // }
+         $mdDialog.show({
+          // template:
+          //   '<md-dialog>' +
+          //   '    <md-button style="background-color: rgba(241,103,103,1)!important" ng-click="closeDialog()">' +
+          //   '      <i class="fa fa-times" style="float:right;"></i>' +
+          //   '    </md-button>' +
+          //   '  <md-content>Invalid Room!' +
+          //   // '  <div class="md-actions">' +
+            
+          //   // '  </div>' +
+          //   '</md-content></md-dialog>',
+            templateUrl: 'app/templates/scoredialog.html',
+            controller: 'scoreDialogController'
+        });
     }
+
     //NV
     $scope.cssConsts = {
         centre: [160,240],
@@ -567,6 +583,7 @@ game325.controller('gameController', ['$rootScope', '$http', '$scope', '$state',
             $scope.arrPlayers[i].handsMade = $scope.players[$scope.playerIds[i]]['handsMade'];
             $scope.arrPlayers[i].scores = $scope.players[$scope.playerIds[i]].scores;
         }
+        $rootScope.arrPlayers = $scope.arrPlayers;
         var data;
         if ($scope.gameState == 'nextRound') {
             socket.emit('nextRound', {data : data})
@@ -848,16 +865,6 @@ game325.controller('gameController', ['$rootScope', '$http', '$scope', '$state',
     };
 }]);
 
-// game325.controller('gamepageController', ['$rootScope', '$http', '$scope', '$state', '$stateParams', 'gameService', 'socket', '$timeout', 'delayService','$timeout', '$mdSidenav', function ($rootScope, $http, $scope, $state, $stateParams, gameService, socket, $timeout ,delayService, $timeout, $mdSidenav){
-//     $scope.toggleLeft = function() {
-//     $mdSidenav('left').toggle();
-//   };
-  
-//   $scope.closeleft = function() {
-//     $mdSidenav('left').close()
-//   };
-
-// }])
 game325.directive('ngEnter', function() {
         return function(scope, element, attrs) {
             element.bind("keydown keypress", function(event) {
@@ -871,3 +878,10 @@ game325.directive('ngEnter', function() {
             });
         };
     });
+game325.controller('scoreDialogController',['$scope', '$mdDialog', '$rootScope', function($scope, $mdDialog, $rootScope){
+    $scope.closeDialog = function(){
+            $mdDialog.hide();
+        };
+    $scope.arrPlayers = $rootScope.arrPlayers;
+    console.log($scope.arrPlayers);
+}])
