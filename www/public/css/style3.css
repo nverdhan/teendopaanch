@@ -183,15 +183,43 @@ md-sidenav.md-locked-open, md-sidenav.md-locked-open.md-closed, md-sidenav.md-lo
 .chat-container{
 	width: 100%;
 	max-height: 100%!important;
+	height: 100%;
 	overflow: auto;
+	position: absolute;
+	bottom: 0;
+	padding-top: 65px!important;
 }
 .chat-box{
 	max-width: 100%;
 }
+.chat-box md-divider{
+	border-top-color: #E0E0E0;
+}
 .md-tile-content{
 	max-width: 80%!important;
 	word-wrap: break-word;
+	padding: 4px;
+	font-size: 10PT;
 }
-.md-input-group input[type="text"]{
-	min-width: 100%;
+md-input-group.md-default-theme input{
+	min-width: 100%
+}
+md-content.md-padding{
+	padding: 8px;
+	padding-right: 0px!important;
+}
+.md-toolbar-tools md-button{
+	font-size: 8pt;
+	font-color: #E0E0E0;
+}
+.chatsend{
+	width: 100%;
+	padding: 10px;
+}
+.chatsend md-button .md-button-inner{
+	height: auto!important;
+}
+.chat-hist{
+	width: 100%;
+	padding: 10px;
 }

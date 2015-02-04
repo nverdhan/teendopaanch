@@ -1,0 +1,17 @@
+<md-dialog aria-label="scoredialog">
+    <md-button style="background-color: rgba(241,103,103,1)!important" ng-click="closeDialog()" aria-label="closedialog">
+        <i class="fa fa-times" style="float:right;"></i>
+    </md-button>
+    <md-content>
+          		<div class="container">
+    <div class="row">
+            <div class="col-md-3">
+                <div class="text-center h5" ng-repeat="score in arrPlayers[0].scores">#{{ $index + 1 }}</div>
+            </div>
+            <show-scores ng-if="arrPlayers[0]" content="arrPlayers[0]"></show-scores>
+            <show-scores ng-if="arrPlayers[1]" content="arrPlayers[1]"></show-scores>
+            <show-scores ng-if="arrPlayers[2]" content="arrPlayers[2]"></show-scores>
+        </div>
+    </div>
+	</md-content>
+</md-dialog>

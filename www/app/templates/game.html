@@ -1,7 +1,7 @@
 <!--nav id="body-nav"></nav-->
 <div class="push-wrap" id="homepage" ng-show="ready">
         <!-- <div class=""> -->
-        <div ng-show="ready" class="bcktrans">
+        <div ng-show="ready" class="bcktrans" flex layout-fill>
         <!-- <div ng-show="true"> -->
             <div class="game-body">
                 <div ng-if="gameState == 'playCard'" class="play-info">
@@ -107,43 +107,47 @@
                     <ul><li class="card">{{ trump }}</li></ul>
                 </div>
             </div>
-            <button class="btn btn-success btn-lg text-center" ng-click="toggleScores()">score</button>
-            <md-button ng-click="toggleRight()"
-            class="md-primary" aria-label="openChatBox">
-            Open Chatbox
-          </md-button>
+            <!-- <button class="btn btn-success btn-lg text-center" ng-click="toggleScores()">score</button> -->
+            <md-button class="md-fab md-fab-bottom-left md-primary" aria-label="Scores" style="position:fixed;" ng-click="toggleScores()">
+                <md-icon icon="assets/img/scoreicon.svg" style="width: 24px; height: 24px;">
+                </md-icon>
+            </md-button>
+            <md-button class="md-fab md-fab-top-right md-primary" aria-label="Scores" style="position:fixed;" ng-click="toggleRight()" hide-md>
+                <md-icon icon="assets/img/ic_chat_24px.svg" style="width: 24px; height: 24px;">
+                </md-icon>
+            </md-button>
+            
             
         </div>
-    <md-sidenav class="md-sidenav-right md-whiteframe-z2" component-id="right" is-locked-open="$media('md')" flex ng-show="ready">
-          <md-content class="md-padding chat-container" layout="vertical" flex layout-fill>
-            <md-content flex layout-fill class="chat-hist">
+    <md-sidenav class="md-sidenav-right md-whiteframe-z2" component-id="right" is-locked-open="$media('md')" flex ng-show="ready" layout="vertical" layout-fill style="max-height:100%!important">
+        <!-- <md-content > -->
+        <md-toolbar style="background-color:#E0E0E0; color: #fff; position:absolute; top:0;" >
+            
+              <span class="md-toolbar-tools" flex layout="horizontal" layout-fill>
+                <h3 flex="90">    Chat </h3>
+              <md-button class="md-fab md-fab-top-right md-primary" aria-label="Scores" ng-click="closeRight()" hide-md>
+                <md-icon icon="assets/img/ic_arrow_back_24px.svg" style="width: 24px; height: 24px;">
+                </md-icon>
+            </md-button>
+                </span>
+        </md-toolbar>
+          <md-content class="md-padding chat-container" flex layout="vertical" layout-align="end center">
+            <md-content flex class="chat-hist">
                 <md-list class='chat-box'>
-                  <!-- <md-item>
-                    <md-item-content>
-                      <div class="md-tile-left">
-                        <img ng-src="{{item.face}}" class="face" alt="{{item.who}}">
-                      </div>
-                      <div class="md-tile-content">
-                        <h3>{{item.what}}</h3>
-                        <h4>{{item.who}}</h4>
-                        <p>
-                          {{item.notes}}
-                        </p>
-                      </div>
-                    </md-item-content>
-                    <md-divider md-inset ng-if="!$last"></md-divider>
-                  </md-item> -->
                 </md-list>
-              </md-content>
-            <!-- <md-input-container>
-                <input type="text" ng-model="chatMsg">
-            </md-input-container> -->
-            <md-text-float ng-model="chatMsg" style="min-width:100%;" ng-enter="sendChat()"> </md-text-float>
+                <div id="bottomscroll"> </div>
+            </md-content>
+            <div layout="horizontal" class="chatsend">
+                <md-text-float ng-model="chatMsg" ng-enter="sendChat()" style="width:285px; margin-bottom:0px!important;"> 
+                </md-text-float>
+                <md-button ng-click = "sendChat()" style="position:absolute; right:0; bottom:0; margin-bottom:18px;" aria-label="sendChat">
+                    <md-icon icon="assets/img/ic_send_24px.svg" style="width: 24px; height: 24px;">
+                    </md-icon>
+                </md-button>
+            </div>
             <!-- <md-button aria-label="sendChat" ng-click="sendChat()">Send</md-button> -->
-        <md-button ng-click="closeright()" class="md-primary" aria-label="closeChatBox">
-          Close Chatbox
-        </md-button>
-      </md-content>
+        </md-content>
+      <!-- </md-content> -->
     </md-sidenav>
                
     
@@ -175,8 +179,9 @@
         </div>
     </div>
 </div>
-<style type="text/css">
-</style>
+
+
+
 <!--script type="text/javascript" src="/socket.io/socket.io.js"></script-->
 <script>
 /*
