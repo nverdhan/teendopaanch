@@ -66,6 +66,7 @@ game325.directive('showScores', ['$compile', function($compile){
         '</md-item-content>'+
         '<md-divider inset></md-divider>'+
        '</md-item>';
+       console.log(content);
        return x;
 
     }

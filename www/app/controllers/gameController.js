@@ -69,7 +69,7 @@ game325.controller('gameController', ['$rootScope', '$http', '$scope', '$state',
                         '</p>'+
                       '</div>'+
                     '</md-item-content>'+
-                  '  <md-divider md-inset ng-if="!$last"></md-divider>'+
+                  '  <md-divider inset></md-divider>'+
                   '</md-item>';             
         return x;
     }
@@ -437,7 +437,7 @@ game325.controller('gameController', ['$rootScope', '$http', '$scope', '$state',
                     '<span class="fracscore-bottom">'+split[1]+'</span>');
             }    
         });
-        console.log($scope.arrPlayers);
+        // console.log($scope.arrPlayers);
     }
 
     //NV
