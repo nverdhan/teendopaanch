@@ -71,6 +71,27 @@ game325.controller('startController', ['$http', '$scope', 'startGameService','$s
         
 
     }
+        $scope.toggleScores = function(ev){
+        // if($scope.showScores == false){
+        //     $scope.showScores = true;
+        // }else{
+        //     $scope.showScores = false;
+        // }
+         $mdDialog.show({
+          // template:
+          //   '<md-dialog>' +
+          //   '    <md-button style="background-color: rgba(241,103,103,1)!important" ng-click="closeDialog()">' +
+          //   '      <i class="fa fa-times" style="float:right;"></i>' +
+          //   '    </md-button>' +
+          //   '  <md-content>Invalid Room!' +
+          //   // '  <div class="md-actions">' +
+            
+          //   // '  </div>' +
+          //   '</md-content></md-dialog>',
+            templateUrl: 'app/templates/scoredialog.html',
+            controller: 'scoreDialogController'
+        });
+    }
 }]);
 
 game325.controller('errDialogController',['$scope', '$mdDialog', function($scope, $mdDialog){

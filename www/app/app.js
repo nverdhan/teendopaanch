@@ -42,10 +42,32 @@ game325.controller('gameCtrl', ['$rootScope', '$scope', '$http', function($rootS
 game325.directive('showScores', ['$compile', function($compile){
     var a = function(content){
         var content = content.content;
-        var x = '<div class="col-md-2"><div class="text-center h4">'+content.id+'</div>';
-        var y = '<div ng-repeat = "game in content.scores">{{ game.handsMade }} / {{ game.handsToMake }} &nbsp; ( {{ game.handsMade - game.handsToMake }} )</div>';
-        var z = x+y+'<div class="text-center h5">{{ content.total }}</div></div>';
-        return z;
+        // var x = '<div class="col-md-2"><div class="text-center h4">'+content.id+'</div>';
+        // var y = '<div ng-repeat = "game in content.scores">{{ game.handsMade }} / {{ game.handsToMake }} &nbsp; ( {{ game.handsMade - game.handsToMake }} )</div>';
+        // var z = x+y+'<div class="text-center h5">{{ content.total }}</div></div>';
+        // return z;
+        var x = '<md-item>'+
+        '<md-item-content>'+
+          '<div class="md-tile-left imgholder">'+
+            '<img src="assets/img/ankit.jpg" class="score-face" alt="{{item.who}}">'+
+          '</div>'+
+          '<div class="md-tile-content">'+
+            '<div layout="horizontal">'+
+            '<h3>'+content.id+'</h3>'+
+            '<h4 class="total-score">Total 3 out of 7 hands made</h4>'+
+            '</div>'+
+            '<div flex layout="horizontal" class="progress-container" ng-repeat = "game in content.scores">'+
+            '<md-progress-linear mode="determinate" value="{{game.handsMade/game.handsToMake*100}}" style="width:80%;"></md-progress-linear>'+
+            '<div class="fracscore">'+
+            '{{game.handsMade}}/{{game.handsToMake}}'+
+            '</div>'+
+            '</div>'+
+          '</div>'+
+        '</md-item-content>'+
+        '<md-divider inset></md-divider>'+
+       '</md-item>';
+       return x;
+
     }
     var linker = function (scope, element, attrs){
         scope.$watch('content', function (argument) {
