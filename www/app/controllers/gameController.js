@@ -21,7 +21,7 @@
 //         }
 //     }
 // }]);
-game325.controller('gameController', ['$rootScope', '$http', '$scope', '$state', '$stateParams','authService', 'gameService', 'socket', '$timeout', 'delayService', '$mdSidenav', function ($rootScope, $http, $scope, $state, $stateParams, authService, gameService, socket, $timeout ,delayService, $mdSidenav){
+game325.controller('gameController', ['$rootScope', '$http', '$scope', '$state', '$stateParams','authService', 'gameService', 'socket', '$timeout', 'delayService', '$mdSidenav', '$anchorScroll', '$location', function ($rootScope, $http, $scope, $state, $stateParams, authService, gameService, socket, $timeout ,delayService, $mdSidenav, $anchorScroll, $location){
     $scope.gameId = $stateParams.id;
     $scope.gameType = $stateParams.type;
     socket.removeAllListeners();
@@ -81,6 +81,9 @@ game325.controller('gameController', ['$rootScope', '$http', '$scope', '$state',
         }
         var e = $scope.getMsgTemplate($scope.msg);
         angular.element('.chat-box').append(e);
+        $location.hash('bottomscroll');
+        $anchorScroll();
+        $location.hash('');
     })
     socket.on('start', function (data){
         $scope.gameState = data.data.gameState;
@@ -836,7 +839,7 @@ game325.controller('gameController', ['$rootScope', '$http', '$scope', '$state',
         angular.element('.chat-container').append(msg);
     });
     
-    $scope.closeright = function() {
+    $scope.closeRight = function() {
     $mdSidenav('right').close()
     };
 
