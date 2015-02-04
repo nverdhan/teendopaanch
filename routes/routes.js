@@ -4,11 +4,13 @@ var players = [];
 var randomstring = require("randomstring");
 module.exports = function(app, passport) {
     var client = app.get('redisClient');
-	app.get('/profile', isLoggedIn, function(req, res) {
+	
+    app.get('/profile', isLoggedIn, function(req, res) {
 		res.render('profile', {
 			user : req.user // get the user out of session and pass to template
 		});
 	});
+    
     app.post('/api/start', function(req, res ){
         var room, game;
         
@@ -102,9 +104,7 @@ module.exports = function(app, passport) {
         });
     });
     app.post('/api/join', function (req, res){
-        console.log(req);
-        var id = req.param('data');
-        id = id.roomId;
+        var id = req.roomId;
         console.log(id);
         client.get('gameRoom:'+id, function (err, gameData){
             if(err)
@@ -127,37 +127,47 @@ module.exports = function(app, passport) {
     //         game.start();
     //     }
     // });
-	app.get('/start', function(req, res){
+	
+    app.get('/start', function(req, res){
 		game = new Game();
 		var player = new player();
 		player.id = req.user.id;
 		game.owner = req.user.id;
 		res.render('start');
 	});
-	// app.get('/game/:id', function(req, res){
+	
+    // app.get('/game/:id', function(req, res){
 	// 	var id = res.query('id');
 	// 	res.render('start')
 	// });
     // route for logging out
-	app.get('/logout', function(req, res) {
+	
+    app.get('/logout', function(req, res) {
 		req.logout();
 		res.redirect('/');
 	});
+    
     app.post('/api/auth', function(req, res){
         if(req.user){
             res.json({'user' : req.user});
         }else{
             res.json({'error' : 401})}
     });
-	app.get('/auth/twitter', passport.authenticate('twitter'));
-	// handle the callback after twitter has authenticated the user
+	
+    app.get('/auth/twitter', passport.authenticate('twitter'));
+
 	app.get('/auth/twitter/callback',
 		passport.authenticate('twitter', {
 			successRedirect : '/',
 			failureRedirect : '/'
-		}));
+	}));
+
+    app.get('/', function(req, res){
+        res.sendFile('www/index.html', { root: app.get('rootDir')});
+    });
+
     app.get('*', function(req, res){
-        res.sendFile('www/index.html', { root: app.get('root') });
+        res.sendFile('www/index.html', { root: app.get('rootDir')});
     });
 };
 

@@ -32,6 +32,7 @@ game325.controller('startController', ['$http', '$scope', 'startGameService','$s
           $state.go('game/:id', {id : res.data.roomId, type : res.data.type});      
         });
     }
+
     $scope.createGame = function(){
         var req = {};
         startGameService.create(req).then(function(res){

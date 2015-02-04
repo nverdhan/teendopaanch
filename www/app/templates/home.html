@@ -1,3 +1,13 @@
+<div ng-controller="startController">
+<!-- <md-button class="md-fab md-fab-bottom-right md-primary" aria-label="New document" style="position:fixed;" ng-click="startGame()">
+        <md-icon icon="assets/img/ic_arrow_forward_24px.svg" style="width: 24px; height: 24px;">
+        </md-icon>
+</md-button> -->
+<md-button class="md-fab md-fab-bottom-right md-primary" aria-label="StartGame" style="position:fixed;" ng-click="startGame()">
+        <md-icon icon="assets/img/ic_arrow_forward_24px.svg" style="width: 24px; height: 24px;">
+        </md-icon>
+</md-button>
+</div>
 <div class='homepage'>
 <div class='profile flex' layout="horizontal" layout-align="center center">
     <h1>
@@ -10,7 +20,7 @@
     <br></br>
  <div class="flex" layout="vertical" layout-align="center center">
 	<div ng-click="startGame()">
-		<md-button class="redcol home-elem md-raised">
+		<md-button class="redcol home-elem md-raised" aria-label="randomGameStart">
 			<div flex layout="horizontal" layout-align="center center">
 			<div style="margin-right:15px;"><i class="fa fa-random fa-2x"></i> </div>
 			<div><h2>Join a random game</h2> </div>
@@ -24,12 +34,12 @@
 			<h3>
 			Create private room and invite your friends
 			</h3>
-			<md-button class="bluecoldark md-raised" ng-click="createGame()">
+			<md-button class="bluecoldark md-raised" ng-click="createGame()" aria-label="privateGameStart">
 				Create Room
 			</md-button>
 			<h3>Or join an existing room</h3>
 			<md-text-float label="Room ID" flex ng-model="joinGameRoomId"> </md-text-float>
-			<md-button class="bluecoldark md-raised" ng-click="joinGame()">
+			<md-button class="bluecoldark md-raised" ng-click="joinGame()" aria-label="privateGameJoin">
 				Join
 			</md-button>
 		</md-card>

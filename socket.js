@@ -69,16 +69,21 @@ module.exports = function (app, server){
         socket.on('joinRoom', function(data){
             console.log(user);
             roomId = data.roomId;
+            console.log(data);
             // var game[roomId] = new Game();
             client.get('gameRoom:'+roomId, function (err, gameString){
-                if(err)
+                if(err){
                     throw err;
+                }
                 socket.join(roomId);
+                console.log(gameString);
                 client.get('user:'+socket.id, function (err, userData){
                     if(err)
                         throw err;
                     user = JSON.parse(JSON.parse(userData));
                     gamex = JSON.parse(gameString);
+                    console.log(gameString);
+                    console.log(gamex);
                     var player = new Player();
                     player.id = socket.id;
                     console.log(user);
@@ -86,6 +91,7 @@ module.exports = function (app, server){
                         player.name = user.name;
                         player.img = user.img;  
                     }
+
                     gamex.players.push(player);
                     if(gamex.players.length == 1){
                         gamex.activePlayerId = socket.id;
