@@ -286,7 +286,6 @@ game325.controller('gameController', ['$rootScope', '$http', '$scope', '$state',
                     }, $scope.distributeBottomPlayer());
                 }
                 delayService.asyncTask(100, x);
-                // delayService.asyncTask(i*50+101, $scope.distributeBottomPlayer);
             }
             if((i%3)-1 == 0){
                 var x = function(){
@@ -300,7 +299,6 @@ game325.controller('gameController', ['$rootScope', '$http', '$scope', '$state',
                     }, $scope.distributeLeftPlayer());
                 }
                 delayService.asyncTask(100, x);
-                // delayService.asyncTask(i*50+101, $scope.distributeLeftPlayer);
             }
             if((i%3)-2 == 0){
                 var x = function(){
@@ -314,7 +312,6 @@ game325.controller('gameController', ['$rootScope', '$http', '$scope', '$state',
                     }, $scope.distributeRightPlayer());
                 }
                 delayService.asyncTask(100, x);
-                // delayService.asyncTask(i*50+101,  $scope.distributeRightPlayer);
             }
         }
     }
