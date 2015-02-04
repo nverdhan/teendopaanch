@@ -36,14 +36,14 @@ var config = {
 
 var app = express();
 // Enable CORS
-// var allowCrossDomain = function (req, res, next) {
-//     res.header("Access-Control-Allow-Origin", config.allowedCORSOrigins);
-//     res.header("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE");
-//     res.header("Access-Control-Allow-Headers", "Content-Type");
-//     res.header("Access-Control-Allow-Credentials", "true");
-//     next();
-// };
-// app.use(allowCrossDomain);
+var allowCrossDomain = function (req, res, next) {
+    res.header("Access-Control-Allow-Origin", config.allowedCORSOrigins);
+    res.header("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE");
+    res.header("Access-Control-Allow-Headers", "Content-Type");
+    res.header("Access-Control-Allow-Credentials", "true");
+    next();
+};
+app.use(allowCrossDomain);
 
 // var routes = require('./routes/index');
 // var users = require('./routes/users');
@@ -82,6 +82,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser(config.session.secret));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'www')));
+app.set('root',__dirname);
 
 app.use(session({
     key : 'gameApp',

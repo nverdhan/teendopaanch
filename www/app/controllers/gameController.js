@@ -21,11 +21,18 @@
 //         }
 //     }
 // }]);
-game325.controller('gameController', ['$rootScope', '$http', '$scope', '$state', '$stateParams', 'gameService', 'socket', '$timeout', 'delayService', function ($rootScope, $http, $scope, $state, $stateParams, gameService, socket, $timeout ,delayService){
+game325.controller('gameController', ['$rootScope', '$http', '$scope', '$state', '$stateParams', 'authService', 'gameService', 'socket', '$timeout', 'delayService', function ($rootScope, $http, $scope, $state, $stateParams, authService, gameService, socket, $timeout ,delayService){
     $scope.gameId = $stateParams.id;
     $scope.gameType = $stateParams.type;
     socket.removeAllListeners();
-    socket.emit('joinRoom', {roomId : $scope.gameId});
+    //check auth
+    authService.get().then(function (data) {
+        if(data.data.error){
+            console.log(123);
+        }else{
+            socket.emit('joinRoom', {roomId : $scope.gameId});        
+        }
+    });
     socket.on('message', function(data){
         $scope.playerId = data.id;
         if (data.start == 'closed') {

@@ -121,12 +121,12 @@ module.exports = function(app, passport) {
             }
         });
     });
-    app.post('/game/:id', function(req, res){
-        var playerId = req.user.id;
-        if(players.length == 2){
-            game.start();
-        }
-    });
+    // app.post('/game/:id', function(req, res){
+    //     var playerId = req.user.id;
+    //     if(players.length == 2){
+    //         game.start();
+    //     }
+    // });
 	app.get('/start', function(req, res){
 		game = new Game();
 		var player = new player();
@@ -134,10 +134,10 @@ module.exports = function(app, passport) {
 		game.owner = req.user.id;
 		res.render('start');
 	});
-	app.get('/game/:id', function(req, res){
-		var id = res.query('id');
-		res.render('start')
-	});
+	// app.get('/game/:id', function(req, res){
+	// 	var id = res.query('id');
+	// 	res.render('start')
+	// });
     // route for logging out
 	app.get('/logout', function(req, res) {
 		req.logout();
@@ -157,8 +157,7 @@ module.exports = function(app, passport) {
 			failureRedirect : '/'
 		}));
     app.get('*', function(req, res){
-        // console.log(req.socket);
-        res.sendFile('../www/index.html', {data : 'asd'}); // load the single view file (angular will handle the page changes on the front-end)
+        res.sendFile('www/index.html', { root: app.get('root') });
     });
 };
 
