@@ -7,18 +7,18 @@
 
   display: block;
   /*background-image: url('../../assets/img/card-bck.jpg');*/
-  background-image: url('http://www.hdwallpapersinn.com/wp-content/uploads/2014/11/ace-playing-cards-3000x2000-wallpaper_www.vehiclehi.com_73.jpg');
+  background-image: url('../../assets/img/bckimg.jpg');
   background-size: cover;
   width: 100%;
   height: 100%;
   /*width: 1200px;*/
   /*height: 800px;*/
 
-  -webkit-filter: blur(8px);
-  -moz-filter: blur(8px);
-  -o-filter: blur(8px);
-  -ms-filter: blur(8px);
-  filter: blur(8px);
+  -webkit-filter: blur(10px);
+  -moz-filter: blur(10px);
+  -o-filter: blur(10px);
+  -ms-filter: blur(10px);
+  filter: blur(10px);
 }
 .content {
   position: absolute;
@@ -188,21 +188,24 @@ md-sidenav.md-locked-open, md-sidenav.md-locked-open.md-closed, md-sidenav.md-lo
 	position: absolute;
 	bottom: 0;
 	padding-top: 65px!important;
+	background-color: rgba(0,0,0,0)!important;
 }
 .chat-box{
 	max-width: 100%;
 }
 .chat-box md-divider{
-	border-top-color: #E0E0E0;
+	border-top-color: #d3d3d3;
 }
 .md-tile-content{
 	max-width: 80%!important;
 	word-wrap: break-word;
 	padding: 4px;
-	font-size: 10PT;
+	font-size: 10pt;
 }
-md-input-group.md-default-theme input{
-	min-width: 100%
+.chatsend md-input-group.md-default-theme input{
+	min-width: 100%;
+	background-color: #fff;
+	padding-left: 8px;
 }
 md-content.md-padding{
 	padding: 8px;
@@ -210,16 +213,116 @@ md-content.md-padding{
 }
 .md-toolbar-tools md-button{
 	font-size: 8pt;
-	font-color: #E0E0E0;
+	color: #E0E0E0;
 }
 .chatsend{
 	width: 100%;
-	padding: 10px;
+	padding-top: 10px;
+	padding-bottom: 0px;
+	padding-left: 0px;
+	padding-right: 10px;
+	margin-left: -16px;
 }
-.chatsend md-button .md-button-inner{
+.chatsend md-button.md-button-inner{
 	height: auto!important;
+	margin-left: -8px;
 }
 .chat-hist{
 	width: 100%;
 	padding: 10px;
+	background-color: rgba(0,0,0,0)!important;
+}
+.chat-head{
+	/*background-color:#E0E0E0;*/
+	color: #fff;
+	position:absolute;
+	top:0;
+/*	background: linear-gradient(
+      to bottom,
+      rgba(0, 0, 0, 0),
+      rgba(0, 0, 0, 0.6)
+    ),rgba(241,103,103,1);*/
+	background-size: cover;	
+}
+/*Score dialog*/
+.scoredialog{
+	width: 500px;
+}
+.score-head{
+	background: linear-gradient(
+      to bottom,
+      rgba(0, 0, 0, 0),
+      rgba(0, 0, 0, 0.6)
+    ),
+	url('../../assets/img/coverimg.jpg');	
+	background-size: cover;	
+}
+.imgholder{
+	width: 50px;
+    height: 50px;
+    overflow: hidden;
+    margin: 10px!important;
+    position: relative;
+}
+.score-face{
+	position: absolute;
+    left: -100%;
+    right: -100%;
+    top: -100%;
+    bottom: -100%;
+    margin: auto!important; 
+    height: auto;
+    width: 50px;
+}
+.player-container-score{
+	padding-top: 8px;
+}
+.player-container{
+	padding-top: 4px;
+	padding-bottom: 4px;
+}
+/*.fracscore{
+	font-size: 20pt;
+	color: rgba(241,103,103,1);
+	margin-left: 40px;
+	margin-top: -20px;
+}
+sup,
+sub {
+	height: 0;
+	line-height: 1;
+	vertical-align: baseline;
+	_vertical-align: bottom;
+	position: relative;
+}
+sup {
+	bottom: 1ex;
+}
+sub {
+	top: .5ex;
+}*/
+.fracscore, .fracscore-top, .fracscore-bottom {
+    padding: 0 5px; 
+    font-size: 10pt;
+	color: rgba(241,103,103,1);
+	margin-left: 20px;
+	margin-top: -3px;   
+}
+
+.fracscore {
+    display: inline-block;
+    text-align: center;    
+}
+
+.fracscore-bottom{
+    border-top: 1px solid #000;
+    display: block;
+}
+.progress-container{
+	padding-bottom: 4px;
+}
+.total-score{
+	position: absolute;
+	right: 0;
+	color: green;
 }

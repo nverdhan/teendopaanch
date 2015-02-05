@@ -69,7 +69,7 @@ game325.controller('gameController', ['$rootScope', '$http', '$scope', '$state',
                         '</p>'+
                       '</div>'+
                     '</md-item-content>'+
-                  '  <md-divider md-inset ng-if="!$last"></md-divider>'+
+                  '  <md-divider inset></md-divider>'+
                   '</md-item>';             
         return x;
     }
@@ -422,25 +422,19 @@ game325.controller('gameController', ['$rootScope', '$http', '$scope', '$state',
     }
     $scope.showScores = false;
     $scope.toggleScores = function(ev){
-        // if($scope.showScores == false){
-        //     $scope.showScores = true;
-        // }else{
-        //     $scope.showScores = false;
-        // }
          $mdDialog.show({
-          // template:
-          //   '<md-dialog>' +
-          //   '    <md-button style="background-color: rgba(241,103,103,1)!important" ng-click="closeDialog()">' +
-          //   '      <i class="fa fa-times" style="float:right;"></i>' +
-          //   '    </md-button>' +
-          //   '  <md-content>Invalid Room!' +
-          //   // '  <div class="md-actions">' +
-            
-          //   // '  </div>' +
-          //   '</md-content></md-dialog>',
             templateUrl: 'app/templates/scoredialog.html',
             controller: 'scoreDialogController'
         });
+         $('.fracscore').each(function(key, value) {
+            $this = $(this)
+            var split = $this.html().split("/")
+            if( split.length == 2 ){
+                $this.html('<span class="fracscore-top">'+split[0]+'</span>'+
+                    '<span class="fracscore-bottom">'+split[1]+'</span>');
+            }    
+        });
+        // console.log($scope.arrPlayers);
     }
 
     //NV
@@ -880,5 +874,4 @@ game325.controller('scoreDialogController',['$scope', '$mdDialog', '$rootScope',
             $mdDialog.hide();
         };
     $scope.arrPlayers = $rootScope.arrPlayers;
-    console.log($scope.arrPlayers);
 }])

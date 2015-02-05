@@ -119,9 +119,9 @@
             
             
         </div>
-    <md-sidenav class="md-sidenav-right md-whiteframe-z2" component-id="right" is-locked-open="$media('md')" flex ng-show="ready" layout="vertical" layout-fill style="max-height:100%!important">
+    <md-sidenav class="md-sidenav-right md-whiteframe-z2" component-id="right" is-locked-open="$media('md')" flex ng-show="ready" layout="vertical" layout-fill style="max-height:100%!important; background-color: #f6f6f6;">
         <!-- <md-content > -->
-        <md-toolbar style="background-color:#E0E0E0; color: #fff; position:absolute; top:0;" >
+        <md-toolbar class="chat-head">
             
               <span class="md-toolbar-tools" flex layout="horizontal" layout-fill>
                 <h3 flex="90">    Chat </h3>
@@ -138,9 +138,9 @@
                 <div id="bottomscroll"> </div>
             </md-content>
             <div layout="horizontal" class="chatsend">
-                <md-text-float ng-model="chatMsg" ng-enter="sendChat()" style="width:285px; margin-bottom:0px!important;"> 
+                <md-text-float ng-model="chatMsg" ng-enter="sendChat()" style="width:300px; margin-bottom:0px!important; margin-left=-8px; padding-bottom=0"> 
                 </md-text-float>
-                <md-button ng-click = "sendChat()" style="position:absolute; right:0; bottom:0; margin-bottom:18px;" aria-label="sendChat">
+                <md-button ng-click = "sendChat()" style="position:absolute; right:0; bottom:0; margin-bottom:2px;" aria-label="sendChat">
                     <md-icon icon="assets/img/ic_send_24px.svg" style="width: 24px; height: 24px;">
                     </md-icon>
                 </md-button>
@@ -166,7 +166,7 @@
     
 </div>
 <!-- Users waiting end -->
-<div class="overlay" ng-show = "showScores">
+<!-- <div class="overlay" ng-show = "showScores">
     <div ng-click="closeScores()" class="close-overlay"><i class="fa fa-times"></i></div>
     <div class="container">
     <div class="row">
@@ -178,7 +178,7 @@
             <show-scores ng-if="arrPlayers[2]" content="arrPlayers[2]"></show-scores>
         </div>
     </div>
-</div>
+</div> -->
 
 
 
