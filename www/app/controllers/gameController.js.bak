@@ -883,6 +883,7 @@ game325.controller('gameController', ['$rootScope', '$http', '$scope', '$state',
     $mdSidenav('right').toggle();
     };
 }]);
+
 game325.directive('ngEnter', function() {
         return function(scope, element, attrs) {
             element.bind("keydown keypress", function(event) {

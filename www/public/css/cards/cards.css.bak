@@ -12,9 +12,9 @@
 
 .playingCards .card {
     display: inline-block;
-    width: 100%;
-    height: 100%;
-    /*border: 1px solid #666;*/
+    width: 3em;
+    height: 3.6em;
+    border: 1px solid #666;
     border-radius: .3em;
     -moz-border-radius: .3em;
     -webkit-border-radius: .3em;
@@ -39,8 +39,8 @@
 .playingCards a.card:hover, .playingCards a.card:active, .playingCards a.card:focus,
 .playingCards label.card:hover,
 .playingCards strong .card {
-    /*-webkit-animation: hoveranim 0.1s;  Chrome, Safari, Opera 
-    animation: hoveranim 0.1s;*/
+    -webkit-animation: hoveranim 0.1s; /* Chrome, Safari, Opera */
+    animation: hoveranim 0.1s;
 }
 @-webkit-keyframes hoveranim {
     from {
@@ -82,15 +82,15 @@
 .playingCards a.card:hover, .playingCards a.card:active, .playingCards a.card:focus,
 .playingCards label.card:hover,
 .playingCards strong .card {
-    /*bottom: 0.1em;
-    right: 0.1em;*/
+    bottom: 0.1em;
+    right: 0.1em;
     -moz-box-shadow: .2em .2em .5em #333;
     -webkit-box-shadow: .2em .2em .5em #333;
     box-shadow: .2em .2em .5em #333;
 }
 .playingCards a.card:active, .playingCards a.card:focus, .playingCards a.card.active, .playingCards a.card.active:hover{
-    /*-webkit-animation: activeanim 0.1s;  Chrome, Safari, Opera 
-    animation: activeanim 0.1s;*/
+    -webkit-animation: activeanim 0.1s; /* Chrome, Safari, Opera */
+    animation: activeanim 0.1s;
 }
 @-webkit-keyframes activeanim {
     from {
@@ -128,8 +128,8 @@
 } 
 
 .playingCards a.card:active, .playingCards a.card:focus, .playingCards a.card.active, .playingCards a.card.active:hover{
-    /*bottom: 1em;
-    right: 0.2em;*/
+    bottom: 1em;
+    right: 0.2em;
     -moz-box-shadow: .2em .2em .5em #333;
     -webkit-box-shadow: .2em .2em .5em #333;
     box-shadow: .2em .2em .5em #333;
@@ -200,7 +200,6 @@
 }
 .playingCards .card .suit {
     line-height: .7;
-    font-size: 1.2em;
 }
 
 /* checkbox */
@@ -501,28 +500,28 @@
 .playingCards.simpleCards .card.D .suit:after,
 .playingCards .card.rank-a.D .suit:after {
     content: url(images/diams.png);
-    bottom: 0.15em;
-    right: 0.17em;
+    bottom: 0.25em;
+    right: 0.1em;
 }
 .playingCards.simpleCards .card.H .suit:after,
 .playingCards .card.rank-a.H .suit:after {
     content: url(images/heart.png);
-    bottom: 0.15em;
-    right: 0.17em;
+    bottom: 0.2em;
+    left: 0.25em;
     
 }
 .playingCards.simpleCards .card.S .suit:after,
 .playingCards .card.rank-a.S .suit:after {
     content: url(images/spade.png);
-    bottom: 0.15em;
-    right: 0.17em;
+    bottom: 0.2em;
+    right: 0.05em;
     
 }
 .playingCards.simpleCards .card.C .suit:after,
 .playingCards .card.rank-a.C .suit:after {
     content: url(images/club.png);
-    bottom: 0.15em;
-    right: 0.17em;
+    bottom: 0.2em;
+    right: 0.05em;
     
 }
 
@@ -574,7 +573,7 @@
     clear: both;
 }
 .playingCards ul.hand {
-    /*margin-bottom: 3.5em;*/
+    margin-bottom: 3.5em;
 }
 .playingCards ul.table li,
 .playingCards ul.hand li,
@@ -587,7 +586,7 @@
 
 .playingCards ul.hand,
 .playingCards ul.deck {
-    /*height: 8em;*/
+    height: 8em;
 }
 .playingCards ul.hand li,
 .playingCards ul.deck li {
