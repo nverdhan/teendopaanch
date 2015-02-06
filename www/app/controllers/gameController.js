@@ -620,21 +620,22 @@ game325.controller('gameController', ['$rootScope', '$http', '$scope', '$state',
         var initialClass = $scope.getPosition(e);
         var finalClass = $scope.getPlayedPosition(e);
         if(e == 0){
-            console.log(456)
-            var top = $scope.gameWindow.y*2/3;
-            var left = $scope.gameWindow.x/2 - $scope.cardSize/2;
-            // $timeout(function (){
-            //     $('.moveCard').animate({
-            //         left : '22em',
-            //         top : b
-            //     }, function(){
-            //         $('.moveCard').addClass('zeroFinal');
-            //         $('.moveCard').css({
-            //                     left : '',
-            //                     top : ''
-            //                 });
-            //     });
-            // }, 10);
+            var top = $scope.gameWindow.y*5/9;
+            var left = $scope.gameWindow.x/2 - $scope.cardSize.x/2;
+            $timeout(function (){
+                angular.element('.played-cards').css('z-index',9);
+                $('.moveCard').animate({
+                    left : left,
+                    top : top
+                }, function(){
+                    angular.element('.played-cards').css('z-index',0);
+                    $('.moveCard').addClass('zeroFinal');
+                    // $('.moveCard').css({
+                    //             left : '',
+                    //             top : ''
+                    //         });
+                });
+            }, 20);
         }
         if(e!= 0){
             $timeout(function (){
@@ -664,7 +665,7 @@ game325.controller('gameController', ['$rootScope', '$http', '$scope', '$state',
         var data;
         if ($scope.gameState == 'nextRound') {
             socket.emit('nextRound', {data : data})
-        };
+        }
         if($scope.gameTurn%30 == 1){
             var data = 123;
             if($scope.activePlayerId == $scope.playerId){
@@ -685,13 +686,23 @@ game325.controller('gameController', ['$rootScope', '$http', '$scope', '$state',
     }
     $scope.moveHand = function(x){
         if(x == 0){
-            angular.element('.played-cards-ul li').addClass('zeroInitial').removeClass('zeroFinal rightFinal leftFinal');
+            var l = angular.element('.game-body').width()/2 - angular.element('.card').width()/2;
+            var t = angular.element('.bottom-player ul').offset().top - angular.element('.played-cards').offset().top;
+            // angular.element('.played-cards-ul li').addClass('zeroInitial').removeClass('zeroFinal rightFinal leftFinal');
         }else if(x == 120){
-            angular.element('.played-cards-ul li').addClass('leftInitial').removeClass('zeroFinal rightFinal leftFinal');
+            var l = angular.element('.left-player ul').offset().left - angular.element('.game-body').offset().left  + angular.element('.left-player ul').width()/2;
+            var t = angular.element('.left-player ul').offset().top - angular.element('.played-cards').offset().top;
+            // angular.element('.played-cards-ul li').addClass('leftInitial').removeClass('zeroFinal rightFinal leftFinal');
         }else if(x == 240){
-            angular.element('.played-cards-ul li').addClass('rightInitial').removeClass('zeroFinal rightFinal leftFinal');
+            // angular.element('.played-cards-ul li').addClass('rightInitial').removeClass('zeroFinal rightFinal leftFinal');
+            var l = angular.element('.right-player ul').offset().left - angular.element('.game-body').offset().left + angular.element('.right-player ul').width()/2;
+            var t = angular.element('.right-player ul').offset().top - angular.element('.played-cards').offset().top;
         }
-        delayService.asyncTask(1600, $scope.refreshCardsPlayed);
+        angular.element('.played-cards-ul li').animate({
+                'left' : l,
+                'top' : t
+            })
+        delayService.asyncTask(1200, $scope.refreshCardsPlayed);
         // if(($scope.gameTurn-1)%30 == 0){
         //     delayService.asyncTask(1200, $scope.nextRound);
         // }else{
