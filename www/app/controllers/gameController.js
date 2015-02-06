@@ -500,6 +500,7 @@ game325.controller('gameController', ['$rootScope', '$http', '$scope', '$state',
         firstplayerY: 10,
         radiusplayer: 155
     }
+
     $scope.assignClass = function(card){
         return ['rank-'+card.rank, card.suit];
     }
@@ -935,6 +936,14 @@ game325.controller('gameController', ['$rootScope', '$http', '$scope', '$state',
     $scope.toggleRight = function() {
     $mdSidenav('right').toggle();
     };
+    $scope.getProfilePic = function(playerindex){
+        if (typeof $scope.arrPlayers[playerindex] !== 'undefined') {
+            // var picurl = $scope.arrPlayers[playerindex].img;
+            var x = {'background': '#fff url(../../assets/img/ankit.jpg) no-repeat center center',
+                    'background-size': 'cover!important'};
+            return x;
+        }
+    }
 }]);
 game325.directive('ngEnter', function() {
         return function(scope, element, attrs) {
