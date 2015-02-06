@@ -19,8 +19,8 @@
                 <div class="left-player playingCards" ng-style="getWidth(1);">
                     <h6>{{ arrPlayers[1].name }}</h6>
                     <div class="card-to-play"></div>
-                    <ul class="hand"  style="height:{{cardSize.y}}px">
-                        <li ng-repeat="card in leftPlayerCards" class="" id="{{ card.id }}" ng-class="card.id" ng-click="play($index, leftPlayerId, $event)" style="width:{{cardSize.x}}px; height:{{cardSize.y}}px;">
+                    <ul class="hand"  style="height:{{cardSize.y}}px; width:100%; margin:0; padding:0;">
+                        <li ng-repeat="card in leftPlayerCards" class="" id="{{ card.id }}" ng-class="card.id" ng-click="play($index, leftPlayerId, $event)" style="width:{{cardSize.x}}px; height:{{cardSize.y}}px; left:{{$index*cardLeftMargin}}px;">
                             <a class="card back"></a>
                         </li>
                     </ul>
@@ -30,8 +30,8 @@
                 <div class="right-player playingCards" ng-style="getWidth(2);">
                     <h6>{{ arrPlayers[2].name }}</h6>
                     <div class="card-to-play"></div>
-                    <ul class="hand" style="height:{{cardSize.y}}px">
-                        <li ng-repeat="card in rightPlayerCards" class="" id="{{ card.id }}" ng-class="card.id" ng-click="play($index, rightPlayerId, $event)" style="width:{{cardSize.x}}px; height:{{cardSize.y}}px;">
+                    <ul class="hand" style="height:{{cardSize.y}}px; width:100%; margin:0; padding:0;">
+                        <li ng-repeat="card in rightPlayerCards" class="" id="{{ card.id }}" ng-class="card.id" ng-click="play($index, rightPlayerId, $event)" style="width:{{cardSize.x}}px; height:{{cardSize.y}}px; left:{{$index*cardLeftMargin}}px;">
                             <a class="card back"></a>
                         </li>
                     </ul>
@@ -41,8 +41,8 @@
                 <div class="bottom-player playingCards simpleCards firstperson" ng-style="getWidth(0);">
                     <h6>{{ arrPlayers[0].name }}</h6>
                     <div class="card-to-play"></div>
-                    <ul class="hand"  style="height:{{cardSize.y}}px">
-                        <li ng-repeat = "card in bottomPlayerCards">
+                    <ul class="hand"  style="height:{{cardSize.y}}px; width:100%; margin:0; padding:0;">
+                        <li ng-repeat = "card in bottomPlayerCards" style="left:{{$index*cardLeftMargin}}px;">
                             <a ng-if="card" class="card" ng-class = "assignClass(card)" ng-click="play(card, playerId, $event)" style="width:{{cardSize.x}}px; height:{{cardSize.y}}px;">
                                 <span class="rank">{{ getRankForHTML(card) }}</span>
                                 <span class="suit" ng-bind-html="'&'+getSuitForHTML(card)+';' | unsafe"></span>
@@ -54,7 +54,7 @@
                 <!--by NV-->
                 <div class="card movingCard" ng-if="movingCard">{{ movingCard[0].suit }} {{ movingCard[0].rank }}</div>
                 <div class="set-trump playingCards simpleCards" ng-show="gameState == 'setTrump' && playerId == activePlayerId" ng-style="getTrumpDivCSS()">
-                    <ul class="table" style="height:{{cardSize.y}}px">
+                    <ul class="table" style="height:{{cardSize.y}}px; width:100%; margin:0; padding:0;">
                         <li class="card" ng-repeat="trump in trumps" ng-click="setTrumpCard(trump)" style="width:{{cardSize.x}}px; height:{{cardSize.y}}px;">
                             <a class="card {{ trump }}">
                                 <span class="suit"></span>
@@ -62,8 +62,8 @@
                         </li>
                     </ul>
                 </div>
-                <div class="played-cards playingCards simpleCards" ng-style="getMargin()">
-                    <ul class="played-cards-ul table" style="height:{{cardSize.y}}px">
+                <div class="played-cards playingCards simpleCards" ng-style="getPlayedCardsDivCSS()">
+                    <ul class="played-cards-ul table" style="height:100%; width:100%; margin:0; padding:0;">
                         <li ng-repeat = "player in arrPlayers" class="{{ getPosition(player.position) }}" ng-class="{true : 'moveCard'}[player.position == 0]"  ng-if="player.cardPlayed" style="position: absolute; width:{{cardSize.x}}px; height:{{cardSize.y}}px;" ng-style="getCardInitialStyle(player.position)">
                             <a class="card" ng-if="player.cardPlayed" ng-class="assignClass2(player.cardPlayed, player.position);" style="position:absolute;">
                                     <span class="rank">{{ getRankForHTML(player.cardPlayed) }}</span>
@@ -74,8 +74,8 @@
                         </li>
                     </ul>
                 </div>
-                <div class="allDeck playingCards simpleCards" style="height:{{cardSize.y}}px; width:{{cardSize.x}}px; top:{{getDeckTop()}}px;">
-                    <ul class="hand"  style="height:{{cardSize.y}}px; width:{{cardSize.x}}px">
+                <div class="allDeck playingCards simpleCards" style="height:{{cardSize.y}}px; width:{{cardSize.x}}px; top:{{getDeckTop()}}px; z-index:10;">
+                    <ul class="hand"  style="height:{{cardSize.y}}px; width:{{cardSize.x}}px; position:absolute !important;">
                         <li ng-repeat = "card in leftPlayerDeck" class="leftPlayerDeck" style="width:{{cardSize.x}}px; height:{{cardSize.y}}px;">
                             <a ng-if="card" class="card" style="position:absolute;">
                                     <span class="rank">{{ getRankForHTML(card) }}</span>
@@ -84,7 +84,7 @@
                             <a class="card back" style="position:absolute;"></a>
                         </li>
                     </ul>
-                    <ul class="hand"  style="height:{{cardSize.y}}px; width:{{cardSize.x}}px">
+                    <ul class="hand"  style="height:{{cardSize.y}}px; width:{{cardSize.x}}px; position:absolute !important;">
                         <li ng-repeat = "card in rightPlayerDeck" class="rightPlayerDeck" style="width:{{cardSize.x}}px; height:{{cardSize.y}}px;">
                             <a ng-if="card" class="card" style="position:absolute;">
                                     <span class="rank">{{ getRankForHTML(card) }}</span>
@@ -93,7 +93,7 @@
                             <a class="card back" style="position:absolute;"></a>
                         </li>
                     </ul>
-                    <ul class="hand"  style="height:{{cardSize.y}}px; width:{{cardSize.x}}px">
+                    <ul class="hand"  style="height:{{cardSize.y}}px; width:{{cardSize.x}}px; position:absolute !important;">
                         <li ng-repeat = "card in bottomPlayerDeck" class="bottomPlayerDeck" style="width:{{cardSize.x}}px; height:{{cardSize.y}}px;">
                             <a ng-if="card" ng-class = "assignClass(card)" class="card front" style="position:absolute;">
                                     <span class="rank">{{ getRankForHTML(card) }}</span>
@@ -116,13 +116,10 @@
                 <md-icon icon="assets/img/ic_chat_24px.svg" style="width: 24px; height: 24px;">
                 </md-icon>
             </md-button>
-            
-            
         </div>
     <md-sidenav class="md-sidenav-right md-whiteframe-z2" component-id="right" is-locked-open="$media('md')" flex ng-show="ready" layout="vertical" layout-fill style="max-height:100%!important; background-color: #f6f6f6;">
         <!-- <md-content > -->
         <md-toolbar class="chat-head">
-            
               <span class="md-toolbar-tools" flex layout="horizontal" layout-fill>
                 <h3 flex="90">    Chat </h3>
               <md-button class="md-fab md-fab-top-right md-primary" aria-label="Scores" ng-click="closeRight()" hide-md>
@@ -149,8 +146,6 @@
         </md-content>
       <!-- </md-content> -->
     </md-sidenav>
-               
-    
 </div>
 <div ng-if="waiting && gameType == 0" class="waiting" >
     <div>share room with our friends you want to join {{ gameId }}</div>
@@ -183,23 +178,3 @@
 
 
 <!--script type="text/javascript" src="/socket.io/socket.io.js"></script-->
-<script>
-/*
-var scaleX = canvas.width / window.innerWidth;
-var scaleY = canvas.height / window.innerHeight;
-var scaleToFit = Math.min(scaleX, scaleY);
- 
-stage.style.transformOrigin = "0 0";
-stage.style.transform = "scale("+scaleToFit+")";
-*/
-$(document).ready(function(){
-    $('.options').addClass('active');
-    $('.toggle li').click(function(){
-        $('.playingCards').toggleClass($(this).text());
-    });
-    $('.lang li').click(function(){
-        $('html').attr('lang', $(this).text());
-        $('html').attr('xml:lang', $(this).text());
-    });
-});
-</script>
