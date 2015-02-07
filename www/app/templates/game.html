@@ -67,6 +67,44 @@
                 </div>
                 <div class="right-player playingCards" ng-style="getWidth(2);">
                     <h6>{{ arrPlayers[2].name }}</h6>
+                    <div class="right-player-profile">
+                        <div class="ball" ng-style="getProfilePic(1);">
+                          <div class="halo"></div>
+                          <div class="msg-count"></div>
+                          <div class="name">Ankit</div>
+                          <div class="notif">
+                            <div class="bar">
+                              <!-- <div class="action"></div> -->
+                              <p class="text">Hey, I am dude!</p>
+                            </div>
+                            <!-- <div class="arrow"></div> -->
+                          </div>
+                        </div>
+                        <script type="text/javascript">
+                            jQuery(document).ready(function($) {
+                              /*
+                                $(document).on('click', function() {
+                                    $('body').removeClass('anim-start');
+                                    setTimeout(function() {
+                                        $('body').addClass('anim-start');
+                                    }, 100);
+                                });
+                              */
+                              
+                                setTimeout(function() {
+                                 $('.right-player-profile').toggleClass('anim-start');
+                                }, 500);
+                              
+                                 setInterval(function() {
+                                  $('.right-player-profile').removeClass('anim-start');
+                                  setTimeout(function() {
+                                    $('.right-player-profile').addClass('anim-start');
+                                  }, 50);
+                                }, 5*1000);
+
+                            });
+                        </script>
+                    </div>
                     <div class="card-to-play"></div>
                     <ul class="hand" style="height:{{cardSize.y}}px; width:100%; margin:0; padding:0;">
                         <li ng-repeat="card in rightPlayerCards" class="" id="{{ card.id }}" ng-class="card.id" ng-click="play($index, rightPlayerId, $event)" style="width:{{cardSize.x}}px; height:{{cardSize.y}}px; left:{{$index*cardLeftMargin}}px;">
