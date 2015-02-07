@@ -329,10 +329,10 @@ sub {
 
 /*Player profiles*/
 .ball {
-  position: absolute;
+  position: relative;
   /*top: 50%;*/
-  top: 100px;
-  left: -50%;
+  /*top: 100px;
+  left: -50%;*/
 /*  margin-top: -50px;
   margin-left: -50px;*/
   height: 50px;

@@ -18,7 +18,7 @@
                 </div>
                 <div class="left-player playingCards" ng-style="getWidth(1);">
                     <h6>{{ arrPlayers[1].name }}</h6>
-                    <div class="left-player-profile">
+                    <div class="left-player-profile players-profile">
                         <div class="ball" ng-style="getProfilePic(1);">
                           <div class="halo"></div>
                           <div class="msg-count"></div>
@@ -26,35 +26,11 @@
                           <div class="notif">
                             <div class="bar">
                               <!-- <div class="action"></div> -->
-                              <p class="text">Hey, I am dude!</p>
+                              <p class="text">Hey, Play</p>
                             </div>
                             <!-- <div class="arrow"></div> -->
                           </div>
                         </div>
-                        <script type="text/javascript">
-                            jQuery(document).ready(function($) {
-                              /*
-                                $(document).on('click', function() {
-                                    $('body').removeClass('anim-start');
-                                    setTimeout(function() {
-                                        $('body').addClass('anim-start');
-                                    }, 100);
-                                });
-                              */
-                              
-                                setTimeout(function() {
-                                 $('.left-player-profile').toggleClass('anim-start');
-                                }, 500);
-                              
-                                 setInterval(function() {
-                                  $('.left-player-profile').removeClass('anim-start');
-                                  setTimeout(function() {
-                                    $('.left-player-profile').addClass('anim-start');
-                                  }, 50);
-                                }, 5*1000);
-
-                            });
-                        </script>
                     </div>
                     <div class="card-to-play"></div>
                     <ul class="hand"  style="height:{{cardSize.y}}px; width:100%; margin:0; padding:0;">
@@ -66,7 +42,22 @@
                     <div class="statistics">{{ arrPlayers[1].handsToMake }} / {{ arrPlayers[1].handsMade }}</div>
                 </div>
                 <div class="right-player playingCards" ng-style="getWidth(2);">
+                    
                     <h6>{{ arrPlayers[2].name }}</h6>
+                    <div class="right-player-profile players-profile">
+                    <div class="ball" ng-style="getProfilePic(1);">
+                          <div class="halo"></div>
+                          <div class="msg-count"></div>
+                          <div class="name">P1</div>
+                          <div class="notif">
+                            <div class="bar">
+                              <!-- <div class="action"></div> -->
+                              <p class="text">Hey, Play</p>
+                            </div>
+                            <!-- <div class="arrow"></div> -->
+                          </div>
+                        </div>
+                    </div>
                     <div class="card-to-play"></div>
                     <ul class="hand" style="height:{{cardSize.y}}px; width:100%; margin:0; padding:0;">
                         <li ng-repeat="card in rightPlayerCards" class="" id="{{ card.id }}" ng-class="card.id" ng-click="play($index, rightPlayerId, $event)" style="width:{{cardSize.x}}px; height:{{cardSize.y}}px; left:{{$index*cardLeftMargin}}px;">
@@ -78,6 +69,20 @@
                 <!--by NV-->
                 <div class="bottom-player playingCards simpleCards firstperson" ng-style="getWidth(0);">
                     <h6>{{ arrPlayers[0].name }}</h6>
+                    <div class="bottom-player-profile players-profile">
+                    <div class="ball" ng-style="getProfilePic(1);">
+                          <div class="halo"></div>
+                          <div class="msg-count"></div>
+                          <div class="name">P0</div>
+                          <div class="notif">
+                            <div class="bar">
+                              <!-- <div class="action"></div> -->
+                              <p class="text">Hey, Play</p>
+                            </div>
+                            <!-- <div class="arrow"></div> -->
+                          </div>
+                        </div>
+                    </div>
                     <div class="card-to-play"></div>
                     <ul class="hand"  style="height:{{cardSize.y}}px; width:100%; margin:0; padding:0;">
                         <li ng-repeat = "card in bottomPlayerCards" style="left:{{$index*cardLeftMargin}}px;">
@@ -114,7 +119,7 @@
                 </div>
                 <div class="allDeck playingCards simpleCards" style="height:{{cardSize.y}}px; width:{{cardSize.x}}px; top:{{getDeckTop()}}px; z-index:10;">
                     <ul class="hand"  style="height:{{cardSize.y}}px; width:{{cardSize.x}}px; position:absolute !important;">
-                        <li ng-repeat = "card in leftPlayerDeck" class="leftPlayerDeck" style="width:{{cardSize.x}}px; height:{{cardSize.y}}px;">
+                        <li ng-repeat = "card in leftPlayerDeck" class="leftPlayerDeck" style="width:{{cardSize.x}}px; height:{{cardSize.y}}px; left:0;">
                             <a ng-if="card" class="card" style="position:absolute;">
                                     <span class="rank">{{ getRankForHTML(card) }}</span>
                                     <span class="suit" ng-bind-html="'&'+getSuitForHTML(card)+';' | unsafe"></span>
@@ -123,7 +128,7 @@
                         </li>
                     </ul>
                     <ul class="hand"  style="height:{{cardSize.y}}px; width:{{cardSize.x}}px; position:absolute !important;">
-                        <li ng-repeat = "card in rightPlayerDeck" class="rightPlayerDeck" style="width:{{cardSize.x}}px; height:{{cardSize.y}}px;">
+                        <li ng-repeat = "card in rightPlayerDeck" class="rightPlayerDeck" style="width:{{cardSize.x}}px; height:{{cardSize.y}}px; left:0;">
                             <a ng-if="card" class="card" style="position:absolute;">
                                     <span class="rank">{{ getRankForHTML(card) }}</span>
                                     <span class="suit" ng-bind-html="'&'+getSuitForHTML(card)+';' | unsafe"></span>
@@ -132,7 +137,7 @@
                         </li>
                     </ul>
                     <ul class="hand"  style="height:{{cardSize.y}}px; width:{{cardSize.x}}px; position:absolute !important;">
-                        <li ng-repeat = "card in bottomPlayerDeck" class="bottomPlayerDeck" style="width:{{cardSize.x}}px; height:{{cardSize.y}}px;">
+                        <li ng-repeat = "card in bottomPlayerDeck" class="bottomPlayerDeck" style="width:{{cardSize.x}}px; height:{{cardSize.y}}px; left:0;">
                             <a ng-if="card" ng-class = "assignClass(card)" class="card front" style="position:absolute;">
                                     <span class="rank">{{ getRankForHTML(card) }}</span>
                                     <span class="suit" ng-bind-html="'&'+getSuitForHTML(card)+';' | unsafe"></span>
@@ -216,3 +221,18 @@
 
 
 <!--script type="text/javascript" src="/socket.io/socket.io.js"></script-->
+<script type="text/javascript">
+    jQuery(document).ready(function($) {
+      setTimeout(function() {
+            $('.players-profile').toggleClass('anim-start');
+        }, 200);
+      
+        //  setInterval(function() {
+        //   $('.left-player-profile').removeClass('anim-start');
+        //   setTimeout(function() {
+        //     $('.left-player-profile').addClass('anim-start');
+        //   }, 50);
+        // }, 5*1000);
+
+    });
+</script>
