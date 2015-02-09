@@ -4,7 +4,7 @@
         <div ng-show="ready" class="bcktrans" flex layout-fill>
         <!-- <div ng-show="true"> -->
             <div class="game-body">
-                <div ng-if="gameState == 'playCard'" class="play-info">
+<!--                 <div ng-if="gameState == 'playCard'" class="play-info">
                     Player {{activePlayerId}} Play
                 </div>
                 <div ng-if="gameState == 'withdrawCard'" class="play-info">
@@ -15,6 +15,26 @@
                 </div>
                 <div ng-if="gameState == 'setTrump'" class="play-info">
                     Player {{activePlayerId}} Set Trump
+                </div> -->
+                <div class="play-info" ng-if="gameState == 'playCard'">
+                    <md-whiteframe class="md-whiteframe-z1 status">
+                        <span>Player {{activePlayerId}} Play</span>
+                    </md-whiteframe>
+                </div>
+                <div class="play-info" ng-if="gameState == 'withdrawCard'">
+                    <md-whiteframe class="md-whiteframe-z1 status">
+                        <span>{{activePlayerId}} to withdraw card from {{otherPlayerId}}</span>
+                    </md-whiteframe>
+                </div>
+                <div class="play-info" ng-if="gameState == 'returnCard'">
+                    <md-whiteframe class="md-whiteframe-z1 status">
+                        <span>{{activePlayerId}} returning card to {{otherPlayerId}}</span>
+                    </md-whiteframe>
+                </div>
+                <div class="play-info" ng-if="gameState == 'setTrump'">
+                    <md-whiteframe class="md-whiteframe-z1 status">
+                        <span>Player {{activePlayerId}} Set Trump</span>
+                    </md-whiteframe>
                 </div>
                 <div class="left-player playingCards" ng-style="getWidth(1);">
                     <h6>{{ arrPlayers[1].name }}</h6>
