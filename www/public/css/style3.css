@@ -347,7 +347,7 @@ sub {
   /*transform: scale(0);*/
   opacity: 1;
   /*transition-duration: 0;*/
-  /*transition-timing-function: cubic-bezier(0.005, 0.95, 0.135, 1.205);*/
+  transition-timing-function: cubic-bezier(0.005, 0.95, 0.135, 1.205);
 }
 .ball .msg-count {
   position: absolute;
@@ -452,6 +452,10 @@ sub {
   transform: none;
   transition-duration: .3s;
 }*/
+.player-active .ball{
+  transform: scale(1.5);
+  transition-duration: .2s;
+}
 .anim-start .ball .notif {
   opacity: 1;
   transition-duration: .2s;

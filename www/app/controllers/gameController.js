@@ -183,6 +183,14 @@ game325.controller('gameController', ['$rootScope', '$http', '$scope', '$state',
         }
     }
     $scope.getWidth = function (n) {
+        // if(n==1){
+        //         angular.element('.left-player-profile').toggleClass('player-active');
+        //         if($('.right-player-profile').hasClass('player-active')) angular.element('.right-player-profile').toggleClass('player-active');
+        //     } 
+        // if(n==2){
+        //         angular.element('.right-player-profile').toggleClass('player-active');
+        //         if($('.right-player-profile').hasClass('player-active')) angular.element('.left-player-profile').toggleClass('player-active');
+        //     }
         var x = angular.element('.card').width();
         if(n == 0){
             var i = $scope.bottomPlayerCards.length;
@@ -949,6 +957,16 @@ game325.controller('gameController', ['$rootScope', '$http', '$scope', '$state',
     $scope.getProfilePic = function(playerindex){
         if (typeof $scope.arrPlayers[playerindex] !== 'undefined') {
             // var picurl = $scope.arrPlayers[playerindex].img;
+            // if(playerindex==1){
+            //     angular.element('.left-player-profile').toggleClass('player-active');
+            //     if($('.right-player-profile').hasClass('player-active')) angular.element('.right-player-profile').toggleClass('player-active');
+            // } 
+            // if(playerindex==2){
+            //     angular.element('.right-player-profile').toggleClass('player-active');
+            //     if($('.right-player-profile').hasClass('player-active')) angular.element('.left-player-profile').toggleClass('player-active');
+            // }
+
+            
             var x = {'background': '#fff url(../../assets/img/ankit.jpg) no-repeat center center',
                     'background-size': 'cover!important'};
             return x;
