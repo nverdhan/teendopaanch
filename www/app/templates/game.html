@@ -26,7 +26,7 @@
                           <div class="notif">
                             <div class="bar">
                               <!-- <div class="action"></div> -->
-                              <p class="text">Hey, Play</p>
+                              <p class="text">{{ arrPlayers[1].msg }}</p>
                             </div>
                             <!-- <div class="arrow"></div> -->
                           </div>
@@ -52,7 +52,7 @@
                             <div class="notif">
                                 <div class="bar">
                                 <!-- <div class="action"></div> -->
-                                    <p class="text">Hey, Play</p>
+                                    <p class="text">{{ arrPlayers[2].msg }}</p>
                                 </div>
                             </div>
                         </div>
@@ -67,7 +67,7 @@
                 </div>
                 <!--by NV-->
                 <div class="bottom-player playingCards simpleCards firstperson" ng-style="getWidth(0);">
-                    <h6>{{ arrPlayers[0].name }}</h6>
+                    <!-- <h6>{{ arrPlayers[0].name }}</h6>
                     <div class="bottom-player-profile players-profile">
                     <div class="ball" ng-style="getProfilePic(1);">
                           <div class="halo"></div>
@@ -75,13 +75,13 @@
                           <div class="name">P0</div>
                           <div class="notif">
                             <div class="bar">
-                              <!-- <div class="action"></div> -->
+                              
                               <p class="text">Hey, Play</p>
                             </div>
-                            <!-- <div class="arrow"></div> -->
+                            
                           </div>
                         </div>
-                    </div>
+                    </div> -->
                     <div class="card-to-play"></div>
                     <ul class="hand"  style="height:{{cardSize.y}}px; width:100%; margin:0; padding:0;">
                         <li ng-repeat = "card in bottomPlayerCards" style="left:{{$index*cardLeftMargin}}px;">
@@ -220,7 +220,7 @@
 
 
 <!--script type="text/javascript" src="/socket.io/socket.io.js"></script-->
-<script type="text/javascript">
+<!--script type="text/javascript">
     jQuery(document).ready(function($) {
       setTimeout(function() {
             $('.players-profile').toggleClass('anim-start');
@@ -234,4 +234,5 @@
         // }, 5*1000);
 
     });
-</script>
+</script-->
+

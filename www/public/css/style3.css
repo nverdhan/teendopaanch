@@ -174,6 +174,9 @@ div.profile h1{
 }
 .md-sidenav-right{
 	max-width: 340px;
+  position: fixed;
+  right: 0;
+  z-index: 100;
 }
 md-sidenav.md-locked-open, md-sidenav.md-locked-open.md-closed, md-sidenav.md-locked-open.md-closed.md-sidenav-left, md-sidenav.md-locked-open.md-closed.md-sidenav-right {
 	position: absolute!important;
@@ -341,10 +344,10 @@ sub {
   /*background: url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/22043/avatar_copy.jpg);*/
   background-size: cover!important;
   border-radius: 1000px;
-  transform: scale(0);
-  opacity: 0;
-  transition-duration: 0;
-  transition-timing-function: cubic-bezier(0.005, 0.95, 0.135, 1.205);
+  /*transform: scale(0);*/
+  opacity: 1;
+  /*transition-duration: 0;*/
+  /*transition-timing-function: cubic-bezier(0.005, 0.95, 0.135, 1.205);*/
 }
 .ball .msg-count {
   position: absolute;
@@ -444,35 +447,52 @@ sub {
   transform: scale(0);
 }
 
-.anim-start .ball {
+/*.anim-start .ball {
   opacity: 1;
   transform: none;
   transition-duration: .3s;
-}
+}*/
 .anim-start .ball .notif {
   opacity: 1;
   transition-duration: .2s;
-  transition-delay: 1.6s;
+  /*transition-delay: 0.6s;*/
 }
 .anim-start .ball .notif .bar {
   width: 100%;
   transition-duration: .6s;
-  transition-delay: 1.6s;
+  /*transition-delay: 0.6s;*/
 }
 .anim-start .ball .notif .arrow {
   transform: none;
-  transition-delay: 1.6s;
-  transition-duration: .3s;
+  transition-delay: 0.6s;
+  /*transition-duration: .3s;*/
 }
 .anim-start .ball .halo {
   opacity: 0;
   transform: none;
   transition-duration: .6s;
-  transition-delay: 1.2s;
+  /*transition-delay: 0.2s;*/
 }
 .anim-start .ball .msg-count {
   opacity: 1;
   transform: none;
   transition-duration: .3s;
-  transition-delay: .6s;
+  /*transition-delay: .6s;*/
+}
+
+.anim-end .ball .notif {
+  opacity: 0;
+  transition-duration: .2s;
+  transition-delay: 0.1s;
+}
+.anim-end .ball .notif .bar {
+  width: 0%;
+  transition-duration: .6s;
+  transition-delay: 0.1s;
+}
+.anim-end .ball .msg-count {
+  opacity: 0;
+  transform: none;
+  transition-duration: .3s;
+  transition-delay: .1s;
 }

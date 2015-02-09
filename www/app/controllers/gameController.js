@@ -21,6 +21,7 @@
 //         }
 //     }
 // }]);
+var temp;
 game325.controller('gameController', ['$rootScope', '$http', '$scope', '$state', '$stateParams','authService', 'gameService', 'socket', '$timeout', 'delayService', '$mdSidenav', '$anchorScroll', '$location', '$mdDialog', function ($rootScope, $http, $scope, $state, $stateParams, authService, gameService, socket, $timeout ,delayService, $mdSidenav, $anchorScroll, $location, $mdDialog){
     $scope.gameId = $stateParams.id;
     $scope.gameType = $stateParams.type;
@@ -52,11 +53,6 @@ game325.controller('gameController', ['$rootScope', '$http', '$scope', '$state',
         $scope.showScores = false;
     }
     $scope.getMsgTemplate = function (content){
-        console.log(content);
-        // var x = '<div class="media comment-box"><a class="pull-left comment-body-pic" href="#"><img src="'+content.userPic+'" width="100%" height="100%"/></a>'+
-        //         '<div class="media-body" style="display:line-height:0px;"><h6 class="media-heading color-1 comment-body-h">'+
-        //         '<a class="comment-user-title" href="user/{{ comment.user.id }}">'+content.userId+'</a><small></small></h6>'+
-        //         '<p class="comment-body-p">'+content.body+'</p></div></div>';
         var x ='<md-item>'+
                     '<md-item-content>'+
                       '<div class="md-tile-left">'+
@@ -79,12 +75,37 @@ game325.controller('gameController', ['$rootScope', '$http', '$scope', '$state',
             userId : data.player.id,
             userPic : data.player.img
         }
+        for (var i = $scope.arrPlayers.length - 1; i >= 0; i--) {
+            if($scope.arrPlayers[i].id == $scope.msg.userId){
+                if(i==1) var playerclass='left-player-profile';
+                if(i==2) var playerclass='right-player-profile';
+                if($('.'+playerclass).hasClass('anim-end')){
+                        angular.element('.'+playerclass).toggleClass('anim-end');    
+                    }
+                temp = i;
+                    var x = function(){
+                    angular.element('.'+playerclass).toggleClass('anim-end'); 
+                    if($('.'+playerclass).hasClass('anim-start')){
+                        angular.element('.'+playerclass).toggleClass('anim-start');    
+                    }
+                    $scope.arrPlayers[temp].msg = '';                  
+                    }
+                    var animpromise = $timeout(x,3000);
+                    if(!$('.'+playerclass).hasClass('anim-start')){
+                        angular.element('.'+playerclass).toggleClass('anim-start');    
+                    }else{
+                        xxx = $timeout.cancel(animpromise);
+                        console.log(xxx);
+                    }
+                    $scope.arrPlayers[temp].msg = $scope.msg.body;
+        }
+    };
         var e = $scope.getMsgTemplate($scope.msg);
         angular.element('.chat-box').append(e);
         $location.hash('bottomscroll');
         $anchorScroll();
         $location.hash('');
-    })
+    });
     socket.on('start', function (data){
         $scope.gameState = data.data.gameState;
         $scope.activePlayerId = data.data.activePlayerId;
@@ -150,7 +171,8 @@ game325.controller('gameController', ['$rootScope', '$http', '$scope', '$state',
             handsToMake : '',
             handsMade : 0,
             cardPlayed : '',
-            scores : []
+            scores : [],
+            msg : ''
         }
     }
     $scope.isAllowedCard = function(){

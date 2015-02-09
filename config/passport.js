@@ -36,6 +36,7 @@ module.exports = function(app, passport) {
         process.nextTick(function() {
 
             User.findOne({ 'twitter.id' : profile.id }, function(err, user) {
+                console.log(profile);
                 // if there is an error, stop everything and return that
                 // ie an error connecting to the database
                 if (err)
@@ -62,7 +63,7 @@ module.exports = function(app, passport) {
                         if (err)
                             throw err;
                         var c = JSON.stringify(newUser.twitter);
-                        client.set('userInfo:'+user.id, c, function (err, userInfo){
+                        client.set('userInfo:'+newUser.twitter.id, c, function (err, userInfo){
                             if(err)
                                 throw err;
                         });
