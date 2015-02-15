@@ -24,7 +24,6 @@ module.exports = function (app, server){
     // var config = app.get('config');
     io.use(function(socket, accept){
         var hsData = socket.request;
-        console.log(hsData.headers);
         if(hsData.headers.cookie){
             var cookies = cookieParser.signedCookies(cookie.parse(hsData.headers.cookie), 'seasonsofthewitch');
             var sid = cookies['gameApp'];
@@ -39,7 +38,6 @@ module.exports = function (app, server){
                     }
                     // user = hsData.gameApp.user;
                     if(typeof(user) != 'undefined'){
-                        console.log(8888888888);
                         client.get('userInfo:'+hsData.gameApp.user, function (err, user) {
                             var x = JSON.stringify(user);
                             client.set('user:'+socket.id, x, function (err, userData){
@@ -67,26 +65,20 @@ module.exports = function (app, server){
         var roomId; var startFlag = 0;
 		//io.emit('message', {'message' : 'state from server '});
         socket.on('joinRoom', function(data){
-            console.log(user);
             roomId = data.roomId;
-            console.log(data);
             // var game[roomId] = new Game();
             client.get('gameRoom:'+roomId, function (err, gameString){
                 if(err){
                     throw err;
                 }
                 socket.join(roomId);
-                console.log(gameString);
                 client.get('user:'+socket.id, function (err, userData){
                     if(err)
                         throw err;
                     user = JSON.parse(JSON.parse(userData));
                     gamex = JSON.parse(gameString);
-                    console.log(gameString);
-                    console.log(gamex);
                     var player = new Player();
                     player.id = socket.id;
-                    console.log(user);
                     if(user){
                         player.name = user.name;
                         player.img = user.img;  
@@ -173,7 +165,7 @@ module.exports = function (app, server){
                 gamex.gameState  ='playCard';
                 var y = Game.prototype.withdrawCards.call(gamex);
                 var x = JSON.stringify(gamex);
-
+                console.log(y);
                 if(y){
                     gamex.gameState  ='withdrawCard';
                     client.set('gameRoom:'+roomId, x, function(err, gameSet){
@@ -203,6 +195,8 @@ module.exports = function (app, server){
                 if(err)
                     throw err;
                 gamex = JSON.parse(gameString);
+                console.log('herererere');
+                console.log(data);
                 gamex.cardIndex = data.data.card;
                 Game.prototype.withdrawCard.call(gamex);
                 gamex.gameState  ='returnCard';
@@ -226,6 +220,7 @@ module.exports = function (app, server){
                 gamex.cardIndex = data.data.card;
                 Game.prototype.returnCard.call(gamex);
                 var y = Game.prototype.withdrawCards.call(gamex);
+                console.log(y);
                     if(y){
                         gamex.gameState  ='withdrawCard';
                         var x = JSON.stringify(gamex);

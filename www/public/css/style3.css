@@ -1,24 +1,37 @@
 /*.ng-scope { height: 100%; }*/
 .bckimg{
-	 position: fixed;
+	 /*position: fixed;
   left: 0;
   right: 0;
   z-index: 1;
 
-  display: block;
+  display: block;*/
   /*background-image: url('../../assets/img/card-bck.jpg');*/
-  background-image: url('../../assets/img/bckimg.jpg');
+  /*background-image: url('../../assets/img/bckimg.jpg');
   background-size: cover;
   width: 100%;
-  height: 100%;
+  height: 100%;*/
   /*width: 1200px;*/
   /*height: 800px;*/
 
-  -webkit-filter: blur(10px);
+ /* -webkit-filter: blur(10px);
   -moz-filter: blur(10px);
   -o-filter: blur(10px);
   -ms-filter: blur(10px);
-  filter: blur(10px);
+  filter: blur(10px);*/
+  /*background: none repeat scroll 0 0 rgb(0, 0, 0);*/
+
+    background: -webkit-radial-gradient(center, circle cover, #555a5f 0%, #1c1e20 100%);
+    background: -moz-radial-gradient(center, circle cover, #555a5f 0%, #1c1e20 100%);
+    background: radial-gradient(center, circle cover, #555a5f 0%, #1c1e20 100%);
+    display: block;
+    filter: blur(10px);
+    height: 100%;
+    left: 0;
+    position: fixed;
+    right: 0;
+    width: 100%;
+    z-index: 1;
 }
 .content {
   position: absolute;
@@ -341,6 +354,7 @@ sub {
   height: 50px;
   width: 50px;
   border: 3px solid #E6E6E6;
+  min-width: 50px;
   /*background: url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/22043/avatar_copy.jpg);*/
   background-size: cover!important;
   border-radius: 1000px;
@@ -505,7 +519,7 @@ sub {
 .play-info{
   position: absolute;
   left: 0;
-  bottom: 38px;
+  top: 400px;
   width: 100%;
   text-align: center;
 }
@@ -544,4 +558,11 @@ sub {
 .play-info.ng-leave.ng-leave-active {
     max-height: 0;
     opacity:0;
+}
+.playingCards .card.back{
+    background-image: url("../../assets/img/cardpic.jpg");
+    background-position: -1120px -226.88px;
+    background-size: 1200px auto;
+    height: 113.44px;
+    width: 80px;
 }

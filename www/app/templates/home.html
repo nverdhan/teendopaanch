@@ -8,8 +8,9 @@
 <div class='homepage'>
 <div class='profile flex' layout="horizontal" layout-align="center center">
     <h1>
-    		<img ng-src="assets/img/nvpic.JPG" class="face profile" alt="NV" >
-			<span>Welcome Naisheel </span>
+    	<div class="ball" style="background: #fff url({{loggedinuser.img}}) no-repeat center center; background-size: cover; position:relative; float:left;" ></div>
+    		<!-- <img ng-src="assets/img/nvpic.JPG" class="face profile" alt="NV" > -->
+			<span>Welcome {{loggedinuser.name}} </span>
 	</h1>
 		
  </div>

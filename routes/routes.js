@@ -148,8 +148,8 @@ module.exports = function(app, passport) {
 	});
     
     app.post('/api/auth', function(req, res){
-        if(req.user){
-            res.json({'user' : req.user});
+        if(req.user.twitter){
+            res.json({'user' : req.user.twitter});
         }else{
             res.json({'error' : 401})}
     });
@@ -158,7 +158,7 @@ module.exports = function(app, passport) {
 
 	app.get('/auth/twitter/callback',
 		passport.authenticate('twitter', {
-			successRedirect : '/',
+			successRedirect : '/home',
 			failureRedirect : '/'
 	}));
 

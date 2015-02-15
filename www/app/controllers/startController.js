@@ -9,7 +9,6 @@ game325.controller('startController', ['$http', '$scope', 'startGameService','$s
 //         }
 //     });
     $scope.joinGameRoomId = '';
-    console.log($state.current.name);
     $scope.showStartGame = false;
     $scope.showCreateGame = false;
     $scope.showJoinGame = false;
@@ -23,6 +22,15 @@ game325.controller('startController', ['$http', '$scope', 'startGameService','$s
         $scope.showJoinGame = true;
     }
     $scope.loading = false;
+    authService.get().then(function (data) {
+        $scope.loggedinuser = data.data.user;
+        // console.log(data.data.user);
+       if(data.data.error){
+           console.log(123);
+       }else{
+           // socket.emit('joinRoom', {roomId : $scope.gameId});        
+       }
+    });
     // $scope.twitterAuth = function(){
     //     $window.location.href = "http://127.0.0.1:3000/auth/twitter"
     // }

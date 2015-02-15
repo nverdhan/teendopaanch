@@ -18,31 +18,31 @@
                 </div> -->
                 <div class="play-info" ng-if="gameState == 'playCard'">
                     <md-whiteframe class="md-whiteframe-z1 status">
-                        <span>Player {{activePlayerId}} Play</span>
+                        <span>{{getProfile(activePlayerId).name}} Play</span>
                     </md-whiteframe>
                 </div>
                 <div class="play-info" ng-if="gameState == 'withdrawCard'">
                     <md-whiteframe class="md-whiteframe-z1 status">
-                        <span>{{activePlayerId}} to withdraw card from {{otherPlayerId}}</span>
+                        <span>{{getProfile(activePlayerId).name}} to withdraw card from {{getProfile(otherPlayerId).name}}</span>
                     </md-whiteframe>
                 </div>
                 <div class="play-info" ng-if="gameState == 'returnCard'">
                     <md-whiteframe class="md-whiteframe-z1 status">
-                        <span>{{activePlayerId}} returning card to {{otherPlayerId}}</span>
+                        <span>{{getProfile(activePlayerId).name}} returning card to {{getProfile(otherPlayerId).name}}</span>
                     </md-whiteframe>
                 </div>
                 <div class="play-info" ng-if="gameState == 'setTrump'">
                     <md-whiteframe class="md-whiteframe-z1 status">
-                        <span>Player {{activePlayerId}} Set Trump</span>
+                        <span>Player {{getProfile(activePlayerId).name}} Set Trump</span>
                     </md-whiteframe>
                 </div>
                 <div class="left-player playingCards" ng-style="getWidth(1);">
-                    <h6>{{ arrPlayers[1].name }}</h6>
+                    <!-- <h6>{{ arrPlayers[1].name }}</h6> -->
                     <div class="left-player-profile players-profile">
                         <div class="ball" ng-style="getProfilePic(1);">
                           <div class="halo"></div>
                           <div class="msg-count"></div>
-                          <div class="name">Ankit</div>
+                          <div class="name">{{ arrPlayers[1].name }}</div>
                           <div class="notif">
                             <div class="bar">
                               <!-- <div class="action"></div> -->
@@ -63,12 +63,12 @@
                 </div>
                 <div class="right-player playingCards" ng-style="getWidth(2);">
                     
-                    <h6>{{ arrPlayers[2].name }}</h6>
+                    <!-- <h6>{{ arrPlayers[2].name }}</h6> -->
                     <div class="right-player-profile players-profile">
-                        <div class="ball" ng-style="getProfilePic(1);">
+                        <div class="ball" ng-style="getProfilePic(2);">
                             <div class="halo"></div>
                             <div class="msg-count"></div>
-                            <div class="name">P1</div>
+                            <div class="name">{{ arrPlayers[2].name }}</div>
                             <div class="notif">
                                 <div class="bar">
                                 <!-- <div class="action"></div> -->
@@ -105,31 +105,31 @@
                     <div class="card-to-play"></div>
                     <ul class="hand"  style="height:{{cardSize.y}}px; width:100%; margin:0; padding:0;">
                         <li ng-repeat = "card in bottomPlayerCards" style="left:{{$index*cardLeftMargin}}px;">
-                            <a ng-if="card" class="card" ng-class = "assignClass(card)" ng-click="play(card, playerId, $event)" style="width:{{cardSize.x}}px; height:{{cardSize.y}}px;">
-                                <span class="rank">{{ getRankForHTML(card) }}</span>
-                                <span class="suit" ng-bind-html="'&'+getSuitForHTML(card)+';' | unsafe"></span>
+                            <a ng-if="card" class="card" ng-class = "assignClass(card)" ng-click="play(card, playerId, $event)" ng-style="getCardPic(card)">
+                                <!-- <span class="rank">{{ getRankForHTML(card) }}</span>
+                                <span class="suit" ng-bind-html="'&'+getSuitForHTML(card)+';' | unsafe"></span> -->
                             </a>
                         </li>
                     </ul>
                     <div class="statistics">{{ arrPlayers[0].handsToMake }} / {{ arrPlayers[0].handsMade }}</div>
                 </div>
                 <!--by NV-->
-                <div class="card movingCard" ng-if="movingCard">{{ movingCard[0].suit }} {{ movingCard[0].rank }}</div>
+                <!-- <div class="card movingCard" ng-if="movingCard">{{ movingCard[0].suit }} {{ movingCard[0].rank }}</div> -->
                 <div class="set-trump playingCards simpleCards" ng-show="gameState == 'setTrump' && playerId == activePlayerId" ng-style="getTrumpDivCSS()">
                     <ul class="table" style="height:{{cardSize.y}}px; width:100%; margin:0; padding:0;">
-                        <li class="card" ng-repeat="trump in trumps" ng-click="setTrumpCard(trump)" style="width:{{cardSize.x}}px; height:{{cardSize.y}}px;">
-                            <a class="card {{ trump }}">
+                        <li class="card" ng-repeat="trump in trumps" ng-click="setTrumpCard(trump)" ng-style="getTrumpPic(trump)">
+                            <!-- <a class="card {{ trump }}">
                                 <span class="suit"></span>
-                            </a>
+                            </a> -->
                         </li>
                     </ul>
                 </div>
                 <div class="played-cards playingCards simpleCards" ng-style="getPlayedCardsDivCSS()">
                     <ul class="played-cards-ul table" style="height:100%; width:100%; margin:0; padding:0;">
-                        <li ng-repeat = "player in arrPlayers" class="{{ getPosition(player.position) }}" ng-class="{true : 'moveCard'}[player.position == 0]"  ng-if="player.cardPlayed" style="position: absolute; width:{{cardSize.x}}px; height:{{cardSize.y}}px;" ng-style="getCardInitialStyle(player.position)">
-                            <a class="card" ng-if="player.cardPlayed" ng-class="assignClass2(player.cardPlayed, player.position);" style="position:absolute;">
-                                    <span class="rank">{{ getRankForHTML(player.cardPlayed) }}</span>
-                                    <span class="suit" ng-bind-html="'&'+getSuitForHTML(player.cardPlayed)+';' | unsafe"></span>
+                        <li ng-repeat = "player in arrPlayers" class="{{ getPosition(player.position) }}" ng-class="{true : 'moveCard'}[player.position == 0]"  ng-if="player.cardPlayed" style="position: absolute;" ng-style="getCardInitialStyle(player.position)">
+                            <a class="card" ng-class="assignClass2(player.cardPlayed, player.position);" style="position:absolute;" ng-style="getCardPic(player.cardPlayed)">
+                                   <!--  <span class="rank">{{ getRankForHTML(player.cardPlayed) }}</span>
+                                    <span class="suit" ng-bind-html="'&'+getSuitForHTML(player.cardPlayed)+';' | unsafe"></span> -->
                             </a>
                             <a ng-if="player.position != 0" class="card back" style="position:absolute;"></a>
                             <!--{{ player.cardPlayed.suit }}  {{ player.cardPlayed.rank }}-->
@@ -139,27 +139,28 @@
                 <div class="allDeck playingCards simpleCards" style="height:{{cardSize.y}}px; width:{{cardSize.x}}px; top:{{getDeckTop()}}px; z-index:10;">
                     <ul class="hand"  style="height:{{cardSize.y}}px; width:{{cardSize.x}}px; position:absolute !important;">
                         <li ng-repeat = "card in leftPlayerDeck" class="leftPlayerDeck" style="width:{{cardSize.x}}px; height:{{cardSize.y}}px; left:0;">
-                            <a ng-if="card" class="card" style="position:absolute;">
-                                    <span class="rank">{{ getRankForHTML(card) }}</span>
-                                    <span class="suit" ng-bind-html="'&'+getSuitForHTML(card)+';' | unsafe"></span>
+                            <a ng-if="card" class="card" style="position:absolute;"
+                            ng-style="getCardPic(card)">
+                                    <!-- <span class="rank">{{ getRankForHTML(card) }}</span>
+                                    <span class="suit" ng-bind-html="'&'+getSuitForHTML(card)+';' | unsafe"></span> -->
                             </a>
                             <a class="card back" style="position:absolute;"></a>
                         </li>
                     </ul>
                     <ul class="hand"  style="height:{{cardSize.y}}px; width:{{cardSize.x}}px; position:absolute !important;">
                         <li ng-repeat = "card in rightPlayerDeck" class="rightPlayerDeck" style="width:{{cardSize.x}}px; height:{{cardSize.y}}px; left:0;">
-                            <a ng-if="card" class="card" style="position:absolute;">
-                                    <span class="rank">{{ getRankForHTML(card) }}</span>
-                                    <span class="suit" ng-bind-html="'&'+getSuitForHTML(card)+';' | unsafe"></span>
+                            <a ng-if="card" class="card" style="position:absolute;" ng-style="getCardPic(card)">
+                                    <!-- <span class="rank">{{ getRankForHTML(card) }}</span>
+                                    <span class="suit" ng-bind-html="'&'+getSuitForHTML(card)+';' | unsafe"></span> -->
                             </a>
                             <a class="card back" style="position:absolute;"></a>
                         </li>
                     </ul>
                     <ul class="hand"  style="height:{{cardSize.y}}px; width:{{cardSize.x}}px; position:absolute !important;">
                         <li ng-repeat = "card in bottomPlayerDeck" class="bottomPlayerDeck" style="width:{{cardSize.x}}px; height:{{cardSize.y}}px; left:0;">
-                            <a ng-if="card" ng-class = "assignClass(card)" class="card front" style="position:absolute;">
-                                    <span class="rank">{{ getRankForHTML(card) }}</span>
-                                    <span class="suit" ng-bind-html="'&'+getSuitForHTML(card)+';' | unsafe"></span>
+                            <a ng-if="card" ng-class = "assignClass(card)" class="card front" style="position:absolute;" ng-style="getCardPic(card)">
+                                    <!-- <span class="rank">{{ getRankForHTML(card) }}</span>
+                                    <span class="suit" ng-bind-html="'&'+getSuitForHTML(card)+';' | unsafe"></span> -->
                             </a>
                             <a class="card back" style="position:absolute;"></a>
                         </li>

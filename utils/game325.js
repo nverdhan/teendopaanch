@@ -73,7 +73,7 @@ game325.prototype.updateHandsToMake = function() {
 	for (var i =0; i < this.players.length; i++) {
         if(this.players[i].id == this.activePlayerId){
             j = i;
-            console.log(this.players[i]);
+            // console.log(this.players[i]);
             this.players[i].handsToMake = 5;
             this.players[i].scores[x-1].handsToMake = 5;
         }
@@ -101,6 +101,7 @@ game325.prototype.withdrawCard = function(){
 	var activePlayerId = this.activePlayerId;
 	var otherPlayerId = this.otherPlayerId;
 	var cardIndex = this.cardIndex;
+	console.log(cardIndex);
 	for (var i = 0; i < this.players.length; i++) {
 		if(this.players[i].id == otherPlayerId){
 			var card = this.players[i].cards.splice(cardIndex, 1);
@@ -136,16 +137,15 @@ game325.prototype.returnCard = function(){
 // }
 game325.prototype.playCard = function(){
 	var card = this.cardPlayed;
-	var x = function(){
-		return {
-			id : '',
-			card : {}
-		}
-	}
 	for (var i = 0; i < this.players.length ; i++) {
 		if(this.players[i].id == this.activePlayerId){
 			this.players[i].cardPlayed = card;
-			var index = this.players[i].cards.indexOf(card);
+			// var index = this.players[i].cards.indexOf(m);
+			for (var j = this.players[i].cards.length - 1; j >= 0; j--) {
+				if(this.players[i].cards[j].suit == card.suit && this.players[i].cards[j].rank == card.rank){
+					var index = j;
+				}
+			};
 			this.players[i].cards.splice(index, 1);
 		}
 	}
@@ -185,7 +185,16 @@ game325.prototype.nextRound = function(){
 }
 game325.prototype.getTurnWinner = function() {
 	var self = this;
-	var x = this.gameTurn%3;
+	var x = (this.gameTurn-1)/30;
+	var y = parseInt(x);
+	if(x == y){
+		// console.log('HEREEEEEEEEEEEEE');
+		var x = x-1;
+	}else{
+		// console.log('fcfedf');
+		var x = Math.floor(this.gameTurn/30);	
+	}
+	console.log(x);
 	var biggestCard = null;
 	for (var i = 0; i < this.players.length; i++){
 		biggestCard = getBiggestCard(biggestCard, this.players[i].cardPlayed, this.turnSuit, this.trump);
@@ -196,8 +205,8 @@ game325.prototype.getTurnWinner = function() {
 			this.players[i].handsMade++;
 			this.winnerId =  this.players[i].id;
 			this.activePlayerId = this.winnerId;
-			this.players[i].scores[x-1].handsMade++;
-			var x = this.players[i].scores[x-1].handsMade;
+			this.players[i].scores[x].handsMade++;
+			// console.log(this.players[i].scores);
 		}
 	}
 }

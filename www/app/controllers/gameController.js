@@ -53,28 +53,42 @@ game325.controller('gameController', ['$rootScope', '$http', '$scope', '$state',
         $scope.showScores = false;
     }
     $scope.getMsgTemplate = function (content){
+        console.log(content);
         var x ='<md-item>'+
                     '<md-item-content>'+
-                      '<div class="md-tile-left">'+
-                        '<img ng-src="'+content.userPic +'" class="face" >'+
+                      '<div class="md-tile-left ball" style="background: #fff url('+content.userPic+') no-repeat center center; background-size: cover;">'+
                       '</div>'+
                       '<div class="md-tile-content">'+
-                        '<h4>' + content.userId +'</h4>'+
+                        '<h4>' + content.userName +'</h4>'+
                         '<p>'+
                           content.body+
                         '</p>'+
                       '</div>'+
                     '</md-item-content>'+
-                  '  <md-divider inset></md-divider>'+
+                  '  <md-divider></md-divider>'+
                   '</md-item>';             
         return x;
     }
     socket.on('msgRecieved', function (data) {
+        console.log(data);
+        data.player.user = JSON.parse(data.player.user);
+        console.log(data);
+        if(data.player.user){
         $scope.msg = {
             body : data.msg.msg,
+            userName : data.player.user.name,
             userId : data.player.id,
-            userPic : data.player.img
+            userPic : data.player.user.img
         }
+        }else{
+            $scope.msg = {
+                body : data.msg.msg,
+                userName: "Devansh",
+                userId : data.player.id,
+                userPic : "../../assets/img/devd.jpg"
+            }
+        }
+
         for (var i = $scope.arrPlayers.length - 1; i >= 0; i--) {
             if($scope.arrPlayers[i].id == $scope.msg.userId){
                 if(i==1) var playerclass='left-player-profile';
@@ -82,7 +96,7 @@ game325.controller('gameController', ['$rootScope', '$http', '$scope', '$state',
                 if($('.'+playerclass).hasClass('anim-end')){
                         angular.element('.'+playerclass).toggleClass('anim-end');    
                     }
-                temp = i;
+                    temp = i;
                     var x = function(){
                     angular.element('.'+playerclass).toggleClass('anim-end'); 
                     if($('.'+playerclass).hasClass('anim-start')){
@@ -98,8 +112,9 @@ game325.controller('gameController', ['$rootScope', '$http', '$scope', '$state',
                         console.log(xxx);
                     }
                     $scope.arrPlayers[temp].msg = $scope.msg.body;
-        }
-    };
+
+            }
+        };
         var e = $scope.getMsgTemplate($scope.msg);
         angular.element('.chat-box').append(e);
         $location.hash('bottomscroll');
@@ -137,7 +152,7 @@ game325.controller('gameController', ['$rootScope', '$http', '$scope', '$state',
     $scope.leftPlayerCards = [];
     $scope.rightPlayerCards = [];
     $scope.gameWindow = {x : 800, y : 600};//px
-    $scope.cardSize = {x: 72, y : 90};//px
+    $scope.cardSize = {x: 80, y : 113.44};//px
     $scope.cardLeftMargin = $scope.cardSize.x*1/3;
     $scope.fullWidth = $scope.cardSize.x + (9*($scope.cardLeftMargin));
     $scope.sendChat = function(){
@@ -191,7 +206,9 @@ game325.controller('gameController', ['$rootScope', '$http', '$scope', '$state',
         //         angular.element('.right-player-profile').toggleClass('player-active');
         //         if($('.right-player-profile').hasClass('player-active')) angular.element('.left-player-profile').toggleClass('player-active');
         //     }
-        var x = angular.element('.card').width();
+        var x = 80;
+        var t = 113.44;
+        $scope.fullWidth = 4*x;
         if(n == 0){
             var i = $scope.bottomPlayerCards.length;
         }
@@ -208,15 +225,18 @@ game325.controller('gameController', ['$rootScope', '$http', '$scope', '$state',
         if(n == 0){
             return {
                 'width': w,
+                'height' : t
             }    
         }else if(n == 1){
             return {
                 'width': w,
+                'height' : t,
                 'left' : c
            }
         }else{
             return {
                 'width': w,
+                'height' : t,
                 'left' : c
             }
         }
@@ -257,14 +277,22 @@ game325.controller('gameController', ['$rootScope', '$http', '$scope', '$state',
         }
         $rootScope.arrPlayers = $scope.arrPlayers;
     }
+    $scope.if15distributed = false;
+    $scope.distributeCardsFlag = false;
     $scope.updateCards = function(){
         for (var i = 0; i < $scope.playerIds.length; i++){
             $scope.arrPlayers[i].cards = $scope.players[$scope.playerIds[i]]['cards'];
         }
         var x = $scope.arrPlayers[0].cards.length + $scope.arrPlayers[1].cards.length + $scope.arrPlayers[2].cards.length;
-        if(x == 15 || x == 30){
+        if(x == 15 && ($scope.gameState!="withdrawCard" && $scope.gameState!="returnCard")){
             $scope.distributeCardsFlag = true;
-        }else{
+            $scope.if15distributed = true;
+        }
+        if(x == 30 && ($scope.gameState!="withdrawCard" && $scope.gameState!="returnCard") && $scope.if15distributed){
+            $scope.distributeCardsFlag = true;
+        }
+        if(x!=15 && x!=30){
+            $scope.if15distributed = false;
             $scope.distributeCardsFlag = false;
         }
         if($scope.gameTurn%30 == 1 && $scope.distributeCardsFlag){
@@ -272,18 +300,18 @@ game325.controller('gameController', ['$rootScope', '$http', '$scope', '$state',
             $scope.bottomPlayerDeck = [];
             $scope.rightPlayerDeck = [];
             for (var i = 0; i < 5; i++) {
-                var b = $scope.arrPlayers[0].cards[i];
+                var b = $scope.arrPlayers[0].cards.pop();
                 $scope.bottomPlayerDeck.push(b);
-                var l = $scope.arrPlayers[1].cards[i];
+                var l = $scope.arrPlayers[1].cards.pop();
                 $scope.leftPlayerDeck.push(l);
-                var r = $scope.arrPlayers[2].cards[i];
+                var r = $scope.arrPlayers[2].cards.pop();
                 $scope.rightPlayerDeck.push(r);
             };
         }
         $scope.leftPlayerId = $scope.arrPlayers[1].id;
         $scope.rightPlayerId = $scope.arrPlayers[2].id;
         if($scope.distributeCardsFlag){
-            $scope.distributeCards();
+            $scope.distributeCards(x);
         }else{
             $scope.bottomPlayerCards = $scope.arrPlayers[0].cards;
             $scope.leftPlayerCards = $scope.arrPlayers[1].cards;
@@ -309,7 +337,13 @@ game325.controller('gameController', ['$rootScope', '$http', '$scope', '$state',
             $scope.rightPlayerCards.push(a);
         }
     }
-    $scope.distributeCards = function(){
+    $scope.distributeCards = function(totalcards){
+        if(totalcards==30 && $scope.if15distributed==false){
+            $scope.bottomPlayerCards = $scope.arrPlayers[0].cards;
+            $scope.leftPlayerCards = $scope.arrPlayers[1].cards;
+            $scope.rightPlayerCards = $scope.arrPlayers[2].cards;
+            return false;
+        }
         var m = 0;
         var n = 0;
         var o = 0;
@@ -321,7 +355,8 @@ game325.controller('gameController', ['$rootScope', '$http', '$scope', '$state',
                     if($scope.bottomPlayerCards.length > 0){
                         var leftX = $('.bottom-player ul li:last-child').offset().left - angular.element('.game-body').offset().left;    
                     }else{
-                        var leftX = $('.bottom-player ul').offset().left - angular.element('.game-body').offset().left;
+                        var leftX = $('.bottom-player ul').offset().left - angular.element('.game-body').offset().left-7*80/6;
+
                     }
                     leftX+= (n)*($scope.cardLeftMargin);
                     angular.element('.bottomPlayerDeck:nth-child('+n+')').css({
@@ -332,7 +367,7 @@ game325.controller('gameController', ['$rootScope', '$http', '$scope', '$state',
                     //  var a = $scope.bottomPlayerDeck.pop();
                     // $scope.bottomPlayerCards.push(a);
                 }
-                delayService.asyncTask(100, x);
+                delayService.asyncTask(50, x);
             }
             if((i%3)-1 == 0){
                 var x = function(){
@@ -341,14 +376,14 @@ game325.controller('gameController', ['$rootScope', '$http', '$scope', '$state',
                     if($scope.leftPlayerCards.length > 0){
                         var leftX = angular.element('.left-player ul li:last-child').offset().left - angular.element('.game-body').offset().left;    
                     }else{
-                        var leftX = angular.element('.left-player ul').offset().left - angular.element('.game-body').offset().left;
+                        var leftX = angular.element('.left-player ul').offset().left - angular.element('.game-body').offset().left-7*80/6;
                     }
                     leftX+= (m)*($scope.cardLeftMargin);
                     angular.element('.leftPlayerDeck:nth-child('+m+')').css({
                         'transform' : 'translateX('+leftX+'px) translateY('+topY+'px)'
                     });
                 }
-                delayService.asyncTask(100, x);
+                delayService.asyncTask(50, x);
             }
             if((i%3)-2 == 0){
                 var x = function(){
@@ -357,14 +392,14 @@ game325.controller('gameController', ['$rootScope', '$http', '$scope', '$state',
                     if($scope.rightPlayerCards.length > 0){
                         var leftX = angular.element('.right-player ul li:last-child').offset().left - angular.element('.game-body').offset().left;
                     }else{
-                        var leftX = angular.element('.right-player ul').offset().left - angular.element('.game-body').offset().left;
+                        var leftX = angular.element('.right-player ul').offset().left - angular.element('.game-body').offset().left-7*80/6;
                     }
                     leftX+= (o)*($scope.cardLeftMargin);
                     angular.element('.rightPlayerDeck:nth-child('+o+')').css({
                         'transform' : 'translateX('+leftX+'px) translateY('+topY+'px)'
                     });
                 }
-                delayService.asyncTask(100, x);
+                delayService.asyncTask(50, x);
             }
         }
         var fn = function(){
@@ -373,7 +408,10 @@ game325.controller('gameController', ['$rootScope', '$http', '$scope', '$state',
             $scope.distributeLeftPlayer();
         }
         delayService.asyncTask(50, fn);
-        
+        if(totalcards==30){
+            $scope.if15distributed = false;
+            $scope.distributeCardsFlag = false;
+        }
     }
     $scope.withDrawEnabled = false;
     $scope.moveWithdrawnCard = function(){
@@ -602,14 +640,14 @@ game325.controller('gameController', ['$rootScope', '$http', '$scope', '$state',
     // $scope.deckRight;
     $scope.getCardInitialStyle = function(e){
         if(e==0){
-            console.log('here');
+            // console.log('here');
             var c = $rootScope.left;
             var top = angular.element('.bottom-player ul').offset().top - angular.element('.played-cards ul').offset().top;
             console.log(c);
             return {
-                'left' : c+'px',
-                'top' : top+'px'
-            }
+                'left' : c,
+                'top' : top
+            };
         }
     }
     $scope.placeCardOnBoard = function(){
@@ -627,6 +665,7 @@ game325.controller('gameController', ['$rootScope', '$http', '$scope', '$state',
         var initialClass = $scope.getPosition(e);
         var finalClass = $scope.getPlayedPosition(e);
         if(e == 0){
+            console.log(45454);
             var top = $scope.gameWindow.y*5/9;
             var left = $scope.gameWindow.x/2 - $scope.cardSize.x/2;
             $timeout(function (){
@@ -642,7 +681,7 @@ game325.controller('gameController', ['$rootScope', '$http', '$scope', '$state',
                     //             top : ''
                     //         });
                 });
-            }, 20);
+            }, 60);
         }
         if(e!= 0){
             $timeout(function (){
@@ -782,7 +821,7 @@ game325.controller('gameController', ['$rootScope', '$http', '$scope', '$state',
     $scope.play = function(card, player, $event){
         $scope.cardLeft = angular.element($event.currentTarget.parentElement).offset().left - angular.element('.played-cards').offset().left;
         $rootScope.left = $scope.cardLeft;
-        console.log($rootScope.left);
+        // console.log($rootScope.left);
         if($scope.gameState == 'withdrawCard'){
             if(($scope.activePlayerId == $scope.playerId) && ($scope.otherPlayerId == player)){
                 if(card == $scope.cardSelected){
@@ -837,6 +876,7 @@ game325.controller('gameController', ['$rootScope', '$http', '$scope', '$state',
                     cardPlayed : card,
                     activePlayerId : $scope.activePlayerId
                 }
+                console.log(card);
                 // GameStateService.play(data).success(function(data){
                 //     $scope.gameState = data['gameState'];
                 //     $scope.players = data['players'];
@@ -939,13 +979,15 @@ game325.controller('gameController', ['$rootScope', '$http', '$scope', '$state',
     $scope.sendMsg = function(){
         socket.emit('sendMsg', {data : 'LOLMAX'});
     }
-    socket.on('recieveMsg', function(data){
-        var userId = data.data.userId;
-        var userPic = data.data.userPic;
-        var userMsg = data.data.userMsg;
-        var msg = userPic+''+userId+''+userMsg;
-        angular.element('.chat-container').append(msg);
-    });
+    // socket.on('recieveMsg', function(data){
+    //     var userId = data.data.userId;
+    //     var userPic = data.data.userPic;
+    //     var userMsg = data.data.userMsg;
+    //     var msg = userPic+''+userId+''+userMsg;
+    //     console.log(msg);
+    //     console.log(data);
+    //     angular.element('.chat-container').append(msg);
+    // });
     
     $scope.closeRight = function() {
     $mdSidenav('right').close()
@@ -954,25 +996,61 @@ game325.controller('gameController', ['$rootScope', '$http', '$scope', '$state',
     $scope.toggleRight = function() {
     $mdSidenav('right').toggle();
     };
+    $scope.getCardPic = function(card){
+        if(card.suit == 'H')
+            var posy = '-226.88px';
+        if(card.suit == 'S')
+            var posy = '-340.32px';
+        if(card.suit == 'D')
+            var posy = '0px';
+        if(card.suit == 'C')
+            var posy = '-113.44px';
+        var posx = ((card.rank-1)*80*-1);
+        var x = {'background-image' : 'url(assets/img/cardpic.jpg)',
+                'width' : '80',
+                'height' : 80*1.418,
+                'background-size' : '1200px',
+                'background-position' : posx+'px '+posy};
+    return x;
+
+    }
+    $scope.getTrumpPic = function(trump){
+        if(trump == 'H')
+            var posy = '-226.88px';
+        if(trump == 'S')
+            var posy = '-340.32px';
+        if(trump == 'D')
+            var posy = '0px';
+        if(trump == 'C')
+            var posy = '-113.44px';
+        var posx = -1040;
+        var x = {'background-image' : 'url(assets/img/cardpic.jpg)',
+                'width' : '80',
+                'height' : 80*1.418,
+                'background-size' : '1200px',
+                'background-position' : posx+'px '+posy};
+    return x;
+
+    }
     $scope.getProfilePic = function(playerindex){
         if (typeof $scope.arrPlayers[playerindex] !== 'undefined') {
-            // var picurl = $scope.arrPlayers[playerindex].img;
-            // if(playerindex==1){
-            //     angular.element('.left-player-profile').toggleClass('player-active');
-            //     if($('.right-player-profile').hasClass('player-active')) angular.element('.right-player-profile').toggleClass('player-active');
-            // } 
-            // if(playerindex==2){
-            //     angular.element('.right-player-profile').toggleClass('player-active');
-            //     if($('.right-player-profile').hasClass('player-active')) angular.element('.left-player-profile').toggleClass('player-active');
-            // }
-
-            
-            var x = {'background': '#fff url(../../assets/img/ankit.jpg) no-repeat center center',
+            var picurl = $scope.arrPlayers[playerindex].img;
+            var x = {'background': '#fff url('+picurl+') no-repeat center center',
                     'background-size': 'cover!important'};
             return x;
         }
     }
-}]);
+    $scope.getProfile = function(id){
+        for (var i = $scope.arrPlayers.length - 1; i >= 0; i--) {
+            if($scope.arrPlayers[i].id == id){
+                return {
+                        name: $scope.arrPlayers[i].name,
+                        img: $scope.arrPlayers[i].img
+                    };
+            };
+        }
+    }
+}])
 game325.directive('ngEnter', function() {
         return function(scope, element, attrs) {
             element.bind("keydown keypress", function(event) {

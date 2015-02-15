@@ -419,7 +419,8 @@ div.clear {
     left: 0;
 }
 .allDeck ul{
-    position: absolute;
+    /*position: absolute;*/
+    margin: 0;
 }
 .allDeck ul li{
     position: absolute;

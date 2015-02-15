@@ -46,14 +46,14 @@ game325.directive('showScores', ['$compile', function($compile){
         // var y = '<div ng-repeat = "game in content.scores">{{ game.handsMade }} / {{ game.handsToMake }} &nbsp; ( {{ game.handsMade - game.handsToMake }} )</div>';
         // var z = x+y+'<div class="text-center h5">{{ content.total }}</div></div>';
         // return z;
+        console.log(content);
         var x = '<md-item>'+
         '<md-item-content>'+
-          '<div class="md-tile-left imgholder">'+
-            '<img src="assets/img/ankit.jpg" class="score-face" alt="{{item.who}}">'+
+          '<div class="md-tile-left ball" style="background: #fff url('+content.img+') no-repeat center center; background-size: cover;">'+
           '</div>'+
           '<div class="md-tile-content">'+
             '<div layout="horizontal">'+
-            '<h3>'+content.id+'</h3>'+
+            '<h3>'+content.name+'</h3>'+
             '<h4 class="total-score">Total 3 out of 7 hands made</h4>'+
             '</div>'+
             '<div flex layout="horizontal" class="progress-container" ng-repeat = "game in content.scores">'+
@@ -66,7 +66,7 @@ game325.directive('showScores', ['$compile', function($compile){
         '</md-item-content>'+
         '<md-divider inset></md-divider>'+
        '</md-item>';
-       console.log(content);
+       // console.log(content);
        return x;
 
     }
