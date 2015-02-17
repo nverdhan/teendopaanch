@@ -372,11 +372,13 @@ game325.controller('gameController', ['$rootScope', '$http', '$scope', '$state',
         if(x == 30 && ($scope.gameState!="withdrawCard" && $scope.gameState!="returnCard") && $scope.if15distributed){
             $scope.distributeCardsFlag = true;
         }
+        console.log($scope.gameTurn)
         if(x!=15 && x!=30){
             $scope.if15distributed = false;
             $scope.distributeCardsFlag = false;
         }
         if($scope.gameTurn%30 == 1 && $scope.distributeCardsFlag){
+
             $scope.leftPlayerDeck = [];
             $scope.bottomPlayerDeck = [];
             $scope.rightPlayerDeck = [];
@@ -926,7 +928,9 @@ game325.controller('gameController', ['$rootScope', '$http', '$scope', '$state',
         $scope.activePlayerId = $scope.temp;
     }
     socket.on('GAME', function (data){
+        console.log(data);
         $scope.game325 = data.data;
+
         var gameEvent = $scope.game325.gameEvent;
         switch(gameEvent){
             case 'SET_TRUMP':
@@ -936,6 +940,7 @@ game325.controller('gameController', ['$rootScope', '$http', '$scope', '$state',
                 $scope.playerIds = data.data.playerIds;
                 $scope.gameState = data.data.gameState;
                 $scope.players = data.data.players;
+                $scope.gameTurn = data.data.gameTurn; //nv add
                 $scope.playerArray = $scope.players;
                 $scope.assignPlayers();
                 $scope.updateCards();
@@ -1204,4 +1209,16 @@ game325.controller('scoreDialogController',['$scope', '$mdDialog', '$rootScope',
             $mdDialog.hide();
         };
     $scope.arrPlayers = $rootScope.arrPlayers;
+    // $scope.getColorClass = function(handsMade,handsToMake){
+    //     console.log('here');
+    //     if(handsMade == handsToMake){
+    //         return 'blue-theme';
+    //     }
+    //     if(handsMade < handsToMake){
+    //         return 'red-theme';
+    //     }
+    //     if(handsMade > handsToMake){
+    //         return 'green-theme';
+    //     }
+    // }
 }])

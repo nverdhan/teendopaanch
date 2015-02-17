@@ -89,7 +89,8 @@ module.exports = function (app, server){
                                 io.sockets.connected[socket.id].emit('CONNECTED', {'id': socket.id, 'start' : gamex.status});
                                 io.sockets.connected[socket.id].emit('GAME', {'data' : gamex});
                             }else{
-                                io.sockets.socket(gamex.players[i].id).emit('RECONNECTED', {'id' : player.id});
+                                // io.sockets.socket(gamex.players[i].id).emit('RECONNECTED', {'id' : player.id});
+                                io.sockets.connected[socket.id].emit('RECONNECTED', {'id' : player.id});
                             }
                         };
                         gamex.gamePaused = false;
