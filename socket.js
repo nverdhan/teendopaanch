@@ -86,10 +86,11 @@ module.exports = function (app, server){
                         for (var i = gamex.players.length - 1; i >= 0; i--) {
                             if(gamex.players[i].id == undefined){
                                 gamex.players[i].id = socket.id;
+                                console.log(socket.id +' -- '+gamex.status);
                                 io.sockets.connected[socket.id].emit('CONNECTED_2', {'id': socket.id, 'data' : gamex});
                                 io.sockets.connected[socket.id].emit('GAME', {'data' : gamex});
                             }else{
-                                io.sockets.connected[socket.id].emit('RECONNECTED', {'id' : player.id});
+                                io.sockets.connected[gamex.players[i].id].emit('RECONNECTED', {'id' : player.id});
                             }
                         };
                         gamex.gamePaused = false;

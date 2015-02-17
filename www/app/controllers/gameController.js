@@ -119,6 +119,7 @@ game325.controller('gameController', ['$rootScope', '$http', '$scope', '$state',
     socket.removeAllListeners();
     socket.emit('JOIN_ROOM', {roomId : $scope.gameId});
     socket.on('CONNECTED', function(data){
+        console.log('connected');
         $scope.playerId = data.id;
         if (data.start == 'closed') {
             var x = {
@@ -128,6 +129,7 @@ game325.controller('gameController', ['$rootScope', '$http', '$scope', '$state',
         };
     });
     socket.on('GAME_STATUS', function(data){
+        console.log('game-status');
         if(data.status == 'closed'){
             $scope.waiting = false;
             $scope.ready = true;
@@ -1091,6 +1093,8 @@ game325.controller('gameController', ['$rootScope', '$http', '$scope', '$state',
         $scope.changePlayerId(id);
     });
     socket.on('CONNECTED_2', function(data){
+        $scope.waiting = false;
+        $scope.ready = true;
         $scope.playerId = data.id;
         $scope.gameState = data.data.gameState;
         $scope.activePlayerId = data.data.activePlayerId;
@@ -1100,6 +1104,7 @@ game325.controller('gameController', ['$rootScope', '$http', '$scope', '$state',
         $scope.gameTurn = data.data.gameTurn;
         $scope.assignPlayers();    
         $scope.updateCards();
+        console.log('herererere');
     });
 /*
     socket.on('RETURN', function (data){
