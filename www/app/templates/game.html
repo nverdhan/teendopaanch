@@ -36,10 +36,10 @@
                         <span>Player {{getProfile(activePlayerId).name}} Set Trump</span>
                     </md-whiteframe>
                 </div>
-                <div class="left-player playingCards" ng-style="getWidth(1);">
+                <div class="left-player playingCards"  ng-style="getWidth(1);">
                     <!-- <h6>{{ arrPlayers[1].name }}</h6> -->
                     <div class="left-player-profile players-profile">
-                        <div class="ball" ng-style="getProfilePic(1);">
+                        <div class="ball" ng-style="getProfilePic(1);" ng-class="{'player-active':arrPlayers[1].id == activePlayerId}">
                           <div class="halo"></div>
                           <div class="msg-count"></div>
                           <div class="name">{{ arrPlayers[1].name }}</div>
@@ -65,7 +65,7 @@
                     
                     <!-- <h6>{{ arrPlayers[2].name }}</h6> -->
                     <div class="right-player-profile players-profile">
-                        <div class="ball" ng-style="getProfilePic(2);">
+                        <div class="ball" ng-style="getProfilePic(2);" ng-class="{'player-active':arrPlayers[2].id == activePlayerId}">
                             <div class="halo"></div>
                             <div class="msg-count"></div>
                             <div class="name">{{ arrPlayers[2].name }}</div>

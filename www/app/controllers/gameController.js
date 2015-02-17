@@ -143,7 +143,7 @@ game325.controller('gameController', ['$rootScope', '$http', '$scope', '$state',
     $scope.getMsgTemplate = function (content){
         var x ='<md-item>'+
                     '<md-item-content>'+
-                      '<div class="md-tile-left ball" style="background: #fff url('+content.userPic+') no-repeat center center; background-size: cover;">'+
+                      '<div class="md-tile-left ball" style="background: #fff url('+content.userPic+') no-repeat center center; background-size: cover; margin-right: 0;">'+
                       '</div>'+
                       '<div class="md-tile-content">'+
                         '<h4>' + content.userName +'</h4>'+
@@ -1240,13 +1240,13 @@ game325.controller('scoreDialogController',['$scope', '$mdDialog', '$rootScope',
     // $scope.getColorClass = function(handsMade,handsToMake){
     //     console.log('here');
     //     if(handsMade == handsToMake){
-    //         return 'blue-theme';
+    //         return {classval: 'blue-theme'};
     //     }
     //     if(handsMade < handsToMake){
-    //         return 'red-theme';
+    //         return {classval: 'red-theme'};
     //     }
     //     if(handsMade > handsToMake){
-    //         return 'green-theme';
+    //         return {classval: 'green-theme'};
     //     }
     // }
 }])

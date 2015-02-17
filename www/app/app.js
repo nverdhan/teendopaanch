@@ -56,15 +56,17 @@ game325.directive('showScores', ['$compile', function($compile){
             '<h3>'+content.name+'</h3>'+
             '<h4 class="total-score">Total 3 out of 7 hands made</h4>'+
             '</div>'+
-            '<div flex layout="horizontal" class="progress-container" ng-repeat = "game in content.scores">'
-        var y ='<md-progress-linear mode="determinate" value="{{game.handsMade/game.handsToMake*100}}" style="width:80%;" ></md-progress-linear>'
+            '<div flex layout="horizontal" class="progress-container" ng-repeat = "game in content.scores"'+
+                'ng-class=\'{"red-theme":game.handsMade<game.handsToMake,"blue-theme":game.handsMade==game.handsToMake,"green-theme":game.handsMade>game.handsToMake}\'>'
+        var y ='<md-progress-linear mode="determinate" value="{{game.handsMade/game.handsToMake*100}}" style="width:80%;">'+ 
+                '</md-progress-linear>'
         var z ='<div class="fracscore">'+
             '{{game.handsMade}}/{{game.handsToMake}}'+
             '</div>'+
             '</div>'+
           '</div>'+
         '</md-item-content>'+
-        '<md-divider inset></md-divider>'+
+        '<md-divider></md-divider>'+
        '</md-item>';
         var w = x+y+z;
        // console.log(content);
