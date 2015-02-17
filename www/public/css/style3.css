@@ -317,6 +317,12 @@ sup {
 sub {
 	top: .5ex;
 }*/
+md-progress-linear.md-default-theme .md-container{
+
+}
+md-progress-linear.md-default-theme .md-bar{
+  
+}
 .fracscore, .fracscore-top, .fracscore-bottom {
     padding: 0 5px; 
     font-size: 10pt;
