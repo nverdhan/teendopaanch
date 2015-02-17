@@ -1,26 +1,3 @@
-// angular.directive('chatDiv', ['$compile', function ($compile){
-//     var t = function(content){
-//         var content = content.content;
-//         var x = '<div class="media comment-box"><a class="pull-left comment-body-pic" href="#"><img src="'+content.userPic+'" width="100%" height="100%"/></a>'+
-//                 '<div class="media-body" style="display:line-height:0px;"><h6 class="media-heading color-1 comment-body-h">'+
-//                 '<a class="comment-user-title" href="user/{{ comment.user.id }}">'+content.userId+'</a><small></small></h6>'+
-//                 '<p class="comment-body-p">'+content.body+'</p></div></div>';
-//         return x;
-
-//     };
-//     var linker = function(scope, element, attrs){
-//         element.html(t(scope)).show();
-//         $(compile(element.contents()))(scope);
-//     }
-//     return {
-//         restrict : 'E',
-//         replace : true,
-//         link : linker,
-//         scope : {
-//             content : '='
-//         }
-//     }
-// }]);
 var temp;
 game325.controller('gameController', ['$rootScope', '$http', '$scope', '$state', '$stateParams','authService', 'gameService', 'socket', '$timeout', 'delayService', '$mdSidenav', '$anchorScroll', '$location', '$mdDialog', function ($rootScope, $http, $scope, $state, $stateParams, authService, gameService, socket, $timeout ,delayService, $mdSidenav, $anchorScroll, $location, $mdDialog){
     $scope.gameId = $stateParams.id;
@@ -54,7 +31,7 @@ game325.controller('gameController', ['$rootScope', '$http', '$scope', '$state',
     $scope.fullWidth = $scope.cardSize.x + (9*($scope.cardLeftMargin));
     $scope.withDrawEnabled = false;
     $scope.disconnectedPlayerId;
-
+    $scope.bottomPlayerWidth;
     $scope.showScores = false;
     $scope.cssConsts = {
         centre: [160,240],
@@ -63,35 +40,6 @@ game325.controller('gameController', ['$rootScope', '$http', '$scope', '$state',
         radiusplayer: 155
     }
     //
-    $scope.Game325 = function(){
-        this.players = [],
-        this.rank,
-        this.suit,
-        this.turnSuit,
-        this.deck,
-        this.cardIndex,
-        this.cardPlayed,
-        this.playerIds,
-        this.round,
-        this.gameStarter,
-        this.gameState,
-        this.noOfPlayers,
-        this.gameTurn,
-        this.playerSetTrump,
-        this.gameWinSeq,
-        this.withdraw,
-        this.playedCards = [];
-        this.playerWinningIndex = Array(0,0,0),
-        this.players = Array(),
-        this.activePlayer,
-        this.activePlayerId,
-        this.otherPlayerId,
-        this.activeSuit,
-        this.lastGameWinner,
-        this.gameRound = 0,
-        this.cardWithdrawn,
-        this.cardReturned;
-    }
     // $scope.game325 = new $scope.Game325();
     $scope.game = {
         'state' : '',
@@ -119,7 +67,6 @@ game325.controller('gameController', ['$rootScope', '$http', '$scope', '$state',
     socket.removeAllListeners();
     socket.emit('JOIN_ROOM', {roomId : $scope.gameId});
     socket.on('CONNECTED', function(data){
-        console.log('connected');
         $scope.playerId = data.id;
         if (data.start == 'closed') {
             var x = {
@@ -129,7 +76,6 @@ game325.controller('gameController', ['$rootScope', '$http', '$scope', '$state',
         };
     });
     socket.on('GAME_STATUS', function(data){
-        console.log('game-status');
         if(data.status == 'closed'){
             $scope.waiting = false;
             $scope.ready = true;
@@ -373,18 +319,18 @@ game325.controller('gameController', ['$rootScope', '$http', '$scope', '$state',
             'padding-right' : y+'px'
         }
     }
-    $scope.bottomPlayerWidth;
     $scope.changePlayerId = function(id){
+        console.log($scope.playerIds);
         for (var i = $scope.playerIds.length - 1; i >= 0; i--) {
             if($scope.playerIds[i] == $scope.disconnectedPlayerId){
                 $scope.playerIds[i] = id;
-            };
-        };
+            }
+        }
         for (var i = $scope.arrPlayers.length - 1; i >= 0; i--) {
             if($scope.arrPlayers[i].id == $scope.disconnectedPlayerId){
                 $scope.arrPlayers[i].id = id;
             }
-        };
+        }
         if($scope.playerId == $scope.disconnectedPlayerId){
             $scope.playerId = id;
         }
@@ -393,6 +339,12 @@ game325.controller('gameController', ['$rootScope', '$http', '$scope', '$state',
         }
         if($scope.rightPlayerId == $scope.disconnectedPlayerId){
             $scope.rightPlayerId = id;
+        }
+        if($scope.activePlayerId == $scope.disconnectedPlayerId){
+            $scope.activePlayerId = id;
+        }
+        if($scope.otherPlayerId == $scope.disconnectedPlayerId){
+            $scope.otherPlayerId = id;
         }
     }
     $scope.assignPlayers = function(){
@@ -989,7 +941,6 @@ game325.controller('gameController', ['$rootScope', '$http', '$scope', '$state',
     socket.on('GAME', function (data){
         console.log(data);
         $scope.game325 = data.data;
-
         var gameEvent = $scope.game325.gameEvent;
         switch(gameEvent){
             case 'SET_TRUMP':
@@ -1086,15 +1037,12 @@ game325.controller('gameController', ['$rootScope', '$http', '$scope', '$state',
     });
     socket.on('DISCONNECTED', function (data){
         $scope.disconnectedPlayerId = data.id;
-        //show player disconnected popup
     });
     socket.on('RECONNECTED', function (data){
         var id = data.id;
         $scope.changePlayerId(id);
     });
-    socket.on('CONNECTED_2', function(data){
-        $scope.waiting = false;
-        $scope.ready = true;
+    socket.on('CONNECTED_2', function (data){
         $scope.playerId = data.id;
         $scope.gameState = data.data.gameState;
         $scope.activePlayerId = data.data.activePlayerId;
@@ -1102,9 +1050,16 @@ game325.controller('gameController', ['$rootScope', '$http', '$scope', '$state',
         $scope.gameState = data.data.gameState;
         $scope.players = data.data.players;
         $scope.gameTurn = data.data.gameTurn;
+        $scope.gameState = data.data.gameState;
+        $scope.activePlayerId = data.data.activePlayerId;
+        $scope.playerIds = data.data.playerIds;
+        $scope.gameState = data.data.gameState;
+        $scope.players = data.data.players;
+        $scope.gameTurn = data.data.gameTurn;
+        $scope.playerArray = $scope.players;
+        $scope.initPlayers();
         $scope.assignPlayers();    
         $scope.updateCards();
-        console.log('herererere');
     });
 /*
     socket.on('RETURN', function (data){
