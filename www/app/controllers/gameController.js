@@ -119,6 +119,7 @@ game325.controller('gameController', ['$rootScope', '$http', '$scope', '$state',
     socket.removeAllListeners();
     socket.emit('JOIN_ROOM', {roomId : $scope.gameId});
     socket.on('CONNECTED', function(data){
+        console.log('connected');
         $scope.playerId = data.id;
         if (data.start == 'closed') {
             var x = {
@@ -128,6 +129,7 @@ game325.controller('gameController', ['$rootScope', '$http', '$scope', '$state',
         };
     });
     socket.on('GAME_STATUS', function(data){
+        console.log('game-status');
         if(data.status == 'closed'){
             $scope.waiting = false;
             $scope.ready = true;
@@ -135,6 +137,62 @@ game325.controller('gameController', ['$rootScope', '$http', '$scope', '$state',
     });
     $scope.closeScores = function (){
         $scope.showScores = false;
+    }
+    $scope.arrangeCard = function(array){
+        var s = [];var h = []; var c = []; var d = [];
+        for (var i = array.length - 1; i >= 0; i--) {
+            var suit = array[i].suit;
+            switch(suit){
+                case 'S':
+                    for (var j = 0; j < s.length; j++){
+                        if(s.length == 0){
+                            s.push(array[i]);
+                        }
+                        else if(j < s.length && s[j+1].rank > array[i].rank){
+                            s.splice(j, 0, array[i]);
+                        }else{
+                            s.plice(s.length-1, 0, array[i]);
+                        }
+                    };
+                    break;
+                case 'H':
+                    for (var j = 0; j < s.length; j++){
+                        if(h.length == 0){
+                            h.push(array[i]);
+                        }
+                        else if(j < h.length && h[j+1].rank > array[i].rank){
+                            h.splice(j, 0, array[i]);
+                        }else{
+                            h.plice(s.length-1, 0, array[i]);
+                        }
+                    };
+                    break;
+                case 'C':
+                    for (var j = 0; j < s.length; j++){
+                        if(c.length == 0){
+                            c.push(array[i]);
+                        }
+                        else if(j < c.length && c[j+1].rank > array[i].rank){
+                            c.splice(j, 0, array[i]);
+                        }else{
+                            c.plice(s.length-1, 0, array[i]);
+                        }
+                    };
+                    break;
+                case 'D':
+                    for (var j = 0; j < d.length; j++){
+                        if(d.length == 0){
+                            d.push(array[i]);
+                        }
+                        else if(j < d.length && d[j+1].rank > array[i].rank){
+                            d.splice(j, 0, array[i]);
+                        }else{
+                            d.plice(s.length-1, 0, array[i]);
+                        }
+                    };
+                    break;
+            }
+        };
     }
     $scope.getMsgTemplate = function (content){
         var x ='<md-item>'+
@@ -205,6 +263,7 @@ game325.controller('gameController', ['$rootScope', '$http', '$scope', '$state',
         $location.hash('');
     })
     socket.on('START', function (data){
+        console.log('started');
         $scope.gameState = data.data.gameState;
         $scope.activePlayerId = data.data.activePlayerId;
         $scope.playerIds = data.data.playerIds;
@@ -377,8 +436,8 @@ game325.controller('gameController', ['$rootScope', '$http', '$scope', '$state',
             $scope.if15distributed = false;
             $scope.distributeCardsFlag = false;
         }
+        console.log($scope.gameTurn);
         if($scope.gameTurn%30 == 1 && $scope.distributeCardsFlag){
-
             $scope.leftPlayerDeck = [];
             $scope.bottomPlayerDeck = [];
             $scope.rightPlayerDeck = [];
@@ -1032,7 +1091,21 @@ game325.controller('gameController', ['$rootScope', '$http', '$scope', '$state',
     socket.on('RECONNECTED', function (data){
         var id = data.id;
         $scope.changePlayerId(id);
-    })
+    });
+    socket.on('CONNECTED_2', function(data){
+        $scope.waiting = false;
+        $scope.ready = true;
+        $scope.playerId = data.id;
+        $scope.gameState = data.data.gameState;
+        $scope.activePlayerId = data.data.activePlayerId;
+        $scope.playerIds = data.data.playerIds;
+        $scope.gameState = data.data.gameState;
+        $scope.players = data.data.players;
+        $scope.gameTurn = data.data.gameTurn;
+        $scope.assignPlayers();    
+        $scope.updateCards();
+        console.log('herererere');
+    });
 /*
     socket.on('RETURN', function (data){
         $scope.players = data.data.players;

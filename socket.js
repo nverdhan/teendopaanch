@@ -86,11 +86,11 @@ module.exports = function (app, server){
                         for (var i = gamex.players.length - 1; i >= 0; i--) {
                             if(gamex.players[i].id == undefined){
                                 gamex.players[i].id = socket.id;
-                                io.sockets.connected[socket.id].emit('CONNECTED', {'id': socket.id, 'start' : gamex.status});
+                                console.log(socket.id +' -- '+gamex.status);
+                                io.sockets.connected[socket.id].emit('CONNECTED_2', {'id': socket.id, 'data' : gamex});
                                 io.sockets.connected[socket.id].emit('GAME', {'data' : gamex});
                             }else{
-                                // io.sockets.socket(gamex.players[i].id).emit('RECONNECTED', {'id' : player.id});
-                                io.sockets.connected[socket.id].emit('RECONNECTED', {'id' : player.id});
+                                io.sockets.connected[gamex.players[i].id].emit('RECONNECTED', {'id' : player.id});
                             }
                         };
                         gamex.gamePaused = false;
@@ -112,25 +112,26 @@ module.exports = function (app, server){
                 });                
             })
         });
-        socket.on('START_GAME', function(data){
-                client.get('gameRoom:'+roomId, function(err, gameString){
-                    if(err)
-                        throw err;
-                    gamex = JSON.parse(gameString);
-                    Game.prototype.initDeck.call(gamex);
-                    Game.prototype.distributeCards.call(gamex);
-                    Game.prototype.updateHandsToMake.call(gamex);
-                    gamex.gameTurn = 1;
-                    gamex.gameState  = 'SET_TRUMP';
-                    gamex.gameEvent  = 'SET_TRUMP';
-                    Game.prototype.assignPlayerIds.call(gamex);
-                    var x = JSON.stringify(gamex);
-                    client.set('gameRoom:'+roomId, x, function(err, gameSet){
-                        io.sockets.in(roomId).emit('GAME', {'data' : gamex});
-                    });
-                });
-        });
+        // socket.on('START_GAME', function(data){
+        //         client.get('gameRoom:'+roomId, function(err, gameString){
+        //             if(err)
+        //                 throw err;
+        //             gamex = JSON.parse(gameString);
+        //             Game.prototype.initDeck.call(gamex);
+        //             Game.prototype.distributeCards.call(gamex);
+        //             Game.prototype.updateHandsToMake.call(gamex);
+        //             gamex.gameTurn = 1;
+        //             gamex.gameState  = 'SET_TRUMP';
+        //             gamex.gameEvent  = 'SET_TRUMP';
+        //             Game.prototype.assignPlayerIds.call(gamex);
+        //             var x = JSON.stringify(gamex);
+        //             client.set('gameRoom:'+roomId, x, function(err, gameSet){
+        //                 io.sockets.in(roomId).emit('GAME', {'data' : gamex});
+        //             });
+        //         });
+        // });
         socket.on('GAME', function(data){
+            console.log('gamed');
             client.get('gameRoom:'+roomId, function(err, gameString){
                     if(err)
                         throw err;
@@ -138,6 +139,7 @@ module.exports = function (app, server){
                     var gameEvent = data.data.gameEvent;
                     switch(gameEvent){
                         case "START_GAME":
+                            console.log(1111111111);
                             Game.prototype.initDeck.call(gamex);
                             Game.prototype.distributeCards.call(gamex);
                             Game.prototype.updateHandsToMake.call(gamex);
@@ -527,6 +529,7 @@ module.exports = function (app, server){
                     if(!roomId){
                         return false;
                     }
+                    console.log(roomId);
                     var gamex = JSON.parse(gameData)
                     gamex.gamePaused = true;
                     for (var i = gamex.players.length - 1; i >= 0; i--) {
