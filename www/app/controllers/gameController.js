@@ -25,25 +25,109 @@ var temp;
 game325.controller('gameController', ['$rootScope', '$http', '$scope', '$state', '$stateParams','authService', 'gameService', 'socket', '$timeout', 'delayService', '$mdSidenav', '$anchorScroll', '$location', '$mdDialog', function ($rootScope, $http, $scope, $state, $stateParams, authService, gameService, socket, $timeout ,delayService, $mdSidenav, $anchorScroll, $location, $mdDialog){
     $scope.gameId = $stateParams.id;
     $scope.gameType = $stateParams.type;
-    socket.removeAllListeners();
-    //check auth
-    //authService.get().then(function (data) {
-    //    if(data.data.error){
-    //        console.log(123);
-    //    }else{
-    //        socket.emit('joinRoom', {roomId : $scope.gameId});        
-    //    }
-    //});
-	socket.emit('joinRoom', {roomId : $scope.gameId});
-    socket.on('message', function(data){
-        $scope.playerId = data.id;
-        if (data.start == 'closed') {
-            socket.emit('startGame', {data : 'start'});
-        };
-    });
     $scope.waiting = true;
     $scope.ready = false;
-    socket.on('status', function(data){
+    $scope.chatMsg = '';
+    $scope.gameState = '';
+    $scope.mySelf = '';
+    $scope.playerId = 0;
+    $scope.activePlayerId;
+    $scope.cards = Array();
+    $scope.trumps = ['S', 'H', 'C', 'D'];
+    $scope.trump = '';
+    $scope.arrPlayers = Array();
+    $scope.nextPlayerType = '';
+    $scope.allowedSuit = '';
+    $scope.player = 0;
+    $scope.players;
+    $scope.playerArray;
+    $scope.cardLeft;
+    $rootScope.left;
+    $rootScope.top;
+    $scope.bottomPlayerCards = [];
+    $scope.leftPlayerCards = [];
+    $scope.rightPlayerCards = [];
+    $scope.bottomPlayerWidth;
+    $scope.gameWindow = {x : 800, y : 600};//px
+    $scope.cardSize = {x: 72, y : 90};//px
+    $scope.cardLeftMargin = $scope.cardSize.x*1/3;
+    $scope.fullWidth = $scope.cardSize.x + (9*($scope.cardLeftMargin));
+    $scope.withDrawEnabled = false;
+    $scope.disconnectedPlayerId;
+
+    $scope.showScores = false;
+    $scope.cssConsts = {
+        centre: [160,240],
+        playerareadia : 50,
+        firstplayerY: 10,
+        radiusplayer: 155
+    }
+    //
+    $scope.Game325 = function(){
+        this.players = [],
+        this.rank,
+        this.suit,
+        this.turnSuit,
+        this.deck,
+        this.cardIndex,
+        this.cardPlayed,
+        this.playerIds,
+        this.round,
+        this.gameStarter,
+        this.gameState,
+        this.noOfPlayers,
+        this.gameTurn,
+        this.playerSetTrump,
+        this.gameWinSeq,
+        this.withdraw,
+        this.playedCards = [];
+        this.playerWinningIndex = Array(0,0,0),
+        this.players = Array(),
+        this.activePlayer,
+        this.activePlayerId,
+        this.otherPlayerId,
+        this.activeSuit,
+        this.lastGameWinner,
+        this.gameRound = 0,
+        this.cardWithdrawn,
+        this.cardReturned;
+    }
+    // $scope.game325 = new $scope.Game325();
+    $scope.game = {
+        'state' : '',
+        'activePlayerId' : '',
+        'cards' : [],
+        'trumps' : ['spade','hearts','clubs', 'diamond'],
+        'trump' : '',
+        'players' : '',
+        'arrPlayers' : [],
+        'allowedSuit'  : '',
+    }
+    $scope.gameStateEvents = {
+        'START' : 'START',
+        'SET_TRUMP' : 'SET_TRUMP',
+        'PLAY_CARD' : 'PLAY_CARD',
+        'GET_WINNER' : 'GET_WINNER',
+        'WITHDRAW_CARD' : 'WITHDRAW_CARD',
+        'RETURN_CARD' : 'RETURN_CARD',
+    }
+    $scope.msgEvents = {
+        'SEND' : 'SEND',
+        'RECIEVE' : 'RECIEVE',
+        'MSG_RECIEVED' : 'MSG_RECIEVED'
+    }
+    socket.removeAllListeners();
+    socket.emit('JOIN_ROOM', {roomId : $scope.gameId});
+    socket.on('CONNECTED', function(data){
+        $scope.playerId = data.id;
+        if (data.start == 'closed') {
+            var x = {
+                gameEvent : 'START_GAME'
+            }
+            socket.emit('GAME', {data : x});
+        };
+    });
+    socket.on('GAME_STATUS', function(data){
         if(data.status == 'closed'){
             $scope.waiting = false;
             $scope.ready = true;
@@ -53,7 +137,6 @@ game325.controller('gameController', ['$rootScope', '$http', '$scope', '$state',
         $scope.showScores = false;
     }
     $scope.getMsgTemplate = function (content){
-        console.log(content);
         var x ='<md-item>'+
                     '<md-item-content>'+
                       '<div class="md-tile-left ball" style="background: #fff url('+content.userPic+') no-repeat center center; background-size: cover;">'+
@@ -120,8 +203,8 @@ game325.controller('gameController', ['$rootScope', '$http', '$scope', '$state',
         $location.hash('bottomscroll');
         $anchorScroll();
         $location.hash('');
-    });
-    socket.on('start', function (data){
+    })
+    socket.on('START', function (data){
         $scope.gameState = data.data.gameState;
         $scope.activePlayerId = data.data.activePlayerId;
         $scope.playerIds = data.data.playerIds;
@@ -131,30 +214,6 @@ game325.controller('gameController', ['$rootScope', '$http', '$scope', '$state',
         $scope.assignPlayers();    
         $scope.updateCards();
     });
-    $scope.chatMsg = '';
-    $scope.gameState = '';
-    $scope.mySelf = '';
-    $scope.playerId = 0;
-    $scope.activePlayerId;
-    $scope.cards = Array();
-    $scope.trumps = ['S', 'H', 'C', 'D'];
-    $scope.trump = '';
-    $scope.arrPlayers = Array();
-    $scope.nextPlayerType = '';
-    $scope.allowedSuit = '';
-    $scope.player = 0;
-    $scope.players;
-    $scope.playerArray;
-    $scope.cardLeft;
-    $rootScope.left;
-    $rootScope.top;
-    $scope.bottomPlayerCards = [];
-    $scope.leftPlayerCards = [];
-    $scope.rightPlayerCards = [];
-    $scope.gameWindow = {x : 800, y : 600};//px
-    $scope.cardSize = {x: 80, y : 113.44};//px
-    $scope.cardLeftMargin = $scope.cardSize.x*1/3;
-    $scope.fullWidth = $scope.cardSize.x + (9*($scope.cardLeftMargin));
     $scope.sendChat = function(){
         var msg = $scope.chatMsg;
         if(msg.length > 0){
@@ -175,7 +234,8 @@ game325.controller('gameController', ['$rootScope', '$http', '$scope', '$state',
         for (var i = 0; i < $scope.playerArray.length; i++) {
             var id = $scope.playerArray[i].id;
             $scope.players[id] = $scope.playerArray[i];
-        };
+        }
+        
     }
     // initialize players
     $scope.getPlayer = function(){
@@ -243,7 +303,7 @@ game325.controller('gameController', ['$rootScope', '$http', '$scope', '$state',
     }
     $scope.getCardWidth = function (){
         var w = angular.element('.card').width();
-        return w+'px';
+        return w;
     }
     $scope.getMargin = function (argument) {
         var c = ($scope.gameTurn%3)-1;
@@ -255,6 +315,27 @@ game325.controller('gameController', ['$rootScope', '$http', '$scope', '$state',
         }
     }
     $scope.bottomPlayerWidth;
+    $scope.changePlayerId = function(id){
+        for (var i = $scope.playerIds.length - 1; i >= 0; i--) {
+            if($scope.playerIds[i] == $scope.disconnectedPlayerId){
+                $scope.playerIds[i] = id;
+            };
+        };
+        for (var i = $scope.arrPlayers.length - 1; i >= 0; i--) {
+            if($scope.arrPlayers[i].id == $scope.disconnectedPlayerId){
+                $scope.arrPlayers[i].id = id;
+            }
+        };
+        if($scope.playerId == $scope.disconnectedPlayerId){
+            $scope.playerId = id;
+        }
+        if($scope.leftPlayerId == $scope.disconnectedPlayerId){
+            $scope.leftPlayerId = id;
+        }
+        if($scope.rightPlayerId == $scope.disconnectedPlayerId){
+            $scope.rightPlayerId = id;
+        }
+    }
     $scope.assignPlayers = function(){
         $scope.arrPlayers = Array();
         while($scope.playerIds.indexOf($scope.playerId)!==0){
@@ -435,10 +516,6 @@ game325.controller('gameController', ['$rootScope', '$http', '$scope', '$state',
                 
         },60);
         delayService.asyncTask(60, $scope.updateCards);
-        // if($scope.players[$scope.activePlayerId].type == 'bot'){
-        //     delayService.asyncTask(2000, $scope.playBot);
-        // }
-        // socket.emit('')
     }
     $scope.moveReturnedCard = function(){
         for (var i = $scope.arrPlayers.length - 1; i >= 0; i--) {
@@ -446,7 +523,7 @@ game325.controller('gameController', ['$rootScope', '$http', '$scope', '$state',
                 $scope.arrPlayers[i].cards.pop();
                 var initialClass = $scope.getInitialPosition($scope.arrPlayers[i].position);    
             }
-        };
+        }
         for (var i = $scope.arrPlayers.length - 1; i >= 0; i--) {
             if($scope.arrPlayers[i].id == $scope.otherPlayerId){
                 var finalClass = $scope.getFinalPosition($scope.arrPlayers[i].position);    
@@ -467,9 +544,6 @@ game325.controller('gameController', ['$rootScope', '$http', '$scope', '$state',
                 }
             }
         }
-        // if($scope.players[$scope.activePlayerId].type == 'bot'){
-        //     delayService.asyncTask(2000, $scope.playBot);
-        // }
     }
     $scope.getDeckTop = function(){
         var x = angular.element('.bottom-player ul').offset().top;
@@ -534,7 +608,6 @@ game325.controller('gameController', ['$rootScope', '$http', '$scope', '$state',
                     '<span class="fracscore-bottom">'+split[1]+'</span>');
             }    
         });
-        // console.log($scope.arrPlayers);
     }
 
     //NV
@@ -565,7 +638,6 @@ game325.controller('gameController', ['$rootScope', '$http', '$scope', '$state',
             'margin' : '0 auto'
         }   
     }
-    //NV
     $scope.getSuitForHTML = function(card){
         if(card.suit == 'H')
             return 'hearts';
@@ -635,19 +707,14 @@ game325.controller('gameController', ['$rootScope', '$http', '$scope', '$state',
         var card = $scope.cardsPlayed[lastPlayerId];
         $scope.allowedSuit = card['suit'];
     }
-    // $scope.deckBottom;
-    // $scope.deckLeft;
-    // $scope.deckRight;
     $scope.getCardInitialStyle = function(e){
         if(e==0){
-            // console.log('here');
             var c = $rootScope.left;
             var top = angular.element('.bottom-player ul').offset().top - angular.element('.played-cards ul').offset().top;
-            console.log(c);
             return {
                 'left' : c,
                 'top' : top
-            };
+            }
         }
     }
     $scope.placeCardOnBoard = function(){
@@ -681,7 +748,7 @@ game325.controller('gameController', ['$rootScope', '$http', '$scope', '$state',
                     //             top : ''
                     //         });
                 });
-            }, 60);
+            }, 20);
         }
         if(e!= 0){
             $timeout(function (){
@@ -713,9 +780,11 @@ game325.controller('gameController', ['$rootScope', '$http', '$scope', '$state',
             socket.emit('nextRound', {data : data})
         }
         if($scope.gameTurn%30 == 1){
-            var data = 123;
             if($scope.activePlayerId == $scope.playerId){
-                socket.emit('nextRound', {data : data});    
+                var data = {
+                    gameEvent : 'NEXT_ROUND'
+                }
+                socket.emit('GAME', {data : data});    
             }
             
         }
@@ -734,13 +803,10 @@ game325.controller('gameController', ['$rootScope', '$http', '$scope', '$state',
         if(x == 0){
             var l = angular.element('.game-body').width()/2 - angular.element('.card').width()/2;
             var t = angular.element('.bottom-player ul').offset().top - angular.element('.played-cards').offset().top;
-            // angular.element('.played-cards-ul li').addClass('zeroInitial').removeClass('zeroFinal rightFinal leftFinal');
         }else if(x == 120){
             var l = angular.element('.left-player ul').offset().left - angular.element('.game-body').offset().left  + angular.element('.left-player ul').width()/2;
             var t = angular.element('.left-player ul').offset().top - angular.element('.played-cards').offset().top;
-            // angular.element('.played-cards-ul li').addClass('leftInitial').removeClass('zeroFinal rightFinal leftFinal');
         }else if(x == 240){
-            // angular.element('.played-cards-ul li').addClass('rightInitial').removeClass('zeroFinal rightFinal leftFinal');
             var l = angular.element('.right-player ul').offset().left - angular.element('.game-body').offset().left + angular.element('.right-player ul').width()/2;
             var t = angular.element('.right-player ul').offset().top - angular.element('.played-cards').offset().top;
         }
@@ -760,158 +826,230 @@ game325.controller('gameController', ['$rootScope', '$http', '$scope', '$state',
         for (var i = $scope.arrPlayers.length - 1; i >= 0; i--) {
             $scope.arrPlayers[i].cardPlayed = '';
         };
-        // $compile($scope.arrPlayers);
         $scope.activePlayerId = $scope.winnerId;
     }
     $scope.setTrumpCard = function(trump){
         if($scope.playerId == $scope.activePlayerId){
             var data = {
-                gameState : 'setTrump',
+                gameState : 'SET_TRUMP',
+                gameEvent : 'SET_TRUMP',
                 trump : trump,
                 activePlayerId : $scope.activePlayerId
             }
-            socket.emit('setTrump', {data : data});
-            // GameStateService.play(data).success(function(data){
-            //     $scope.gameState = data['gameState'];
-            //     $scope.activePlayerId = data['activePlayerId'];
-            //     $scope.otherPlayerId = data['otherPlayerId'];
-            //     $scope.trump = data['trump'];
-            //     $scope.players = data['players'];
-            //     $scope.updateCards();
-            // });
+            socket.emit('GAME', {data : data});
         }
     }
-    $scope.nextRound = function(){
-            var data = {
-                gameState : 'endRound'
-            }
-            GameStateService.play(data).success(function(data){
-                $scope.players = data['players'];
-                $scope.gameState = data['gameState'];
-                $scope.activePlayerId = data['activePlayerId'];
-                $scope.otherPlayerId = data['otherPlayerId'];
-                $scope.activePlayerType = data['players'][$scope.activePlayerId]['type'];
-                $scope.gameTurn = data['game_turn'];
-                $scope.cardPlayed = '';
-                $scope.updatePlayerInfo();
-                $scope.updateCards();
-                for (var i = $scope.arrPlayers.length - 1; i >= 0; i--) {
-                    $scope.arrPlayers[i].cardPlayed = '';
-                }
-                if($scope.activePlayerType == 'bot'){
-                    //computer withdraws card no 1.//hard coded
-                    var data = {
-                        gameState : 'setTrump',
-                    }
-                    GameStateService.play(data).success(function(data){
-                        $scope.gameState = data['gameState'];
-                        $scope.activePlayerId = data['activePlayerId'];
-                        $scope.otherPlayerId = data['otherPlayerId'];
-                        $scope.trump = data['trump'];
-                        $scope.players = data['players'];
-                        $scope.updateCards();
-                        $scope.activePlayerType = data['players'][$scope.activePlayerId]['type'];
-                        if($scope.activePlayerType == 'bot'){
-                            delayService.asyncTask(20, $scope.playBot);
-                        }
-                    });
-                }
-            });
-        }
+    // $scope.nextRound = function(){
+    //         var data = {
+    //             gameState : 'endRound'
+    //         }
+    //         GameStateService.play(data).success(function(data){
+    //             $scope.players = data['players'];
+    //             $scope.gameState = data['gameState'];
+    //             $scope.activePlayerId = data['activePlayerId'];
+    //             $scope.otherPlayerId = data['otherPlayerId'];
+    //             $scope.activePlayerType = data['players'][$scope.activePlayerId]['type'];
+    //             $scope.gameTurn = data['game_turn'];
+    //             $scope.cardPlayed = '';
+    //             $scope.updatePlayerInfo();
+    //             $scope.updateCards();
+    //             for (var i = $scope.arrPlayers.length - 1; i >= 0; i--) {
+    //                 $scope.arrPlayers[i].cardPlayed = '';
+    //             }
+    //             if($scope.activePlayerType == 'bot'){
+    //                 //computer withdraws card no 1.//hard coded
+    //                 var data = {
+    //                     gameState : 'setTrump',
+    //                 }
+    //                 GameStateService.play(data).success(function(data){
+    //                     $scope.gameState = data['gameState'];
+    //                     $scope.activePlayerId = data['activePlayerId'];
+    //                     $scope.otherPlayerId = data['otherPlayerId'];
+    //                     $scope.trump = data['trump'];
+    //                     $scope.players = data['players'];
+    //                     $scope.updateCards();
+    //                     $scope.activePlayerType = data['players'][$scope.activePlayerId]['type'];
+    //                     if($scope.activePlayerType == 'bot'){
+    //                         delayService.asyncTask(20, $scope.playBot);
+    //                     }
+    //                 });
+    //             }
+    //         });
+    //     }
     $scope.play = function(card, player, $event){
         $scope.cardLeft = angular.element($event.currentTarget.parentElement).offset().left - angular.element('.played-cards').offset().left;
         $rootScope.left = $scope.cardLeft;
-        // console.log($rootScope.left);
-        if($scope.gameState == 'withdrawCard'){
+        if($scope.gameState == 'WITHDRAW_CARD'){
             if(($scope.activePlayerId == $scope.playerId) && ($scope.otherPlayerId == player)){
                 if(card == $scope.cardSelected){
                     var data = {
-                        gameState : 'withdrawCard',
-                        cardWithdrawn : card,
+                        gameState : 'WITHDRAW_CARD',
+                        gameEvent : 'WITHDRAW_CARD',
+                        card : card,
                     }
-                    // GameStateService.play(data).success(function(data){
-                    //     $scope.activePlayerId = data['activePlayerId'];
-                    //     $scope.otherPlayerId = data['otherPlayerId'];
-                    //     $scope.players = data['players'];
-                    //     $scope.gameState = data['gameState'];
-                    //     $scope.cardWithdrawn = data['cardWithdrawn'];
-                    //     $scope.moveWithdrawnCard();
-                    // });
-                    socket.emit('withdrawCard', {data : data});
+                    console.log(data);
+                    socket.emit('GAME', {data : data});
                 }else{
                     $scope.cardSelected = card;
                 }
             }
         }
-        if($scope.gameState == 'returnCard'){
+        if($scope.gameState == 'RETURN_CARD'){
             for (var i = $scope.arrPlayers.length - 1; i >= 0; i--){
                 if($scope.arrPlayers[i].id == $scope.activePlayerId){
                     var x = $scope.arrPlayers[i].cards.indexOf(card);
                     if(x > -1){
                         $scope.arrPlayers[i].cards.splice(x, 1);
                         var data = {
-                            gameState : 'returnCard',
-                            cardReturned : x,
+                            gameState : 'RETURN_CARD',
+                            gameEvent : 'RETURN_CARD',
+                            card : x,
                         }
-                        // GameStateService.play(data).success(function(data){
-                        //     $scope.activePlayerId = data['activePlayerId'];
-                        //     $scope.otherPlayerId = data['otherPlayerId'];
-                        //     $scope.players = data['players'];
-                        //     $scope.gameState = data['gameState'];
-                        //     $scope.cardReturned = data['cardReturned'];
-                        //     $scope.moveReturnedCard();
-                        // });
-                        socket.emit('returnCard', {data : data});
+                        socket.emit('GAME', {data : data});
                     }
                 }
-            };
+            }
         }
-        if($scope.gameState == 'setTrump'){
-            return;
-        }
-        if($scope.gameState == 'playCard'){
+        if($scope.gameState == 'PLAY_CARD'){
             if($scope.playerId == $scope.activePlayerId){
                 var data = {
-                    gameState : 'playCard',
+                    gameState : 'PLAY_CARD',
+                    gameEvent : 'PLAY_CARD',
                     cardPlayed : card,
                     activePlayerId : $scope.activePlayerId
                 }
-                console.log(card);
-                // GameStateService.play(data).success(function(data){
-                //     $scope.gameState = data['gameState'];
-                //     $scope.players = data['players'];
-                //     $scope.cardsPlayed = data['cardsPlayed'];
-                //     $scope.activePlayerId = data['activePlayerId'];
-                //     $scope.nextPlayerType = data['players'][$scope.activePlayerId]['type'];
-                //     $scope.gameTurn = data['game_turn'];
-                //     $scope.placeCardOnBoard();
-                //     $scope.updateCards();
-                // });
-                socket.emit('playCard', {data : data});
-            }     
+                socket.emit('GAME', {data : data});
+            }
         }
     }
-    socket.on('return', function (data){
+    $scope.assignActivePlayer = function(){
+        $scope.activePlayerId = $scope.temp;
+    }
+    socket.on('GAME', function (data){
+        $scope.game325 = data.data;
+        var gameEvent = $scope.game325.gameEvent;
+        switch(gameEvent){
+            case 'SET_TRUMP':
+                $scope.game325 = data.data;
+                $scope.gameState = data.data.gameState;
+                $scope.activePlayerId = data.data.activePlayerId;
+                $scope.playerIds = data.data.playerIds;
+                $scope.gameState = data.data.gameState;
+                $scope.players = data.data.players;
+                $scope.playerArray = $scope.players;
+                $scope.assignPlayers();
+                $scope.updateCards();
+                break;
+            case 'RETURN_CARD':
+                console.log(data);
+                $scope.activePlayerId = data.data.activePlayerId;
+                $scope.otherPlayerId = data.data.otherPlayerId;
+                $scope.gameState = 'RETURN_CARD';
+                $scope.gameState = data.data.gameState;
+                $scope.cardReturned = data.data.cardPlayed;
+                $scope.moveReturnedCard();
+                break;
+            case 'WITHDRAW_CARD':
+                $scope.activePlayerId = data.data.activePlayerId;
+                $scope.otherPlayerId = data.data.otherPlayerId;
+                $scope.cardWithdrawn = data.data.cardPlayed;
+                $scope.gameState = data.data.gameState;
+                $scope.moveWithdrawnCard();
+                break;
+            case 'RETURN':
+                console.log(data);
+                $scope.players = data.data.players;
+                $scope.playerArray = $scope.players;
+                $scope.activePlayerId = data.data.activePlayerId;
+                $scope.otherPlayerId = data.data.otherPlayerId;
+                $scope.gameState = 'RETURN_CARD';
+                $scope.cardWithdrawn = data.data.cardPlayed;
+                $scope.initPlayers();
+                $scope.moveWithdrawnCard();
+                delayService.asyncTask(100, $scope.updateCards);
+                break;
+            case 'WITHDRAW':
+                $scope.players = data.data.players;
+                $scope.playerArray = $scope.players;
+                $scope.initPlayers();
+                $scope.updateCards();
+                $scope.activePlayerId = data.data.activePlayerId;
+                $scope.otherPlayerId = data.data.otherPlayerId;
+                $scope.gameState = 'WITHDRAW_CARD';
+                break;
+            case 'PLAY_CARD':
+                $scope.activePlayerId = data.data.activePlayerId;
+                $scope.otherPlayerId = data.data.otherPlayerId;
+                $scope.cardsPlayed = data.data.cardsPlayed;
+                $scope.gameState = data.data.gameState;
+                $scope.players = data.data.players;
+                $scope.playerArray = $scope.players;
+                $scope.initPlayers();
+                $scope.updateCards();
+                break;
+            case 'CARD_PLAYED':
+                $scope.activePlayerId = data.data.activePlayerId;
+                $scope.otherPlayerId = data.data.otherPlayerId;
+                $scope.temp = $scope.activePlayerId;
+                $scope.cardsPlayed = data.data.cardsPlayed;
+                $scope.cardPlayed = data.data.cardPlayed;
+                $scope.gameState = data.data.gameState;
+                $scope.players = data.data.players;
+                $scope.playerArray = $scope.players;
+                $scope.initPlayers();
+                $scope.updateCards();
+                $scope.placeCardOnBoard();
+                $scope.activePlayerId = data.data.activePlayerId;
+                delayService.asyncTask(300, $scope.assignActivePlayer);
+                break;
+            case 'DECLARE_WINNER':
+                $scope.activePlayerId = data.data.activePlayerId;
+                $scope.otherPlayerId = data.data.otherPlayerId;
+                $scope.cardsPlayed = data.data.cardsPlayed;
+                $scope.cardPlayed = data.data.cardPlayed;
+                $scope.gameState = data.data.gameState;
+                $scope.players = data.data.players;
+                $scope.playerArray = $scope.players;
+                $scope.gameTurn = data.data.gameTurn;
+                $scope.placeCardOnBoard();
+                $scope.initPlayers();
+                $scope.updateCards();
+                $scope.winnerId = data.data.winnerId;
+                delayService.asyncTask(1600, $scope.updateBoard);
+                delayService.asyncTask(12, $scope.updateScores);
+                break;
+        }
+    });
+    socket.on('DISCONNECTED', function (data){
+        $scope.disconnectedPlayerId = data.id;
+        //show player disconnected popup
+    });
+    socket.on('RECONNECTED', function (data){
+        var id = data.id;
+        $scope.changePlayerId(id);
+    })
+/*
+    socket.on('RETURN', function (data){
         $scope.players = data.data.players;
         $scope.playerArray = $scope.players;
         $scope.activePlayerId = data.data.activePlayerId;
         $scope.otherPlayerId = data.data.otherPlayerId;
-        $scope.gameState = 'returnCard';
+        $scope.gameState = 'RETURN_CARD';
         $scope.cardWithdrawn = data.data.cardPlayed;
         $scope.initPlayers();
         $scope.moveWithdrawnCard();
         delayService.asyncTask(100, $scope.updateCards);
     });
-    socket.on('withdraw', function (data){
+    socket.on('WITHDRAW', function (data){
         $scope.players = data.data.players;
         $scope.playerArray = $scope.players;
         $scope.initPlayers();
         $scope.updateCards();
         $scope.activePlayerId = data.data.activePlayerId;
         $scope.otherPlayerId = data.data.otherPlayerId;
-        $scope.gameState = 'withdrawCard';
+        $scope.gameState = 'WITHDRAW_CARD';
     });
-    socket.on('playCard', function(data){
+    socket.on('PLAY_CARD', function(data){
         $scope.activePlayerId = data.data.activePlayerId;
         $scope.otherPlayerId = data.data.otherPlayerId;
         $scope.cardsPlayed = data.data.cardsPlayed;
@@ -922,7 +1060,7 @@ game325.controller('gameController', ['$rootScope', '$http', '$scope', '$state',
         $scope.updateCards();
     });
     $scope.temp;
-    socket.on('cardPlayed', function(data){
+    socket.on('CARD_PLAYED', function(data){
         $scope.activePlayerId = data.data.activePlayerId;
         $scope.otherPlayerId = data.data.otherPlayerId;
         $scope.temp = $scope.activePlayerId;
@@ -937,11 +1075,7 @@ game325.controller('gameController', ['$rootScope', '$http', '$scope', '$state',
         $scope.activePlayerId = data.data.activePlayerId;
         delayService.asyncTask(300, $scope.assignActivePlayer);
     });
-    
-    $scope.assignActivePlayer = function(){
-        $scope.activePlayerId = $scope.temp;
-    }
-    socket.on('declareWinner', function(data){
+    socket.on('DECLARE_WINNER', function(data){
         $scope.activePlayerId = data.data.activePlayerId;
         $scope.otherPlayerId = data.data.otherPlayerId;
         $scope.cardsPlayed = data.data.cardsPlayed;
@@ -957,7 +1091,7 @@ game325.controller('gameController', ['$rootScope', '$http', '$scope', '$state',
         delayService.asyncTask(1600, $scope.updateBoard);
         delayService.asyncTask(12, $scope.updateScores);
     })
-    socket.on('withdrawnCard', function(data){
+    socket.on('WITHDRAWN_CARD', function(data){
         $scope.activePlayerId = data.data.activePlayerId;
         $scope.otherPlayerId = data.data.otherPlayerId;
         $scope.cardWithdrawn = data.data.cardPlayed;
@@ -965,14 +1099,15 @@ game325.controller('gameController', ['$rootScope', '$http', '$scope', '$state',
         $scope.moveWithdrawnCard();
 
     });
-    socket.on('returnCard', function(data){
+    socket.on('RETURN_CARD', function(data){
         $scope.activePlayerId = data.data.activePlayerId;
         $scope.otherPlayerId = data.data.otherPlayerId;
-        $scope.gameState = 'returnCard';
+        $scope.gameState = 'RETURN_CARD';
         $scope.gameState = data.data.gameState;
         $scope.cardReturned = data.data.cardPlayed;
         $scope.moveReturnedCard();
     });
+*/
     socket.on('PlayerLeft', function(data){
         $state.go('home');
     });

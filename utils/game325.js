@@ -17,6 +17,7 @@ var game325 = function(){
 	this.playerIds,
 	this.round,
 	this.gameStarter,
+	this.gamePaused = false,
 	this.noOfPlayers,
 	this.gameTurn = 1,
 	this.playerSetTrump,

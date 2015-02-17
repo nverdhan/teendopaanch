@@ -16,22 +16,22 @@
                 <div ng-if="gameState == 'setTrump'" class="play-info">
                     Player {{activePlayerId}} Set Trump
                 </div> -->
-                <div class="play-info" ng-if="gameState == 'playCard'">
+                <div class="play-info" ng-if="gameState == 'PLAY_CARD'">
                     <md-whiteframe class="md-whiteframe-z1 status">
                         <span>{{getProfile(activePlayerId).name}} Play</span>
                     </md-whiteframe>
                 </div>
-                <div class="play-info" ng-if="gameState == 'withdrawCard'">
+                <div class="play-info" ng-if="gameState == 'WITHDRAW_CARD'">
                     <md-whiteframe class="md-whiteframe-z1 status">
                         <span>{{getProfile(activePlayerId).name}} to withdraw card from {{getProfile(otherPlayerId).name}}</span>
                     </md-whiteframe>
                 </div>
-                <div class="play-info" ng-if="gameState == 'returnCard'">
+                <div class="play-info" ng-if="gameState == 'RETURN_CARD'">
                     <md-whiteframe class="md-whiteframe-z1 status">
                         <span>{{getProfile(activePlayerId).name}} returning card to {{getProfile(otherPlayerId).name}}</span>
                     </md-whiteframe>
                 </div>
-                <div class="play-info" ng-if="gameState == 'setTrump'">
+                <div class="play-info" ng-if="gameState == 'SET_TRUMP'">
                     <md-whiteframe class="md-whiteframe-z1 status">
                         <span>Player {{getProfile(activePlayerId).name}} Set Trump</span>
                     </md-whiteframe>
@@ -115,7 +115,7 @@
                 </div>
                 <!--by NV-->
                 <!-- <div class="card movingCard" ng-if="movingCard">{{ movingCard[0].suit }} {{ movingCard[0].rank }}</div> -->
-                <div class="set-trump playingCards simpleCards" ng-show="gameState == 'setTrump' && playerId == activePlayerId" ng-style="getTrumpDivCSS()">
+                <div class="set-trump playingCards simpleCards" ng-show="gameState == 'SET_TRUMP' && playerId == activePlayerId" ng-style="getTrumpDivCSS()">
                     <ul class="table" style="height:{{cardSize.y}}px; width:100%; margin:0; padding:0;">
                         <li class="card" ng-repeat="trump in trumps" ng-click="setTrumpCard(trump)" ng-style="getTrumpPic(trump)">
                             <!-- <a class="card {{ trump }}">
