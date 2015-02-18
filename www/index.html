@@ -8,6 +8,7 @@
     <link rel="stylesheet" type="text/css" href="public/css/font-awesome/css/font-awesome.min.css">
     <link rel="stylesheet" href="assets/bower_components/angular-material/angular-material.min.css">
     <link rel="stylesheet" type="text/css" href="public/css/style3.css">
+    <link rel="stylesheet" type="text/css" href="public/css/cover.css">
     <link rel="stylesheet" type="text/css" href="assets/css/normalize.css">
     <link rel="stylesheet" type="text/css" href="public/css/cards/cards.css" media="screen" />
     <script type="text/javascript" src="public/js/jquery/jquery-1.10.2.min.js"></script>
@@ -33,7 +34,7 @@
     </head>
 </html>
 <body>
-    <div class='bckimg'> </div>
+    <div class='bckimg' ng-hide="uiRouterState.current.name == 'cover'"> </div>
     <div flex class="content" ui-view></div>
     <div class="view-main" ></div> 
 </body>

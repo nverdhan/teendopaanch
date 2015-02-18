@@ -135,16 +135,16 @@
             </md-button>
                 </span>
         </md-toolbar>
-          <md-content class="md-padding chat-container" flex layout="vertical" layout-align="end center">
+          <md-content class="md-padding chat-container" flex layout="vertical" layout-align="end center" style="padding-bottom: 0px;">
             <md-content flex class="chat-hist">
                 <md-list class='chat-box'>
                 </md-list>
                 <div id="bottomscroll"> </div>
             </md-content>
             <div layout="horizontal" class="chatsend">
-                <md-text-float ng-model="chatMsg" ng-enter="sendChat()" style="width:300px; margin-bottom:0px!important; margin-left=-8px; padding-bottom=0"> 
+                <md-text-float ng-model="chatMsg" ng-enter="sendChat()" style="min-width:340px; margin-bottom:0px!important; margin-left=-8px; padding-bottom=0"> 
                 </md-text-float>
-                <md-button ng-click = "sendChat()" style="position:absolute; right:0; bottom:0; margin-bottom:2px;" aria-label="sendChat">
+                <md-button ng-click = "sendChat()" aria-label="sendChat" class="sendchatbutton">
                     <md-icon icon="assets/img/ic_send_24px.svg" style="width: 24px; height: 24px;">
                     </md-icon>
                 </md-button>

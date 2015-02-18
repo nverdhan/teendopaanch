@@ -107,3 +107,7 @@ game325.controller('errDialogController',['$scope', '$mdDialog', function($scope
             $mdDialog.hide();
         };
 }])
+game325.controller('coverController', ['$rootScope', '$http', '$scope', '$state', '$stateParams','authService', 'gameService', 'socket', '$timeout', 'delayService', '$mdSidenav', '$anchorScroll', '$location', '$mdDialog', function ($rootScope, $http, $scope, $state, $stateParams, authService, gameService, socket, $timeout ,delayService, $mdSidenav, $anchorScroll, $location, $mdDialog){
+
+  
+}])

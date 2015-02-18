@@ -1,0 +1,40 @@
+.bgblack{
+	background-color: #383838;
+    display: block;
+    height: 100%;
+    left: 0;
+    position: fixed;
+    right: 0;
+    width: 100%;
+    z-index: 1;
+}
+.center-col, .left-col, .right-col{
+	background-color: red;
+	/*height: 100%;*/
+}
+  .q-container {
+    display: flex;
+    display: -webkit-flex;
+    display: -moz-flex;
+    flex-flow: row wrap;
+    justify-content: space-around;
+    -webkit-justify-content: space-around;
+    -moz-justify-content: space-around;
+    align-items: space-between;    
+    -moz-align-items: space-between;
+    -webkit-align-items: space-between;
+     align-content: space-between;    
+    -moz-align-content: space-between;
+    -webkit-align-content: space-between;
+}
+  .q-item{
+    /*flex: 0 0 100%;*/
+    /*margin-bottom: 10px;*/
+    /*max-height: 50px;*/
+    /*min-width: min-content;*/
+    /*max-width: 400px;*/
+    /*border: 0.5px solid black;*/
+    /*align-self: space-between;    
+    -moz-align-self: space-between;
+    -webkit-align-self: space-between;*/
+  }

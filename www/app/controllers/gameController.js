@@ -732,14 +732,22 @@ game325.controller('gameController', ['$rootScope', '$http', '$scope', '$state',
     }
     $scope.getPlayedCardsDivCSS = function(){
         var position = 'absolute';
-        var h = angular.element('.bottom-player ul').offset().top -angular.element('.left-player ul').offset().top  - angular.element('.game-body').offset().top + $scope.cardSize.y;
-        var w = $scope.gameWindow.x-20;
-        var top = angular.element('.left-player ul').offset().top - angular.element('.game-body').offset().top;
+        // var h = angular.element('.bottom-player ul').offset().top -angular.element('.left-player ul').offset().top  - angular.element('.game-body').offset().top;
+        // var w = $scope.gameWindow.x-20;
+        // var top = angular.element('.left-player ul').offset().top - angular.element('.game-body').offset().top;
+        // return {
+        //     'position' : position,
+        //     'top' : top/$scope.scalefactor,
+        //     'width' : w,
+        //     'height' : h/$scope.scalefactor+ $scope.cardSize.y,
+        //     'padding' : 0,
+        //     'margin' : '0 auto'
+        // }
         return {
             'position' : position,
-            'top' : top/$scope.scalefactor,
-            'width' : w,
-            'height' : h/$scope.scalefactor,
+            'top' : 70+'px',
+            'width' : 780+'px',
+            'height' : 519.9625+'px',
             'padding' : 0,
             'margin' : '0 auto'
         }

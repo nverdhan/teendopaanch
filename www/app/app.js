@@ -36,8 +36,9 @@ game325.factory('delayService', ['$q', '$timeout', function ($q, $timeout){
     return _fact;
 }]);
 
-game325.controller('gameCtrl', ['$rootScope', '$scope', '$http', function($rootScope, $scope, $http){
-    $scope.title = 'GameApp';
+game325.controller('gameCtrl', ['$rootScope', '$scope', '$http', '$state', function($rootScope, $scope, $http, $state){
+    // $scope.title = 'GameApp';
+    $scope.uiRouterState = $state;
 }]);
 game325.directive('showScores', ['$compile', function($compile){
     var a = function(content){

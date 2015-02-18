@@ -453,7 +453,7 @@ div.clear {
 .hand{
     position: absolute !important;
 }
-.activePlayer{
+.player-active{
     -webkit-animation: bounceOut .8s linear infinite;
     -moz-animation: bounceOut .8s linear infinite;
     -o-animation: bounceOut .8s linear infinite;

@@ -221,6 +221,16 @@ md-sidenav.md-locked-open, md-sidenav.md-locked-open.md-closed, md-sidenav.md-lo
 	min-width: 100%;
 	background-color: #fff;
 	padding-left: 8px;
+  padding-right: 36px;
+}
+.sendchatbutton{
+  position:absolute;
+  right:0;
+  bottom:0;
+  margin-bottom:2px;
+}
+md-button.sendchatbutton .md-button-inner{
+  padding: 0px;
 }
 md-content.md-padding{
 	padding: 8px;
@@ -435,11 +445,12 @@ sub {
   	left: 55px;
   	color: black;
   	font-size: 12pt;
+    margin-left: 5px;
 }
 .ball .notif {
   position: absolute;
   top: 23px;
-  left: 50px;
+  left: 60px;
   width: 183px;
   opacity: 0;
 }
@@ -598,7 +609,7 @@ sub {
 }
 
 /*Pic anim*/
-.player-active::before, .player-active::after {
+/*.player-active::before, .player-active::after {
   position: absolute;
   top: 0;
   bottom: 0;
@@ -648,4 +659,4 @@ sub {
   75% {
     clip: rect(0px, 65px, 65px, 63px);
   }
-}
+}*/
