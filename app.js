@@ -53,7 +53,7 @@ var configDB = require('./config/DBConfig.js');
 
 var socialAuth = require('./config/auth');
 
-// mongoose.connect(configDB.url);
+mongoose.connect(configDB.url);
 
 app.set('config', config);
 

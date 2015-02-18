@@ -372,6 +372,9 @@ sub {
 }
 
 /*Player profiles*/
+.players-profile{
+  margin-bottom: 10px;
+}
 .ball {
   position: relative;
   /*top: 50%;*/
@@ -546,7 +549,7 @@ sub {
 .play-info{
   position: absolute;
   left: 0;
-  top: 400px;
+  top: 444px;
   width: 100%;
   text-align: center;
 }
