@@ -453,3 +453,45 @@ div.clear {
 .hand{
     position: absolute !important;
 }
+.activePlayer{
+    -webkit-animation: bounceOut .8s linear infinite;
+    -moz-animation: bounceOut .8s linear infinite;
+    -o-animation: bounceOut .8s linear infinite;
+    -ms-animation: bounceOut .8s linear infinite;
+    animation: bounceOut .8s linear infinite;
+}
+@-moz-keyframes bounceOut {
+  0% { box-shadow: 0 0 0 5px #f66; opacity: 1; }
+  25% { box-shadow: 0 0 0 4px #f66; opacity: 1; }
+  50% { box-shadow: 0 0 0 7px #f66; opacity: 1; }
+  75% { box-shadow: 0 0 0 4px #f66; opacity: 1; }
+  100% { box-shadow: 0 0 0 5px #f66; opacity: 1; }
+}
+@-webkit-keyframes bounceOut {
+  0% { box-shadow: 0 0 0 5px #f66; opacity: 1; }
+  25% { box-shadow: 0 0 0 4px #f66; opacity: 1; }
+  50% { box-shadow: 0 0 0 7px #f66; opacity: 1; }
+  75% { box-shadow: 0 0 0 4px #f66; opacity: 1; }
+  100% { box-shadow: 0 0 0 5px #f66; opacity: 1; }
+}
+@-o-keyframes bounceOut {
+  0% { box-shadow: 0 0 0 5px #f66; opacity: 1; }
+  25% { box-shadow: 0 0 0 4px #f66; opacity: 1; }
+  50% { box-shadow: 0 0 0 7px #f66; opacity: 1; }
+  75% { box-shadow: 0 0 0 4px #f66; opacity: 1; }
+  100% { box-shadow: 0 0 0 5px #f66; opacity: 1; }
+}
+@-ms-keyframes bounceOut {
+  0% { box-shadow: 0 0 0 5px #f66; opacity: 1; }
+  25% { box-shadow: 0 0 0 4px #f66; opacity: 1; }
+  50% { box-shadow: 0 0 0 7px #f66; opacity: 1; }
+  75% { box-shadow: 0 0 0 4px #f66; opacity: 1; }
+  100% { box-shadow: 0 0 0 5px #f66; opacity: 1; }
+}
+@keyframes bounceOut {
+  0% { box-shadow: 0 0 0 5px #f66; opacity: 1; }
+  25% { box-shadow: 0 0 0 4px #f66; opacity: 1; }
+  50% { box-shadow: 0 0 0 7px #f66; opacity: 1; }
+  75% { box-shadow: 0 0 0 4px #f66; opacity: 1; }
+  100% { box-shadow: 0 0 0 5px #f66; opacity: 1; }
+}
