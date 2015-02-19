@@ -1,4 +1,4 @@
-var game325 = angular.module('game325', ['ng','ui.router','ngAria','ngMaterial','ngAnimate','btford.socket-io','ngAnimate']);
+var game325 = angular.module('game325', ['ng','ui.router','ngAria','ngMaterial','ngAnimate','btford.socket-io','ngAnimate','alAngularHero']);
 
 // game325.config(['$httpProvider', '$locationProvider', function ($httpProvider, $locationProvider) {
 //     $locationProvider.html5Mode(true).hashPrefix('!');

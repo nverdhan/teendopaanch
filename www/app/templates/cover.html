@@ -1,6 +1,104 @@
 <div class="bgblack"></div>
-<div class='q-container content'>
-	<div flex class='right-col q-item'></div>
-	<div flex class='center-col q-item'></div>
-	<div flex class='left-col q-item'></div>
-</div>
+<div class='wide window-container screen screen1'>
+	<!-- <div class='left-col'> -->
+		<div flex layout="vertical" class="profile item">
+			<div flex class="item-body"></div>
+			<div class="item-bar">
+				<div flex>Profile</div>
+				<md-icon icon="assets/img/ic_send_24px.svg"></md-icon>
+			</div>
+		</div>
+		<div flex layout="vertical" class="leaderboard item">
+			<div flex class="item-body"></div>
+			<div class="item-bar">
+				<div flex>Leaderboard</div>
+				<md-icon icon="assets/img/ic_send_24px.svg"></md-icon>
+			</div>
+		</div>
+		<div flex layout="vertical" class="aboutus item">
+			<div flex class="item-body"></div>
+			<div class="item-bar">
+				<div flex>About Us</div>
+				<md-icon icon="assets/img/ic_send_24px.svg"></md-icon>
+			</div>
+		</div>
+		<div flex layout="vertical" class="game-325 item" ng-class="className" ng-click="changeClass('game-325')" hero-id="game-325">
+			<div flex class="item-body"></div>
+			<div class="item-bar">
+				<div flex>Teen Do Paanch</div>
+				<md-icon icon="assets/img/ic_send_24px.svg"></md-icon>
+			</div>
+		</div>
+		<div flex layout="vertical" class="game-29 item">
+			<div flex class="item-body"></div>
+			<div class="item-bar">
+				<div flex>Twenty-nine</div>
+				<md-icon icon="assets/img/ic_send_24px.svg"></md-icon>
+			</div>
+		</div>
+		<div flex layout="vertical" class="game-7 item">
+			<div flex class="item-body"></div>
+			<div class="item-bar">
+				<div flex>Satti Center</div>
+				<md-icon icon="assets/img/ic_send_24px.svg"></md-icon>
+			</div>
+		</div>
+		<div flex layout="vertical"  class="game-hearts item">
+			<div flex class="item-body"></div>
+			<div class="item-bar">
+				<div flex>Hearts</div>
+				<md-icon icon="assets/img/ic_send_24px.svg"></md-icon>
+			</div>
+		</div>
+		<div flex layout="vertical" class="game-10pakad item">
+			<div flex class="item-body"></div>
+			<div class="item-bar">
+				<div flex>Dehla Pakad</div>
+				<md-icon icon="assets/img/ic_send_24px.svg"></md-icon>
+			</div>
+		</div>
+		<div flex layout="vertical" class="game-a item">
+			<div flex class="item-body"></div>
+			<div class="item-bar">
+				<div flex>Game on demand</div>
+				<md-icon icon="assets/img/ic_send_24px.svg"></md-icon>
+			</div>
+		</div>
+		<div flex layout="vertical" class="game-b item">
+			<div flex class="item-body"></div>
+			<div class="item-bar">
+				<div flex>Dude's Special</div>
+				<md-icon icon="assets/img/ic_send_24px.svg"></md-icon>
+			</div>
+		</div>
+		<div flex layout="vertical" class="game-c item">
+			<div flex class="item-body"></div>
+			<div class="item-bar">
+				<div flex>For our very own DevD</div>
+				<md-icon icon="assets/img/ic_send_24px.svg"></md-icon>
+			</div>
+		</div>
+</div> 
+<script type="text/javascript">
+	  $( document ).ready(function(){
+		  var ink, d, x, y;
+		  $(".item").mousedown(function(e){
+		    if($(this).find(".item-ink").length === 0){
+		        $(this).prepend("<span class='item-ink'></span>");
+		    }
+		         
+		    ink = $(this).find(".item-ink");
+		    ink.removeClass("ripple-animate");
+		     
+		    if(!ink.height() && !ink.width()){
+		        d = Math.max($(this).outerWidth(), $(this).outerHeight());
+		        ink.css({height: d, width: d});
+		    }
+		     
+		    x = e.pageX - $(this).offset().left - ink.width()/2;
+		    y = e.pageY - $(this).offset().top - ink.height()/2;
+		     
+		    ink.css({top: y+'px', left: x+'px'}).addClass("ripple-animate");
+		  });
+  });
+</script>
