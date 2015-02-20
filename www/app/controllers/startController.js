@@ -1,5 +1,5 @@
-game325.controller('startController', ['$http', '$scope', 'startGameService','$state', 'authService' ,'$window' , '$mdDialog', function ($http, $scope, startGameService, $state, authService, $window, $mdDialog){
-//     authService.get().then(function(res){
+game325.controller('startController', ['$http', '$scope', 'startGameService','$state', 'AuthService' ,'$window' , '$mdDialog', function ($http, $scope, startGameService, $state, AuthService, $window, $mdDialog){
+//     AuthService.get().then(function(res){
 //        console.log(res);
 //         if(res.data.error == "401"){
 //             $scope.authorized = false;
@@ -22,11 +22,10 @@ game325.controller('startController', ['$http', '$scope', 'startGameService','$s
         $scope.showJoinGame = true;
     }
     $scope.loading = false;
-    authService.get().then(function (data) {
+    AuthService.get().then(function (data) {
         $scope.loggedinuser = data.data.user;
         // console.log(data.data.user);
        if(data.data.error){
-           console.log(123);
        }else{
            // socket.emit('joinRoom', {roomId : $scope.gameId});        
        }

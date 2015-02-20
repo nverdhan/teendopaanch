@@ -4,16 +4,23 @@ var players = [];
 var randomstring = require("randomstring");
 module.exports = function(app, passport) {
     var client = app.get('redisClient');
-	
     app.get('/profile', isLoggedIn, function(req, res) {
 		res.render('profile', {
 			user : req.user // get the user out of session and pass to template
 		});
 	});
-    
+    app.get('/test', function (req, res){
+        if(!req.user){
+            console.log('test');
+            req.user = {
+                id : 'anon',
+                name : 'Dead'
+            }
+        }
+        console.log(req.user);
+    });
     app.post('/api/start', function(req, res ){
         var room, game;
-        
         if(req.user){
             var userId = req.user.id;
         }else{
@@ -148,10 +155,13 @@ module.exports = function(app, passport) {
 	});
     
     app.post('/api/auth', function(req, res){
-        if(req.user.twitter){
-            res.json({'user' : req.user.twitter});
+        if (req.user) {
+            if(req.user.twitter){
+                res.json({'user' : req.user.twitter});
+            }    
         }else{
-            res.json({'error' : 401})}
+            res.json({'error' : 401})
+        }
     });
 	
     app.get('/auth/twitter', passport.authenticate('twitter'));

@@ -6,7 +6,7 @@ game325.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', fun
             controller: 'loginController',
             templateUrl: 'app/templates/login.html',
                 data: {
-                    requiresAuth: false
+                    requiresAuth: true
                 }
         })
         .state('home', {
@@ -14,7 +14,7 @@ game325.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', fun
             controller : 'startController',
             templateUrl : 'app/templates/home.html',
                 data : {
-                    requiresAuth : false
+                    requiresAuth : true
                 }
             })
         .state('start', {
@@ -57,7 +57,7 @@ game325.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', fun
             controller : 'gameController',
             templateUrl : 'app/templates/game.html',
                 data : {
-                    requiresAuth : false
+                    requiresAuth : true
                 }
         });
         

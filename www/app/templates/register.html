@@ -1,0 +1,95 @@
+<div ng-controller="registerCtrl">
+	<div class="login-center" layout="column" layout-sm="column">
+		<div ng-if="loginFB" class="center" flex ng-click ='twitterAuth()' >
+		<h1>Create Private Room and Invite your friends</h1>
+			<!--div ng-click ='twitterAuth()'-->
+				<md-card class="flogin">
+					<i class="card-img-upper fa fa-facebook" ></i>
+					<i class="card-img md-card-image fa fa-facebook" style="color:#fff; font-size:100pt;" ></i>
+					<i class="card-img-lower fa fa-facebook" ></i>
+				</md-card>
+			<!--/div-->
+		</div>
+		<div ng-if="loginAnon" flex>
+			<!--div ng-click ='twitterAuth()'-->
+
+				<!--md-card-->
+				
+
+					<!--i class="card-img-upper fa fa-facebook" ></i>
+					<i class="card-img md-card-image fa fa-facebook" style="color:#fff; font-size:100pt;" ></i>
+					<i class="card-img-lower fa fa-facebook" ></i-->
+					<div class="center" style="max-width:300px;">
+						<md-content md-theme="docs-dark" class="md-padding" layout="row" layout-sm="column" style="font-size:1.2em">
+						<md-input-container>
+					      <!--label>name</label-->
+					      <input ng-model="user.title" class="md-input" placeholder="name">
+					    </md-input-container>
+					    </md-content>
+						<div class="avatar-img" ng-repeat="avatar in avatars" ng-style="getAvatar($index)" ng-click="selectAvatar($index)" ng-class="{true : 'selected-avatar'}[selectedImgIndex == $index]"></div>
+						<div class="clear"></div>
+						<!-- <button class="md-raised md-button md-default-theme" ng-transclude=""><span class="ng-scope">Next</span></button> -->
+					</div>
+				<!--/md-card-->
+			<!--/div-->
+		</div>
+		<div ng-if="loginFB" flex>
+			<div>
+			  <md-divider></md-divider>
+			  <div ng-click="startGame()" class="center" ng-if="loginFB">
+				<md-button class="redcol home-elem md-raised" aria-label="randomGameStart">
+					<div flex layout="horizontal" layout-align="center center">
+					<div style="margin-right:15px;"><i class="fa fa-random fa-2x"></i> </div>
+					<div><h2>Play as Anonymous</h2> </div>
+		      		</div>
+		      	</md-button>
+			</div>
+			<div ng-if="loginAnon" class="center" ng-click="register()">
+				<md-button class="redcol home-elem md-raised" aria-label="randomGameStart">
+					<div flex layout="horizontal" layout-align="center center">
+					<div style="margin-right:15px;"><i class="fa fa-random fa-2x"></i> </div>
+					<div><h3>Next</h3> </div>
+		      		</div>
+		      	</md-button>
+			</div>
+			</div>
+		</div>
+		<!--form name = "signUpForm" method="post" class="form-horizontal form-signin" ng-submit="register(credentials)" action="" novalidate>
+			<h1 class="form-group col-lg-12 col-xs-12 col-md-12 heading-1">sign up</h1>
+			<div class="form-group col-lg-12 col-xs-12 col-md-12 has-feedback">
+				<div class="controls">
+					<input id="inputSigninName" type="text" class="form-control solid-bdr overlay-input" ng-model="credentials.name" name="name" placeholder="name" required ng-minlength="6" ng-maxlength="12">
+					<span class="fa fa-user form-control-feedback"></span>
+				</div>
+				<div class="alert alert-danger" ng-show="signUpForm.name.$error.minlength">name should be at least 6 characters long</div>
+				<div class="alert alert-danger" ng-show="signUpForm.name.$error.maxlength">name should not more than 12 characters long</div>
+			</div>
+			<div class="form-group col-lg-12 col-xs-12 col-md-12 has-feedback">
+				<div class="controls">
+					<input id="inputSigninEmail" type="email" class="form-control solid-bdr overlay-input" ng-model="credentials.email" name="email" placeholder="email" required>
+					<span class="fa fa-envelope form-control-feedback"></span>
+				</div>
+				<div class="alert alert-danger" ng-show="signUpForm.email.$invalid && !signUpForm.email.$pristine">please enter a valid Email address</div>
+			</div>
+			<div class="form-group col-lg-12 col-xs-12 col-md-12 has-feedback">
+				<div class="controls">
+					<input id="inputSigninPwd" type="password" class="form-control" ng-model="credentials.password" name="password" placeholder="password" ng-minlength="6" ng-maxlength="12">
+					<span class="fa fa-lock form-control-feedback"></span>
+				</div>
+				<div class="alert alert-danger" ng-show="signUpForm.password.$error.minlength">password should be at least 6 characters long</div>
+				<div class="alert alert-danger" ng-show="signUpForm.password.$error.maxlength">password should not more than 12 characters long</div>
+				<div class="alert alert-danger" ng-show="showError">{{ errorMessage }}</div>
+			</div>
+			<div class="form-group col-lg-12 col-xs-12 col-md-12">
+				<div class="vs-input text-right">
+              		<input type="submit" class="btn btn-default btn-ok" value="submit">
+            	</div>
+          	</div>
+          	<div class="form-group col-lg-12 col-xs-12 col-md-12">
+				<span class="pointer pull-left" ng-click="$parent.switchLogin()"><strong>login</strong></span>
+				<span class="pointer pull-right" ng-click="$parent.switchForgotPwd()"><strong>forgot password?</strong></span>
+          	</div>
+          	<div class="clearfix"></div>
+		</form-->
+	</div>
+</div>

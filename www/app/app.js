@@ -1,5 +1,22 @@
-var game325 = angular.module('game325', ['ng','ui.router','ngAria','ngMaterial','ngAnimate','btford.socket-io','ngAnimate']);
 
+var game325 = angular.module('game325', ['ng','ui.router','ngAria','ngMaterial','ngAnimate','btford.socket-io','ngAnimate', 'ngCookies']);
+
+game325.constant('AUTH_EVENTS', {
+    loginSuccess    :   'auth-login-success',
+    loginFailed     :   'auth-login-failed',
+    logoutSuccess   :   'auth-logout-success',
+    SessionTimeout  :   'auth-session-timeout',
+    notAuthenticated    :   'auth-not-authenticated',
+    notAuthorized   :   'auth-not-authorized',
+    internalServerError : 'internal-server-error'
+});
+
+game325.constant('USER_ROLES', {
+    all     :   '*',
+    admin   :   'admin',
+    editor  :   'editor',
+    guest   :   'guest'
+});
 // game325.config(['$httpProvider', '$locationProvider', function ($httpProvider, $locationProvider) {
 //     $locationProvider.html5Mode(true).hashPrefix('!');
 // }]);
@@ -8,7 +25,6 @@ game325.filter('unsafe', function($sce) {
         return $sce.trustAsHtml(val);
     };
 });
-
 game325.factory('socket', function(socketFactory){
     return socketFactory({ioSocket : io.connect('http://127.0.0.1:3000')});
 });
@@ -34,19 +50,185 @@ game325.factory('delayService', ['$q', '$timeout', function ($q, $timeout){
     }
     _fact.asyncTask = _asyncTask;
     return _fact;
+}])
+game325.controller('gameCtrl', ['$rootScope', '$scope', '$http', 'AuthService', 'Session', '$cookieStore','$mdDialog','AUTH_EVENTS', function ($rootScope, $scope, $http, AuthService, Session, $cookieStore, $mdDialog, AUTH_EVENTS){
+    $scope.title = 'GameApp';
+    var credentials = {
+        id : $cookieStore.get('userId')
+    }
+    console.log(credentials);
+    if(!credentials.id){
+        $cookieStore.put('userId','anon');
+    }
+    AuthService.get(credentials).then(function(res){
+        if(res.status == 'success'){
+            $scope.currentUser = res.user;
+            Session.create(res.status, res.userId)
+        }else if(res.status == 'error'){
+            $scope.currentUser = null
+            Session.destroy();
+        }
+    });
+    // $scope.showLoginDialog = function(){
+    //     $mdDialog.show({
+
+    //     })
+    // }
+    $scope.setCurrentUser = function (user){
+        $scope.currentUser = user;
+        if($cookieStore.get('userId') == 'anon'){
+            $cookieStore.put('userId',user.id);
+        }
+    }
+    $scope.signOut = function(){
+        $scope.currentUser = null;
+        $cookieStore.put('userId','anon');
+        AuthService.logout().then(function(res){
+            if($state.current.data.requiresAuth && (!$scope.currentUser.id)){
+                $state.go('home');
+            }
+            $scope.showLoginDialog = true;
+        })
+    }
+    $scope.OverlayVisible = false;
+    $scope.loginRequired = function(){
+        $scope.OverlayVisible = true;
+    }
+    $scope.exitLogin = function(){
+        if($state.current.data.requiresAuth && (!$scope.currentUser.id)){
+            $state.go('home');
+        }
+        $scope.OverlayVisible = false;
+    }
+    $scope.showLogin = function(){      
+        $rootScope.$broadcast(AUTH_EVENTS.notAuthenticated);
+    }
+    $scope.$on(AUTH_EVENTS.internalServerError, $scope.showInternalServerError);
+    $scope.$on(AUTH_EVENTS.notFound, $scope.shownotFound);
+    $scope.$on(AUTH_EVENTS.notAuthenticated, $scope.loginRequired);
+    $scope.$on(AUTH_EVENTS.sessionTimeout, $scope.loginRequired);
+    $scope.$on(AUTH_EVENTS.loginSuccess, $scope.exitLogin);
+}]);
+game325.run( ['$rootScope', '$state', 'AUTH_EVENTS', 'AuthService', 'Session', '$location', function ($rootScope, $state, AUTH_EVENTS, AuthService, Session, $location){
+    //$rootScope.$on('$stateChangeStart', ['event', 'next', 'toState', 'toParams', 'fromState', 'fromParams', function (event, next, toState, toParams, fromState, fromParams){
+    $rootScope.$on('$stateChangeStart', function (event, next, toState, toParams, fromState, fromParams){
+        // ngProgress.start();
+        var authorizedRoles = next.data.authorizedRoles;
+        var requiresAuth = next.data.requiresAuth;
+        var a = AuthService.isAuthenticated();
+        if(requiresAuth == true && a == false){
+            $rootScope.$broadcast(AUTH_EVENTS.notAuthenticated);
+            event.preventDefault;
+        }
+        // if(!AuthService.isAuthorized(authorizedRoles)){
+        //     if(AuthService.isAuthenticated()){
+        //         $rootScope.$broadcast(AUTH_EVENTS.notAuthorized);
+        //     }
+        // }
+    });
+    // $rootScope.$on('$stateChangeSuccess', 
+    //     function(event, toState, toParams, fromState, fromParams){
+    //         var pageUrl = $location.path();
+    //         ga('send', 'pageview', pageUrl);
+    //         ngProgress.complete();
+    //     });
 }]);
 
-game325.controller('gameCtrl', ['$rootScope', '$scope', '$http', function($rootScope, $scope, $http){
-    $scope.title = 'GameApp';
+game325.config(['$httpProvider', function ($httpProvider){
+    $httpProvider.interceptors.push(['$injector', function ($injector){
+        return $injector.get('AuthInterceptor');
+    }]);
+}]);
+game325.factory('AuthInterceptor', ['$rootScope', '$q', 'AUTH_EVENTS', function ($rootScope, $q, AUTH_EVENTS){
+    return {
+        responseError : function(response){
+            $rootScope.$broadcast({
+                401 : AUTH_EVENTS.notAuthenticated,
+                404 : AUTH_EVENTS.notFound,
+                403 : AUTH_EVENTS.notAuthorized,
+                419 : AUTH_EVENTS.sessionTimeout,
+                440 : AUTH_EVENTS.sessionTimeout,
+                500 : AUTH_EVENTS.internalServerError
+            }[response.status], response);
+            return $q.reject(response);
+        }
+    }
+}]);
+
+game325.config(['$httpProvider', function ($httpProvider) {
+    var $http;
+    var interceptor = ['$q', '$injector', function ($q, $injector) {
+            var notificationChannel;
+            function success(response) {
+                $http = $http || $injector.get('$http');
+                // don't send notification until all requests are complete
+                if ($http.pendingRequests.length < 1) {
+                    // get requestNotificationChannel via $injector because of circular dependency problem
+                    notificationChannel = notificationChannel || $injector.get('requestNotificationChannel');
+                    // send a notification requests are complete
+                    notificationChannel.requestEnded();
+                }
+                return response;
+            }
+            function error(response) {
+                // get $http via $injector because of circular dependency problem
+                $http = $http || $injector.get('$http');
+                // don't send notification until all requests are complete
+                if ($http.pendingRequests.length < 1) {
+                    // get requestNotificationChannel via $injector because of circular dependency problem
+                    notificationChannel = notificationChannel || $injector.get('requestNotificationChannel');
+                    // send a notification requests are complete
+                    notificationChannel.requestEnded();
+                }
+                return $q.reject(response);
+            }
+            return function (promise) {
+                // get requestNotificationChannel via $injector because of circular dependency problem
+                notificationChannel = notificationChannel || $injector.get('requestNotificationChannel');
+                // send a notification requests are complete
+                notificationChannel.requestStarted();
+                return promise.then(success, error);
+            }
+        }];
+
+    $httpProvider.interceptors.push(interceptor);
+}])
+.factory('requestNotificationChannel', ['$rootScope', function($rootScope){
+    // private notification messages
+    var _START_REQUEST_ = '_START_REQUEST_';
+    var _END_REQUEST_ = '_END_REQUEST_';
+    // publish start request notification
+    var requestStarted = function() {
+        $rootScope.$broadcast(_START_REQUEST_);
+        $rootScope.appLoading = true;
+    };
+    // publish end request notification
+    var requestEnded = function() {
+        $rootScope.$broadcast(_END_REQUEST_);
+        $rootScope.appLoading = false;
+    };
+    // subscribe to start request notification
+    var onRequestStarted = function($scope, handler){
+        $scope.$on(_START_REQUEST_, function(event){
+            handler();
+        });
+    };
+    // subscribe to end request notification
+    var onRequestEnded = function($scope, handler){
+        $scope.$on(_END_REQUEST_, function(event){
+            handler();
+        });
+    };
+    return {
+        requestStarted:  requestStarted,
+        requestEnded: requestEnded,
+        onRequestStarted: onRequestStarted,
+        onRequestEnded: onRequestEnded
+    };
 }]);
 game325.directive('showScores', ['$compile', function($compile){
     var a = function(content){
         var content = content.content;
-        // var x = '<div class="col-md-2"><div class="text-center h4">'+content.id+'</div>';
-        // var y = '<div ng-repeat = "game in content.scores">{{ game.handsMade }} / {{ game.handsToMake }} &nbsp; ( {{ game.handsMade - game.handsToMake }} )</div>';
-        // var z = x+y+'<div class="text-center h5">{{ content.total }}</div></div>';
-        // return z;
-        console.log(content);
         var x = '<md-item>'+
         '<md-item-content>'+
           '<div class="md-tile-left ball" style="background: #fff url('+content.img+') no-repeat center center; background-size: cover; margin-right:10px;">'+
@@ -69,9 +251,7 @@ game325.directive('showScores', ['$compile', function($compile){
         '<md-divider></md-divider>'+
        '</md-item>';
         var w = x+y+z;
-       // console.log(content);
        return w;
-
     }
     var linker = function (scope, element, attrs){
         scope.$watch('content', function (argument) {
@@ -87,14 +267,14 @@ game325.directive('showScores', ['$compile', function($compile){
             content : '='
         }
     }
-}]);
+}])
 game325.service('createPrivateRoomService', ['$http', function ($http){
     return {
         create : function (req) {
             return $http.post(apiPrefix+'create', {data : req});
         }
     }
-}]);
+}])
 game325.service('joinPrivateRoomService', ['$http', function ($http){
     return {
         create : function (req) {
@@ -105,71 +285,6 @@ game325.service('joinPrivateRoomService', ['$http', function ($http){
 game325.controller('crateController', ['$http', '$scope', 'cratePrivateRoomService', function ($http, $scope, cratePrivateRoomService) {
     
 }]);
-game325.animation('.moveCardX', ['$rootScope', function ($rootScope){
-    var a = $rootScope.left;
-    var b = '16em';
-    var c = '15em';
-    return {
-        enter : function (element, done){
-            element.css({
-                left : a,
-                top : '28em'
-            });
-             $(element).animate({
-                    left : '22em',
-                    top : b
-                }, function(){
-                    element.css({
-                        left : '',
-                        top : ''
-                    });
-                    element.addClass('zeroFinal');
-                });
-            return function (cancelled){
-                // if(cancelled){
-                //     jQuery(element).stop();
-                // }else{
-                //     // completeTheAnimation();
-                // }
-            }
-        },
-        leave : function (element, done){
-
-        },
-        move : function (element, done){},
-        beforeAddClass : function (element, className, done){},
-        addClass : function (element, className, done){
-            // if(className == 'done'){
-            //     $(element).animate({
-            //         left : a,
-            //         top : b
-            //     });
-            // }
-            // else{
-            //     runTheAnimation(element, done);
-            // }
-            return function onEnd (element, done){};
-        },
-        allowCancel : function (element, event, className){}
-        
-    }
-}]);
-// game325.controller('FirstPersonController', function($scope, $rootScope){
-//     $scope.cardlist = $rootScope.cardlistplayer0;
-//     console.log($scope.cardlist);
-
-//     $scope.assignClass = function(card){
-//         return ['rank-'+card.rank, card.suit];
-//     }
-
-//     $scope.getFirstPersonStyle = function(){
-//         return {
-//             'position': 'fixed',
-//             'bottom' : '10em',
-//             'left' : $rootScope.cssConsts.centre[0]-$rootScope.cardlistplayer0.length*1.8*16/2-3.3/2*16+ 'px'
-//         }   
-//     }
-// })
 $(function() {
     $('.toggle-nav').click(function() {
         $('body').toggleClass('show-nav');
@@ -191,3 +306,81 @@ game325.controller('loginController',['$rootScope', '$location', '$scope', '$htt
         $location.path('home');
     };
 }]);
+game325.directive('loginDialog', function (AUTH_EVENTS) {
+    var login = "'public/app/templates/login.html'";
+    var register = "'app/templates/register.html'";
+    var forgotPwd = "'public/app/templates/forgotPwd.html'";
+  return {
+    restrict: 'A',
+    template: '<div ng-if="registerVisible" ng-include src="'+register+'"></div>',
+    link: function (scope) {
+      // var showLoginDialog = function () {
+      //   scope.hideAll();
+      //   scope.loginVisible = true;
+      // };
+      // var hideLoginDialog = function () {
+      //   scope.loginVisible = false;
+      // };
+      var showRegisterDialog = function () {
+        scope.registerVisible = true;
+      };
+      var hideRegisterDialog = function () {
+        scope.registerVisible = false;
+      };
+      // var showForgotPwdDialog = function () {
+      //   scope.forgotPwdVisible = true;
+      // };
+      // var hideForgotPwdDialog = function () {
+      //   scope.forgotPwdVisible = false;
+      // };
+      // scope.switchLogin = function(){
+      //   hideForgotPwdDialog();
+      //   hideRegisterDialog();
+      //       showLoginDialog();      
+      // }
+      // scope.switchRegister = function(){
+      //   hideLoginDialog();
+      //   hideForgotPwdDialog();
+      //   showRegisterDialog();
+      // }
+      // scope.switchForgotPwd = function(){
+      //   hideLoginDialog();
+      //   hideRegisterDialog();
+      //   showForgotPwdDialog();
+      // }
+      scope.close = function(){
+        scope.$parent.hideOverlay();
+      }
+      scope.hideAll = function(){
+        scope.loginVisible = false;
+        scope.registerVisible = false;
+        scope.forgotPwdVisible = false;  
+      }
+      scope.hideAll();
+      scope.$on(AUTH_EVENTS.notAuthenticated, showRegisterDialog);
+      scope.$on(AUTH_EVENTS.sessionTimeout, showRegisterDialog);
+      scope.$on(AUTH_EVENTS.loginSuccess, hideRegisterDialog);
+    }
+  };
+});
+game325.controller('registerCtrl', ['$scope', function ($scope){
+    $scope.loginFB = true;
+    $scope.loginAnon = false;
+    $scope.startGame = function(){
+        $scope.loginFB = false;
+        $scope.loginAnon = true;
+    }
+    // $scope.avatars = {
+    //     img1 : 'url()'
+    // }
+    $scope.avatars = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15];
+    $scope.selectedImgIndex = null;
+    $scope.selectAvatar = function(index){
+        $scope.selectedImgIndex = index;
+    }
+    $scope.getAvatar = function(index){
+        return {
+            'background-position' : index*64+'px'+' '+'0px',
+        }
+    }
+}])
