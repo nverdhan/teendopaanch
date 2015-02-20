@@ -1,14 +1,14 @@
 game325.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', function ($stateProvider, $urlRouterProvider, $locationProvider){
 //$locationProvider.html5mode(true).hashPrefix('!');
     $stateProvider
-        .state('login', {
-            url: '/',
-            controller: 'loginController',
-            templateUrl: 'app/templates/login.html',
-                data: {
-                    requiresAuth: true
-                }
-        })
+        // .state('login', {
+        //     url: '/',
+        //     controller: 'loginController',
+        //     templateUrl: 'app/templates/login.html',
+        //         data: {
+        //             requiresAuth: true
+        //         }
+        // })
         .state('home', {
             url : '/home', // this was / nv
             controller : 'startController',
@@ -18,11 +18,11 @@ game325.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', fun
                 }
             })
         .state('cover', {
-            url : '/cover', // this was / nv
+            url : '/', // this was / nv
             controller : 'coverController',
             templateUrl : 'app/templates/cover.html',
                 data : {
-                    requiresAuth : false
+                    requiresAuth : true
                 }
             })
         .state('start', {

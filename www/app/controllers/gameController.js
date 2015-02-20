@@ -1,5 +1,5 @@
 var temp;
-game325.controller('gameController', ['$rootScope', '$http', '$scope', '$state', '$stateParams','authService', 'gameService', 'socket', '$timeout', 'delayService', '$mdSidenav', '$anchorScroll', '$location', '$mdDialog', function ($rootScope, $http, $scope, $state, $stateParams, authService, gameService, socket, $timeout ,delayService, $mdSidenav, $anchorScroll, $location, $mdDialog){
+game325.controller('gameController', ['$rootScope', '$http', '$scope', '$state', '$stateParams','AuthService', 'gameService', 'socket', '$timeout', 'delayService', '$mdSidenav', '$anchorScroll', '$location', '$mdDialog','$cookieStore', function ($rootScope, $http, $scope, $state, $stateParams, AuthService, gameService, socket, $timeout ,delayService, $mdSidenav, $anchorScroll, $location, $mdDialog, $cookieStore){
     $scope.gameId = $stateParams.id;
     $scope.gameType = $stateParams.type;
     $scope.waiting = true;
@@ -41,6 +41,10 @@ game325.controller('gameController', ['$rootScope', '$http', '$scope', '$state',
         firstplayerY: 10,
         radiusplayer: 155
     }
+    $scope.user = $cookieStore.get('userId');
+    $scope.user = JSON.parse($scope.user);
+
+
     //
     // $scope.game325 = new $scope.Game325();
     $scope.game = {
@@ -67,7 +71,7 @@ game325.controller('gameController', ['$rootScope', '$http', '$scope', '$state',
         'MSG_RECIEVED' : 'MSG_RECIEVED'
     }
     socket.removeAllListeners();
-    socket.emit('JOIN_ROOM', {roomId : $scope.gameId});
+    socket.emit('JOIN_ROOM', {roomId : $scope.gameId, user : $scope.user});
     socket.on('CONNECTED', function(data){
         $scope.playerId = data.id;
         if (data.start == 'closed') {
@@ -180,7 +184,7 @@ game325.controller('gameController', ['$rootScope', '$http', '$scope', '$state',
     $scope.getMsgTemplate = function (content){
         var x ='<md-item>'+
                     '<md-item-content>'+
-                      '<div class="md-tile-left ball" style="background: #fff url('+content.userPic+') no-repeat center center; background-size: cover; margin-right: 0;">'+
+                      '<div class="md-tile-left ball" style="background: #fff url('+content.userPic+');background-position:'+content.backgroundPosition+'; background-size: cover; margin-right: 0;">'+
                       '</div>'+
                       '<div class="md-tile-content">'+
                         '<h4>' + content.userName +'</h4>'+
@@ -194,16 +198,21 @@ game325.controller('gameController', ['$rootScope', '$http', '$scope', '$state',
         return x;
     }
     socket.on('msgRecieved', function (data) {
-        console.log(data);
-        data.player.user = JSON.parse(data.player.user);
-        console.log(data);
         if(data.player.user){
-        $scope.msg = {
-            body : data.msg.msg,
-            userName : data.player.user.name,
-            userId : data.player.id,
-            userPic : data.player.user.img
-        }
+            if(data.player.user.type == 'local'){
+                userPic = '/assets/img/avatars.png';
+                backgroundPosition = 44*data.player.user.imgIndex+'px 0px';
+            }else{
+                userPic = data.player.user.img;
+                backgroundPosition = '50% 50%';
+            }
+            $scope.msg = {
+                body : data.msg.msg,
+                userName : data.player.user.name,
+                userId : data.player.id,
+                userPic : userPic,
+                backgroundPosition : backgroundPosition
+            }
         }else{
             $scope.msg = {
                 body : data.msg.msg,
@@ -259,7 +268,7 @@ game325.controller('gameController', ['$rootScope', '$http', '$scope', '$state',
     $scope.sendChat = function(){
         var msg = $scope.chatMsg;
         if(msg.length > 0){
-            socket.emit('sendMsg', {msg : msg});
+            socket.emit('sendMsg', {msg : msg, user : $scope.user});
             $scope.chatMsg = '';
         }
     }
@@ -399,6 +408,7 @@ game325.controller('gameController', ['$rootScope', '$http', '$scope', '$state',
             $scope.initPlayers();
             player.name = $scope.players[$scope.playerIds[i]]['name'];
             player.img = $scope.players[$scope.playerIds[i]]['img'];
+            player.type = $scope.players[$scope.playerIds[i]]['type'];
             player.cards = $scope.players[$scope.playerIds[i]]['cards'];
             player.handsToMake = $scope.players[$scope.playerIds[i]]['handsToMake'];
             player.scores = $scope.players[$scope.playerIds[i]]['scores'];
@@ -433,11 +443,11 @@ game325.controller('gameController', ['$rootScope', '$http', '$scope', '$state',
             $scope.rightPlayerDeck = [];
             for (var i = 0; i < 5; i++) {
                 var b = $scope.arrPlayers[0].cards.pop();
-                $scope.bottomPlayerDeck.push(b);
+                $scope.bottomPlayerDeck.unshift(b);
                 var l = $scope.arrPlayers[1].cards.pop();
-                $scope.leftPlayerDeck.push(l);
+                $scope.leftPlayerDeck.unshift(l);
                 var r = $scope.arrPlayers[2].cards.pop();
-                $scope.rightPlayerDeck.push(r);
+                $scope.rightPlayerDeck.unshift(r);
             };
         }
         $scope.leftPlayerId = $scope.arrPlayers[1].id;
@@ -1199,9 +1209,9 @@ game325.controller('gameController', ['$rootScope', '$http', '$scope', '$state',
     socket.on('PlayerLeft', function(data){
         $state.go('home');
     });
-    $scope.sendMsg = function(){
-        socket.emit('sendMsg', {data : 'LOLMAX'});
-    }
+    // $scope.sendMsg = function(){
+    //     socket.emit('sendMsg', {data : 'LOLMAX'});
+    // }
     // socket.on('recieveMsg', function(data){
     //     var userId = data.data.userId;
     //     var userPic = data.data.userPic;
@@ -1253,14 +1263,22 @@ game325.controller('gameController', ['$rootScope', '$http', '$scope', '$state',
                 'margin-right' : '2px',
                 'background-size' : '1200px',
                 'background-position' : posx+'px '+posy};
-    return x;
-
+            return x;
     }
     $scope.getProfilePic = function(playerindex){
         if (typeof $scope.arrPlayers[playerindex] !== 'undefined') {
-            var picurl = $scope.arrPlayers[playerindex].img;
-            var x = {'background': '#fff url('+picurl+') no-repeat center center',
-                    'background-size': 'cover!important'};
+            if($scope.arrPlayers[playerindex].type == 'local'){
+                var picurl = '/assets/img/avatars.png';
+                var index = $scope.arrPlayers[playerindex].img;
+                var backgroundPosition = index*44+'px 0px';
+            }else{
+                var picurl = $scope.arrPlayers[playerindex].img;
+                var backgroundPosition = '50% 50%';
+            }
+            var x = {
+                    'background': '#fff url('+picurl+')',
+                    'background-position' : backgroundPosition
+                };
             return x;
         }
     }

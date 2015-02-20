@@ -75,7 +75,6 @@ module.exports = function (app, server){
                 client.get('user:'+socket.id, function (err, userData){
                     if(err)
                         throw err;
-                    console.log(userData);
                     user = JSON.parse(JSON.parse(userData));
                     gamex = JSON.parse(gameString);
                     var player = new Player();
@@ -83,7 +82,13 @@ module.exports = function (app, server){
                     if(user){
                         player.name = user.name;
                         player.img = user.img;
+                        player.type = 'fb'
+                    }else if(data.user){
+                        player.name = data.user.name;
+                        player.img = data.user.imgIndex;
+                        player.type = data.user.type;
                     }
+                    console.log(player);
                     if(gamex.gamePaused){
                             for (var i = gamex.players.length - 1; i >= 0; i--) {
                                 if(gamex.players[i].id == undefined){
@@ -220,11 +225,11 @@ module.exports = function (app, server){
             client.get('user:'+socket.id, function (err, userData) {
                 if(err)
                     throw err;
-                var x = JSON.parse(userData);
+                // var x = JSON.parse(userData);
                 var msg = data;
                 var playerData = {
                     id : socket.id,
-                    user : x
+                    user : data.user
                 }
                 io.sockets.in(roomId).emit('msgRecieved', {'msg' : msg, 'player' : playerData});
             })

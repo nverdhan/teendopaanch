@@ -42,6 +42,12 @@
     left: 0%;
   }
 }
+.error{
+  padding: 12px;
+  margin-bottom: 12px;
+  color : rgba(241,103,103,1) !important;
+}
+
 .avatar-img{
   padding: 12px;
   margin: 4px;

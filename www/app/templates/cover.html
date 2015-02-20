@@ -1,7 +1,7 @@
 <div class="bgblack"></div>
 <div class='wide window-container screen screen1'>
 	<!-- <div class='left-col'> -->
-		<div flex layout="vertical" class="profile item">
+		<div flex layout="vertical" class="profile item"  ng-click="showProfile()">
 			<div flex class="item-body"></div>
 			<div class="item-bar">
 				<div flex>Profile</div>
@@ -23,7 +23,7 @@
 			</div>
 		</div>
 		<div flex layout="vertical" class="game-325 item" ng-class="className" ng-click="changeClass('game-325')" hero-id="game-325">
-			<div flex class="item-body"></div>
+			<div flex class="item-body" ></div>
 			<div class="item-bar">
 				<div flex>Teen Do Paanch</div>
 				<md-icon icon="assets/img/ic_send_24px.svg"></md-icon>
@@ -82,7 +82,7 @@
 <script type="text/javascript">
 	  $( document ).ready(function(){
 		  var ink, d, x, y;
-		  $(".item").mousedown(function(e){
+		  $(".item").mouseup(function(e){
 		    if($(this).find(".item-ink").length === 0){
 		        $(this).prepend("<span class='item-ink'></span>");
 		    }

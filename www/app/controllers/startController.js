@@ -36,6 +36,7 @@ game325.controller('startController', ['$http', '$scope', 'startGameService','$s
     $scope.startGame = function(){
         var req = {};
         startGameService.start(req).then(function(res){
+          console.log(res);
           $state.go('game/:id', {id : res.data.roomId, type : res.data.type});      
         });
     }
@@ -106,10 +107,25 @@ game325.controller('errDialogController',['$scope', '$mdDialog', function($scope
             $mdDialog.hide();
         };
 }])
-game325.controller('coverController', ['$rootScope', '$http', '$scope', '$state', '$stateParams','authService', 'gameService', 'socket', '$timeout', 'delayService', '$mdSidenav', '$anchorScroll', '$location', '$mdDialog', function ($rootScope, $http, $scope, $state, $stateParams, authService, gameService, socket, $timeout ,delayService, $mdSidenav, $anchorScroll, $location, $mdDialog){
+game325.controller('coverController', ['$rootScope', '$http', '$scope', '$state', '$stateParams','AuthService', 'startGameService' ,'gameService', 'socket', '$timeout', 'delayService', '$mdSidenav', '$anchorScroll', '$location', '$mdDialog','$cookieStore','AUTH_EVENTS', function ($rootScope, $http, $scope, $state, $stateParams, AuthService, startGameService, gameService, socket, $timeout ,delayService, $mdSidenav, $anchorScroll, $location, $mdDialog, $cookieStore, AUTH_EVENTS){
   $scope.className='';
   $scope.changeClass = function(a){
-    $scope.className = 'hero';
+    // $scope.className = 'hero';
+    if(a == 'game-325'){
+      var req = {};
+        startGameService.start(req).then(function(res){
+          $state.go('game/:id', {id : res.data.roomId, type : res.data.type});      
+        });
+    }
   }
-  
-}])
+  $scope.start325 = function(){
+    // alert(89);
+  }
+  $scope.showProfile = function(){
+    var id = $cookieStore.get('userId');
+    id = JSON.parse(id);
+    if(id.type == 'local'){
+      $rootScope.$broadcast(AUTH_EVENTS.notAuthenticated);
+    }
+  }
+}]);
