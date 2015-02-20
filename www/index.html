@@ -4,18 +4,15 @@
     <title>{{title}}</title>
     <meta name="fragment" content="!">
     <base href="http://127.0.0.1:3000/">
-    <!-- <link rel="stylesheet" href="public/css/bootstrap.min.css" type="text/css"> -->
     <link rel="stylesheet" href="public/css/game.css" type="text/css">
     <link rel="stylesheet" type="text/css" href="public/css/font-awesome/css/font-awesome.min.css">
     <link rel="stylesheet" href="assets/bower_components/angular-material/angular-material.min.css">
     <link rel="stylesheet" type="text/css" href="public/css/style3.css">
+    <link rel="stylesheet" type="text/css" href="public/css/cover.css">
     <link rel="stylesheet" type="text/css" href="assets/css/normalize.css">
     <link rel="stylesheet" type="text/css" href="public/css/cards/cards.css" media="screen" />
     <script type="text/javascript" src="public/js/jquery/jquery-1.10.2.min.js"></script>
     <script type="text/javascript" src="/socket.io/socket.io.js"></script>
-    <!--script src="public/js/angular.min.js"></script-->
-    
-    <!--script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.22/angular-cookies.min.js"></script-->
     <!-- Naisheel -->
     <script src="assets/bower_components/angular/angular.min.js"></script>
     <script src="assets/bower_components/angular-aria/angular-aria.min.js"></script>
@@ -23,12 +20,14 @@
     <script src="assets/bower_components/angular-cookies/angular-cookies.min.js"></script>
     <script src="assets/bower_components/hammerjs/hammer.min.js"></script>
     <script src="assets/bower_components/angular-material/angular-material.min.js"></script>
+    <script type="text/javascript" src="assets/js/angular-hero.js"></script>
     <!-- Ank -->
 	<script type="text/javascript" src="public/js/angular-ui-router.min.js"></script>
     <script type="text/javascript" src="public/js/socket.min.js"></script>
-    <!--script type="text/javascript" src="public/js/angular-animate.min.js"></script-->
     <link href='http://fonts.googleapis.com/css?family=Merriweather' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" type="text/css" href="https://material.angularjs.org/docs.css">
+    <link href='http://fonts.googleapis.com/css?family=Roboto:400,500,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="assets/css/angular-hero.css">
     <script type="text/javascript" src="app/app.js"></script>
     <script type="text/javascript" src="app/config.js"></script>
     <script type="text/javascript" src="app/controllers/startController.js"></script>
@@ -37,11 +36,9 @@
     <script type="text/javascript" src="app/services/startGameService.js"></script>
     <script type="text/javascript" src="app/services/gameService.js"></script>
     <script type="text/javascript" src="app/routes.js"></script>
-    <!-- <link rel="stylesheet" type="text/css" href="http://localhost/asdf/public/css/style2.css"></link> -->
     </head>
 </html>
 <body>
-    <div class='bckimg'> </div>
     <div id="backGrnd"></div>
 <div id="container">
     <div class="overlay" ng-show="OverlayVisible">
@@ -49,7 +46,6 @@
         <div login-dialog></div>
     </div>
     <!--div class="lightbox" id="searchDialog" ng-class="{true: 'open'}[searchDialogVisible]"></div-->
-    
 </div>
 
     <div flex class="content" ui-view></div>
@@ -71,5 +67,7 @@
       <a class="navbar-brand" class="toggle-nav" href="/">GameApp</a-->
     </div>
     </nav>
+    <div class='bckimg' ng-hide="uiRouterState.current.name == 'cover'"> </div>
+    <div flex class="content page-transition hero-transition" ng-view ui-view></div>
     <div class="view-main" ></div> 
 </body>

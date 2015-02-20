@@ -1,0 +1,249 @@
+.bgblack{
+	background-color: #383838;
+    display: block;
+    height: 100%;
+    left: 0;
+    position: fixed;
+    right: 0;
+    width: 100%;
+    z-index: 1;
+}
+.window-container{
+    position: relative;
+    height: 100%;
+    width: 100%;
+    z-index: 2;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-flex-flow: row wrap;
+    flex-flow: row wrap;
+    justify-content: start;
+    align-items: stretch;
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 500;
+    /*overflow-x: hidden;*/
+}
+.item{
+    background-color: tomato;
+    flex: 0 0 auto;
+    align-self: start;
+    /*margin: 5px 5px;*/
+    border: 5px solid #424242;
+    /*min-width: 200px;*/
+    /*min-height: 100px;*/
+    height: 33.33333%;
+    width: 16.66665%;
+    order: 200;
+}
+.wide .profile{
+    order: 1;
+}
+
+.wide .aboutus{
+    order: 2;
+}
+.wide .game-325{
+    order: 3;
+    width: 33.3333%;
+    height: 66.6666%;
+}
+.wide .game-10pakad{
+    order: 4;
+}
+.wide .game-7{
+    order: 5;
+}
+.wide .leaderboard{
+    position: absolute;
+    order: 6;
+    left: 0;
+    top: 33.3333%;
+    width: 33.3333%;
+    height: 66.6666%;
+}
+.wide .game-29{
+    position: absolute;
+    left: 66.6666%;
+    top:66.66666%;
+    width: 33.33333%;
+    order:11;
+}
+
+.wide .game-hearts{
+    position: absolute;
+    left: 33.3333%;
+    top:66.66666%;
+    order:7;
+}
+.wide .game-a{
+    position: absolute;
+    left: 49.99999983%;
+    top:66.66666%;
+    order:9;
+}
+
+.wide .game-b{
+    position: absolute;
+    left: 83.333333335%;
+    top:33.33333335%;
+    order:10;
+}
+
+.wide .game-c{
+    position: absolute;
+    left: 66.666666%;
+    top:33.333333%;
+    order:8;
+}
+.profile, .game-325{
+    background-color: #ff8a80;
+    }
+.profile .item-bar, .game-325 .item-bar{
+    background-color: #ff5252;
+}
+.game-b{
+    background-color: #CE93D8;
+    }
+.game-b .item-bar{
+    background-color: ;
+}
+.game-10pakad, .game-hearts{
+    background-color: #b9f6ca;
+}
+.game-10pakad .item-bar, .game-hearts .item-bar{
+    background-color: #1de9b6;
+    color: #424242;
+}
+.game-7, .game-a{
+    background-color: #FFF59D;
+}
+.game-7 .item-bar, .game-a .item-bar{
+    background-color: #ffeb3b;
+    color: #424242;
+}
+.leaderboard, .game-c{
+    background-color: #f5f5f5;
+}
+.leaderboard .item-bar, .game-c .item-bar{
+    background-color: #999999;
+}
+.game-29, .aboutus{
+    background-color: #80D8FF;
+}
+.game-29 .item-bar, .aboutus .item-bar{
+    background-color: #2196F3;
+}
+.item-body{
+    /*background-color: yellow;*/
+}
+.item-bar{
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+    height: 48px;
+    padding: 0 16px;
+    font-size: 14px;
+    color: #f5f5f5;
+}
+.item-bar>md-icon{
+    display: inline-block;
+    vertical-align: middle;
+    background-repeat: no-repeat;
+    position: relative;
+    margin: 0px;
+}
+.item{
+  color:#fff;
+  text-decoration:none;
+  position:relative;
+  overflow:hidden;
+  -webkit-transition: all 0.2s ease;
+  -moz-transition: all 0.2s ease;
+  -o-transition: all 0.2s ease;
+  transition: all 0.2s ease;
+  z-index:0;
+}
+.item-ink {
+  display: block;
+  position: absolute;
+  background:rgba(255, 255, 255, 0.3);
+  border-radius: 100%;
+  -webkit-transform:scale(0);
+     -moz-transform:scale(0);
+       -o-transform:scale(0);
+          transform:scale(0);
+}
+.ripple-animate {
+    -webkit-animation:ripple-item 0.45s linear;
+   -moz-animation:ripple-item 0.45s linear;
+    -ms-animation:ripple-item 0.45s linear;
+     -o-animation:ripple-item 0.45s linear;
+        animation:ripple-item 0.45s linear;
+}
+
+@-webkit-keyframes ripple-item {
+    100% {opacity: 0; -webkit-transform: scale(2.5);}
+}
+@-moz-keyframes ripple-item {
+    100% {opacity: 0; -moz-transform: scale(2.5);}
+}
+@-o-keyframes ripple-item {
+    100% {opacity: 0; -o-transform: scale(2.5);}
+}
+@keyframes ripple-item {
+    100% {opacity: 0; transform: scale(2.5);}
+}
+
+.page-transition.ng-enter, .page-transition.ng-leave {
+    bottom: 0;
+    left: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+    transform-style: preserve-3d;
+    transition: opacity 500ms ease-in-out 0s;
+}
+.page-transition.ng-enter, .page-transition.ng-leave.ng-leave-active {
+    opacity: 0;
+}
+.page-transition.ng-enter.ng-enter-active {
+    opacity: 1;
+}
+.hero-transition.hero-leave {
+    visibility: hidden;
+}
+.hero-transition.ng-leave {
+    visibility: visible;
+}
+.page-transition.ng-enter .screen2 p, .page-transition.ng-enter .screen3 p, .page-transition.ng-enter .screen4 .list {
+    opacity: 0;
+    transition: transform 300ms ease-in-out 0s;
+}
+.page-transition.ng-enter.ng-enter-active .screen2 p, .page-transition.ng-enter.ng-enter-active .screen3 p, .page-transition.ng-enter.ng-enter-active .screen4 .list {
+    opacity: 1;
+    transform: none;
+    transition-delay: 200ms;
+}
+.page-transition.ng-enter .screen2 p {
+    transform: scale(0.6);
+}
+.page-transition.ng-enter .screen3 p {
+    transform: translate3d(0px, -200px, 0px);
+}
+.page-transition.ng-enter .screen4 .list {
+    transform: translate3d(0px, 100px, 0px);
+}
+.screen {
+    bottom: 0;
+    left: 0;
+    padding: 16px;
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+.screen1 {
+    overflow-y: scroll;
+    padding: 0;
+}
+

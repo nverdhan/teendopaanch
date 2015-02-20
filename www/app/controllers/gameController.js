@@ -26,13 +26,15 @@ game325.controller('gameController', ['$rootScope', '$http', '$scope', '$state',
     $scope.rightPlayerCards = [];
     $scope.bottomPlayerWidth;
     $scope.gameWindow = {x : 800, y : 600};//px
-    $scope.cardSize = {x: 72, y : 90};//px
+    $scope.cardSize = {x: 80, y : 113.4};//px
     $scope.cardLeftMargin = $scope.cardSize.x*1/3;
     $scope.fullWidth = $scope.cardSize.x + (9*($scope.cardLeftMargin));
     $scope.withDrawEnabled = false;
     $scope.disconnectedPlayerId;
     $scope.bottomPlayerWidth;
+    $scope.profilepicsize = 50 + 10;
     $scope.showScores = false;
+    $scope.scalefactor = 1;
     $scope.cssConsts = {
         centre: [160,240],
         playerareadia : 50,
@@ -81,6 +83,41 @@ game325.controller('gameController', ['$rootScope', '$http', '$scope', '$state',
             $scope.ready = true;
         };
     });
+    $scope.scaleGameBody = function(){
+        var win_w = window.innerWidth;
+        var effh = window.innerHeight;
+        if(win_w > 960){
+            var effw = win_w - 340;
+        }else{
+            var effw = win_w;
+        }
+        if(effw/effh < $scope.gameWindow.x/$scope.gameWindow.y){
+            $scope.scalefactor = effw/$scope.gameWindow.x;
+            var leftshift = $scope.gameWindow.x*($scope.scalefactor-1)/2;
+            var topshift = $scope.gameWindow.y*($scope.scalefactor-1)/2 + + (effh-$scope.gameWindow.y*$scope.scalefactor)/2;
+            return {
+                '-webkit-transform' : 'scale('+$scope.scalefactor+','+$scope.scalefactor+')',
+                '-ms-transform' : 'scale('+$scope.scalefactor+','+$scope.scalefactor+')',
+                'transform' : 'scale('+$scope.scalefactor+','+$scope.scalefactor+')',
+                'left' : leftshift+'px',
+                'top': topshift + 'px'
+            }
+        }
+        if(effw/effh > $scope.gameWindow.x/$scope.gameWindow.y){
+            $scope.scalefactor = effh/$scope.gameWindow.y;
+            var leftshift = $scope.gameWindow.x*($scope.scalefactor-1)/2 + (effw-$scope.gameWindow.x*$scope.scalefactor)/2;
+            var topshift = $scope.gameWindow.y*($scope.scalefactor-1)/2;
+            return {
+                '-webkit-transform' : 'scale('+$scope.scalefactor+','+$scope.scalefactor+')',
+                '-ms-transform' : 'scale('+$scope.scalefactor+','+$scope.scalefactor+')',
+                'transform' : 'scale('+$scope.scalefactor+','+$scope.scalefactor+')',
+                'left' : leftshift+'px',
+                'top': topshift + 'px'
+            }
+        }
+
+
+    }
     $scope.closeScores = function (){
         $scope.showScores = false;
     }
@@ -273,6 +310,7 @@ game325.controller('gameController', ['$rootScope', '$http', '$scope', '$state',
         //     }
         var x = 80;
         var t = 113.44;
+         // size: 50 plus margin-bottom 10
         $scope.fullWidth = 4*x;
         if(n == 0){
             var i = $scope.bottomPlayerCards.length;
@@ -295,13 +333,13 @@ game325.controller('gameController', ['$rootScope', '$http', '$scope', '$state',
         }else if(n == 1){
             return {
                 'width': w,
-                'height' : t,
+                'height' : t + $scope.profilepicsize,
                 'left' : c
            }
         }else{
             return {
                 'width': w,
-                'height' : t,
+                'height' : t + $scope.profilepicsize,
                 'left' : c
             }
         }
@@ -320,7 +358,7 @@ game325.controller('gameController', ['$rootScope', '$http', '$scope', '$state',
         }
     }
     $scope.changePlayerId = function(id){
-        console.log($scope.playerIds);
+        // console.log($scope.playerIds);
         for (var i = $scope.playerIds.length - 1; i >= 0; i--) {
             if($scope.playerIds[i] == $scope.disconnectedPlayerId){
                 $scope.playerIds[i] = id;
@@ -388,7 +426,7 @@ game325.controller('gameController', ['$rootScope', '$http', '$scope', '$state',
             $scope.if15distributed = false;
             $scope.distributeCardsFlag = false;
         }
-        console.log($scope.gameTurn);
+        // console.log($scope.gameTurn);
         if($scope.gameTurn%30 == 1 && $scope.distributeCardsFlag){
             $scope.leftPlayerDeck = [];
             $scope.bottomPlayerDeck = [];
@@ -446,6 +484,7 @@ game325.controller('gameController', ['$rootScope', '$http', '$scope', '$state',
                 var x = function(){
                     n++;
                     var topY = angular.element('.bottom-player ul').offset().top - angular.element('.bottom-player ul').offset().top;
+                    topY = topY/$scope.scalefactor;
                     if($scope.bottomPlayerCards.length > 0){
                         var leftX = $('.bottom-player ul li:last-child').offset().left - angular.element('.game-body').offset().left;    
                     }else{
@@ -453,6 +492,7 @@ game325.controller('gameController', ['$rootScope', '$http', '$scope', '$state',
 
                     }
                     leftX+= (n)*($scope.cardLeftMargin);
+                    leftX = leftX/$scope.scalefactor;
                     angular.element('.bottomPlayerDeck:nth-child('+n+')').css({
                         'transform' : 'translateX('+leftX+'px) translateY('+topY+'px)'
                     });
@@ -467,12 +507,14 @@ game325.controller('gameController', ['$rootScope', '$http', '$scope', '$state',
                 var x = function(){
                     m++;
                     var topY = angular.element('.left-player ul').offset().top  - angular.element('.bottom-player ul').offset().top;
+                    topY = topY/$scope.scalefactor;
                     if($scope.leftPlayerCards.length > 0){
                         var leftX = angular.element('.left-player ul li:last-child').offset().left - angular.element('.game-body').offset().left;    
                     }else{
                         var leftX = angular.element('.left-player ul').offset().left - angular.element('.game-body').offset().left-7*80/6;
                     }
                     leftX+= (m)*($scope.cardLeftMargin);
+                    leftX = leftX/$scope.scalefactor;
                     angular.element('.leftPlayerDeck:nth-child('+m+')').css({
                         'transform' : 'translateX('+leftX+'px) translateY('+topY+'px)'
                     });
@@ -483,12 +525,14 @@ game325.controller('gameController', ['$rootScope', '$http', '$scope', '$state',
                 var x = function(){
                     o++;
                     var topY = angular.element('.right-player ul').offset().top  - angular.element('.bottom-player ul').offset().top;
+                    topY = topY/$scope.scalefactor;
                     if($scope.rightPlayerCards.length > 0){
                         var leftX = angular.element('.right-player ul li:last-child').offset().left - angular.element('.game-body').offset().left;
                     }else{
                         var leftX = angular.element('.right-player ul').offset().left - angular.element('.game-body').offset().left-7*80/6;
                     }
                     leftX+= (o)*($scope.cardLeftMargin);
+                    leftX = leftX/$scope.scalefactor;
                     angular.element('.rightPlayerDeck:nth-child('+o+')').css({
                         'transform' : 'translateX('+leftX+'px) translateY('+topY+'px)'
                     });
@@ -561,8 +605,8 @@ game325.controller('gameController', ['$rootScope', '$http', '$scope', '$state',
     $scope.getDeckTop = function(){
         var x = angular.element('.bottom-player ul').offset().top;
         var y = angular.element('.game-body').offset().top;
-        var z = x-y 
-        return z;
+        var z = x-y;
+        return z/$scope.scalefactor;
     }
     $scope.getPosition = function(position){
         if(position == 0){
@@ -677,24 +721,33 @@ game325.controller('gameController', ['$rootScope', '$http', '$scope', '$state',
     $scope.getTrumpDivCSS = function(){
         var position = 'absolute';
         var top = $scope.gameWindow.y/2 - $scope.cardSize.y/2;
-        var width = $scope.cardSize.x*4+4;
+        var width = $scope.cardSize.x*4+8;
         return {
             'position' : position,
             'top' : top,
             'width' : width,
+            'height' : $scope.cardSize.y,
             'margin' : '0 auto'
         }
     }
     $scope.getPlayedCardsDivCSS = function(){
         var position = 'absolute';
-        var h = angular.element('.bottom-player ul').offset().top -angular.element('.left-player ul').offset().top  - angular.element('.game-body').offset().top + $scope.cardSize.y;
-        var w = $scope.gameWindow.x;
-        var top = angular.element('.left-player ul').offset().top - angular.element('.game-body').offset().top;
+        // var h = angular.element('.bottom-player ul').offset().top -angular.element('.left-player ul').offset().top  - angular.element('.game-body').offset().top;
+        // var w = $scope.gameWindow.x-20;
+        // var top = angular.element('.left-player ul').offset().top - angular.element('.game-body').offset().top;
+        // return {
+        //     'position' : position,
+        //     'top' : top/$scope.scalefactor,
+        //     'width' : w,
+        //     'height' : h/$scope.scalefactor+ $scope.cardSize.y,
+        //     'padding' : 0,
+        //     'margin' : '0 auto'
+        // }
         return {
             'position' : position,
-            'top' : top,
-            'width' : w,
-            'height' : h,
+            'top' : 70+'px',
+            'width' : 780+'px',
+            'height' : 519.9625+'px',
             'padding' : 0,
             'margin' : '0 auto'
         }
@@ -726,7 +779,7 @@ game325.controller('gameController', ['$rootScope', '$http', '$scope', '$state',
             var top = angular.element('.bottom-player ul').offset().top - angular.element('.played-cards ul').offset().top;
             return {
                 'left' : c,
-                'top' : top
+                'top' : top/$scope.scalefactor
             }
         }
     }
@@ -746,7 +799,7 @@ game325.controller('gameController', ['$rootScope', '$http', '$scope', '$state',
         var finalClass = $scope.getPlayedPosition(e);
         if(e == 0){
             console.log(45454);
-            var top = $scope.gameWindow.y*5/9;
+            var top = 2*$scope.cardSize.y + 20;
             var left = $scope.gameWindow.x/2 - $scope.cardSize.x/2;
             $timeout(function (){
                 angular.element('.played-cards').css('z-index',9);
@@ -823,6 +876,8 @@ game325.controller('gameController', ['$rootScope', '$http', '$scope', '$state',
             var l = angular.element('.right-player ul').offset().left - angular.element('.game-body').offset().left + angular.element('.right-player ul').width()/2;
             var t = angular.element('.right-player ul').offset().top - angular.element('.played-cards').offset().top;
         }
+        l = l/$scope.scalefactor;
+        t = t/$scope.scalefactor;
         angular.element('.played-cards-ul li').animate({
                 'left' : l,
                 'top' : t
@@ -891,7 +946,7 @@ game325.controller('gameController', ['$rootScope', '$http', '$scope', '$state',
     //     }
     $scope.play = function(card, player, $event){
         $scope.cardLeft = angular.element($event.currentTarget.parentElement).offset().left - angular.element('.played-cards').offset().left;
-        $rootScope.left = $scope.cardLeft;
+        $rootScope.left = $scope.cardLeft/$scope.scalefactor;
         if($scope.gameState == 'WITHDRAW_CARD'){
             if(($scope.activePlayerId == $scope.playerId) && ($scope.otherPlayerId == player)){
                 if(card == $scope.cardSelected){
@@ -1195,6 +1250,7 @@ game325.controller('gameController', ['$rootScope', '$http', '$scope', '$state',
         var x = {'background-image' : 'url(assets/img/cardpic.jpg)',
                 'width' : '80',
                 'height' : 80*1.418,
+                'margin-right' : '2px',
                 'background-size' : '1200px',
                 'background-position' : posx+'px '+posy};
     return x;

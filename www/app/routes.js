@@ -17,6 +17,14 @@ game325.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', fun
                     requiresAuth : true
                 }
             })
+        .state('cover', {
+            url : '/cover', // this was / nv
+            controller : 'coverController',
+            templateUrl : 'app/templates/cover.html',
+                data : {
+                    requiresAuth : false
+                }
+            })
         .state('start', {
             url : '/start',
             controller : 'startController',

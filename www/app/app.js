@@ -1,3 +1,7 @@
+<<<<<<< HEAD
+=======
+var game325 = angular.module('game325', ['ng','ui.router','ngAria','ngMaterial','ngAnimate','btford.socket-io','ngAnimate','alAngularHero']);
+>>>>>>> bc901d05cc2d9437bae60d9462096f16a431142b
 
 var game325 = angular.module('game325', ['ng','ui.router','ngAria','ngMaterial','ngAnimate','btford.socket-io','ngAnimate', 'ngCookies']);
 
@@ -51,7 +55,7 @@ game325.factory('delayService', ['$q', '$timeout', function ($q, $timeout){
     _fact.asyncTask = _asyncTask;
     return _fact;
 }])
-game325.controller('gameCtrl', ['$rootScope', '$scope', '$http', 'AuthService', 'Session', '$cookieStore','$mdDialog','AUTH_EVENTS', function ($rootScope, $scope, $http, AuthService, Session, $cookieStore, $mdDialog, AUTH_EVENTS){
+game325.controller('gameCtrl', ['$rootScope', '$scope', '$http', '$state', 'AuthService', 'Session', '$cookieStore','$mdDialog','AUTH_EVENTS', function ($rootScope, $scope, $http, $state, AuthService, Session, $cookieStore, $mdDialog, AUTH_EVENTS){
     $scope.title = 'GameApp';
     var credentials = {
         id : $cookieStore.get('userId')
@@ -103,6 +107,7 @@ game325.controller('gameCtrl', ['$rootScope', '$scope', '$http', 'AuthService', 
     $scope.showLogin = function(){      
         $rootScope.$broadcast(AUTH_EVENTS.notAuthenticated);
     }
+    $scope.uiRouterState = $state;
     $scope.$on(AUTH_EVENTS.internalServerError, $scope.showInternalServerError);
     $scope.$on(AUTH_EVENTS.notFound, $scope.shownotFound);
     $scope.$on(AUTH_EVENTS.notAuthenticated, $scope.loginRequired);
@@ -225,7 +230,10 @@ game325.config(['$httpProvider', function ($httpProvider) {
         onRequestStarted: onRequestStarted,
         onRequestEnded: onRequestEnded
     };
-}]);
+// game325.controller('gameCtrl', ['$rootScope', '$scope', '$http', '$state', function($rootScope, $scope, $http, $state){
+    // $scope.title = 'GameApp';
+    // $scope.uiRouterState = $state;
+// }]);
 game325.directive('showScores', ['$compile', function($compile){
     var a = function(content){
         var content = content.content;
