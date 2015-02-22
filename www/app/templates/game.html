@@ -158,8 +158,11 @@
 <!-- *** Users Waiting to connect *** -->
 <div ng-if="waiting" class="waiting">
     <div flex layout="vertical" layout-align="center center">
+    <div>
+        <profile-info ng-repeat="player in connectedPlayers" class="center" content="player" style="float:left; padding:40px;"></profile-info>
+    </div>
         <h2>
-        Waiting for other player(s) to connect
+        {{PlayersToJoinMsg}}
         </h2>
         <md-progress-circular mode="indeterminate"></md-progress-circular>
     </div>

@@ -36,6 +36,7 @@ var config = {
 
 var app = express();
 // Enable CORS
+/*
 var allowCrossDomain = function (req, res, next) {
     res.header("Access-Control-Allow-Origin", config.allowedCORSOrigins);
     res.header("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE");
@@ -44,9 +45,27 @@ var allowCrossDomain = function (req, res, next) {
     next();
 };
 app.use(allowCrossDomain);
-
+*/
 // var routes = require('./routes/index');
 // var users = require('./routes/users');
+var enableCORS = function(req, res, next) {
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
+    res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, Content-Length, X-Requested-With, *');
+        // intercept OPTIONS method
+    if ('OPTIONS' == req.method) {
+        res.send(200);
+    } else {
+        next();
+    };
+};
+
+// app.configure(function() {
+    // enable CORS!
+    app.use(enableCORS);
+
+// });
+
 var mongoose = require('mongoose');
 
 var configDB = require('./config/DBConfig.js');
@@ -92,12 +111,8 @@ app.use(session({
 }));
 app.use(flash());
 
-
-
 require('./models/user');
 require('./config/passport')(app, passport);
-
-
 
 app.use(passport.initialize());
 app.use(passport.session());

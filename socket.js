@@ -17,13 +17,14 @@ module.exports = function (app, server){
 //    });
 	var sessionStore = app.get('sessionStore');
     var client = app.get('redisClient');
-    var user = 'bhnj';
+    var user = '';
     var mongooseClient = app.get('mongooseClient');
     // var redisPub = app.get('redisPub');
 	// var redisSub = app.get('redisSub');
     // var config = app.get('config');
     io.use(function(socket, accept){
         var hsData = socket.request;
+        console.log(hsData.headers);
         if(hsData.headers.cookie){
             var cookies = cookieParser.signedCookies(cookie.parse(hsData.headers.cookie), 'seasonsofthewitch');
             var sid = cookies['gameApp'];
@@ -81,11 +82,11 @@ module.exports = function (app, server){
                     player.id = socket.id;
                     if(user){
                         player.name = user.name;
-                        player.img = user.img;
+                        player.image = user.img;
                         player.type = 'fb'
                     }else if(data.user){
                         player.name = data.user.name;
-                        player.img = data.user.imgIndex;
+                        player.image = data.user.image;
                         player.type = data.user.type;
                     }
                     console.log(player);
@@ -129,9 +130,8 @@ module.exports = function (app, server){
                         }
                         var x = JSON.stringify(gamex);
                         client.set('gameRoom:'+roomId, x, function(err, gameSet){
-                            console.log(gamex);
                             io.sockets.connected[socket.id].emit('CONNECTED', {'id': socket.id, 'start' : gamex.status});
-                            io.sockets.in(roomId).emit('GAME_STATUS', {'status' : gamex.status});
+                            io.sockets.in(roomId).emit('GAME_STATUS', {'data' : gamex});
                         })
                     }
                 })              

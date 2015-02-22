@@ -1,7 +1,7 @@
 // var game325 = angular.module('game325', ['ng','ui.router','ngAria','ngMaterial','ngAnimate','btford.socket-io','ngAnimate','alAngularHero']);
 
-// var game325 = angular.module('game325', ['ng','ui.router','ngAria','ngMaterial','ngAnimate','btford.socket-io','ngAnimate', 'ngCookies', 'alAngularHero']);
-var game325 = angular.module('game325', ['ng','ui.router','ngAria','ngMaterial','ngAnimate','btford.socket-io','ngAnimate', 'ngCookies']);
+var game325 = angular.module('game325', ['ng','ui.router','ngAria','ngMaterial','ngAnimate','btford.socket-io','ngAnimate', 'ngCookies', 'alAngularHero']);
+// var game325 = angular.module('game325', ['ng','ui.router','ngAr?ia','ngMaterial','ngAnimate','btford.socket-io','ngAnimate', 'ngCookies']);
 
 game325.constant('AUTH_EVENTS', {
     loginSuccess    :   'auth-login-success',
@@ -61,27 +61,28 @@ game325.controller('gameCtrl', ['$rootScope', '$scope', '$http', '$state', 'Auth
     if(!credentials.id){
         $cookieStore.put('userId','anon');
     }
+    if(credentials.id && credentials.id != 'anon'){
+        var user = JSON.parse(credentials.id);
+        Session.create(user.name, user.image, user.type);
+    }
     AuthService.get(credentials).then(function(res){
-        if(res.status == 200){
+        if(res.status == 200 && res.data.user){
             var user = {
                 name : res.data.user.name,
-                img : res.data.user.img,
+                image : res.data.user.img,
                 type : 'fb'
             }
-            user = JSON.stringify(user);
-            $cookieStore.put('userId',user);
-            $scope.currentUser = res.user;
-            Session.create(res.status, res.userId)
+            Session.create(user.name, user.image, user.type);
+            console.log(Session);
+            var id = JSON.stringify(user);
+            $cookieStore.put('userId',id);
+            // $scope.currentUser = res.user;
+            // Session.create(res.status, res.userId)
         }else if(res.status == 'error'){
             $scope.currentUser = null
             Session.destroy();
         }
     });
-    // $scope.showLoginDialog = function(){
-    //     $mdDialog.show({
-
-    //     })
-    // }
     $scope.setCurrentUser = function (user){
         $scope.currentUser = user;
         if($cookieStore.get('userId') == 'anon'){
@@ -142,7 +143,7 @@ game325.run( ['$rootScope', '$state', 'AUTH_EVENTS', 'AuthService', 'Session', '
     //         ngProgress.complete();
     //     });
 }]);
-/*
+
 game325.config(['$httpProvider', function ($httpProvider){
     $httpProvider.interceptors.push(['$injector', function ($injector){
         return $injector.get('AuthInterceptor');
@@ -238,14 +239,14 @@ game325.config(['$httpProvider', function ($httpProvider) {
     // $scope.title = 'GameApp';
     // $scope.uiRouterState = $state;
 }]);
-*/
+
 game325.directive('showScores', ['$compile', function($compile){
     var a = function(content){
         var content = content.content;
         var x = '<md-item>'+
         '<md-item-content>'+
           '<div class="md-tile-left ball" style="background: #fff url('+content.img+') no-repeat center center; background-size: cover; margin-right:10px;">'+
-          '</div>'+g
+          '</div>'+
           '<div class="md-tile-content">'+
             '<div layout="horizontal">'+
             '<h3>'+content.name+'</h3>'+
@@ -280,7 +281,37 @@ game325.directive('showScores', ['$compile', function($compile){
             content : '='
         }
     }
-}])
+}]);
+game325.directive('profileInfo', ['$compile', function ($compile){
+  var x = function(content){
+    var content = content.content;
+    if(content.type == 'local'){
+        content.backgroundPosition = 45*content.image+'px 0px';
+        content.image = '/assets/img/avatars.png';
+    }else if(content.type == 'fb'){
+        content.image = content.image;
+        content.backgroundPosition = '50% 50%';
+        // $rootScope.$broadcast(AUTH_EVENTS.loginSuccess);
+    }
+    var y = '<div class="ball center" style="background-image:url('+content.image+'); background-position : '+ content.backgroundPosition+'; margin: 0 auto;"></div>'+
+          '<h4>'+content.name+'</h4>';
+      return y;
+  }
+  var linker = function(scope, element, attrs){
+    scope.$watch('content', function (argument){
+      element.html(x(scope)).show();
+      $compile(element.contents())(scope);
+    })
+  }
+  return {
+    restrict : 'E',
+    replace : true,
+    link : linker,
+    scope : {
+      content : '='
+    }
+  }
+}]);
 game325.service('createPrivateRoomService', ['$http', function ($http){
     return {
         create : function (req) {
@@ -346,29 +377,27 @@ game325.directive('loginDialog', function (AUTH_EVENTS) {
     }
   };
 });
-game325.controller('registerCtrl', ['$rootScope', '$scope','$cookieStore','$window', 'AUTH_EVENTS', function ($rootScope, $scope, $cookieStore, $window, AUTH_EVENTS){
-    var id = $cookieStore.get('userId');
-    console.log(id);
+game325.controller('registerCtrl', ['$rootScope', '$scope','$cookieStore','$window', 'AUTH_EVENTS','Session', function ($rootScope, $scope, $cookieStore, $window, AUTH_EVENTS, Session){
+    // var id = $cookieStore.get('userId');
     $scope.showLoggedInProfile = false;
     $scope.loginFB = true;
     $scope.loginAnon = false;
     $scope.user = {
         type : 'local',
         name : '',
-        imgIndex : null
+        image : null
     }
-    if(id != 'anon'){
-        id = JSON.parse(id);
-        if(id.type == 'local'){
-            $scope.loginFB = false;
-            $scope.loginAnon = true;
-            $scope.user.name = id.name;
-            $scope.user.imgIndex = id.imgIndex;
-        }else if(id.type == 'fb'){
-            alert(89);
-            $scope.showLoggedInProfile = true;
-            $scope.loginFB = false;
-            $scope.loginAnon = false;
+    if(Session.name){
+        $scope.showLoggedInProfile = true;
+        $scope.user.name = Session.name;
+        $scope.loginFB = false;
+        $scope.loginAnon = false;
+        if(Session.type == 'local'){
+            $scope.user.image = '/assets/img/avatars.png';
+            $scope.user.backgroundPosition = 44*Session.image+'px 0px';
+        }else if(Session.type == 'fb'){
+            $scope.user.image = Session.image;
+            $scope.user.backgroundPosition = '50% 50%';
             // $rootScope.$broadcast(AUTH_EVENTS.loginSuccess);
         }
     }else{
@@ -381,7 +410,7 @@ game325.controller('registerCtrl', ['$rootScope', '$scope','$cookieStore','$wind
         $scope.loginAnon = true;
     }
     $scope.avatars = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15];
-    $scope.selectedImgIndex = null;
+    $scope.selectedimage = null;
     $scope.showUserError = false;
     $scope.twitterAuth = function(){
         $window.location.href = "http://127.0.0.1:3000/auth/twitter"
@@ -392,7 +421,7 @@ game325.controller('registerCtrl', ['$rootScope', '$scope','$cookieStore','$wind
     };
     $scope.selectAvatar = function(index){
         $scope.showUserImageError = false;
-        $scope.user.imgIndex = index;
+        $scope.user.image = index;
     }
     $scope.getAvatar = function(index){
         return {
@@ -404,7 +433,7 @@ game325.controller('registerCtrl', ['$rootScope', '$scope','$cookieStore','$wind
         if($scope.user.name.length == ''){
             $scope.showUserError = true;
         }
-        if($scope.avatars.indexOf($scope.user.imgIndex) == -1){
+        if($scope.avatars.indexOf($scope.user.image) == -1){
             $scope.showUserImageError = true;
         }
         if($scope.showUserError || $scope.showUserImageError){
@@ -412,17 +441,18 @@ game325.controller('registerCtrl', ['$rootScope', '$scope','$cookieStore','$wind
         }else{
             var user = JSON.stringify($scope.user);
             $cookieStore.put('userId',user);
-            $rootScope.$broadcast(AUTH_EVENTS.loginSuccess);
-
+            Session.create($scope.user.name, $scope.user.image, 'local');
+            $window.location.href = '/';
         }
-        
-    }
-    $scope.demo = {
-
     }
     $scope.enterName = function(){
         if($scope.user.name.length > 0){
             $scope.showUserError = false;   
         }
+    }
+    $scope.logOut = function(){
+        Session.destroy();
+        $cookieStore.put('userId', 'anon');
+        $window.location.href = '/';
     }
 }])

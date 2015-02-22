@@ -74,6 +74,7 @@ game325.controller('gameController', ['$rootScope', '$http', '$scope', '$state',
     socket.emit('JOIN_ROOM', {roomId : $scope.gameId, user : $scope.user});
     socket.on('CONNECTED', function(data){
         $scope.playerId = data.id;
+        console.log(data);
         if (data.start == 'closed') {
             var x = {
                 gameEvent : 'START_GAME'
@@ -82,7 +83,13 @@ game325.controller('gameController', ['$rootScope', '$http', '$scope', '$state',
         };
     });
     socket.on('GAME_STATUS', function(data){
-        if(data.status == 'closed'){
+        console.log(data);
+        $scope.connectedPlayers  =[]
+        for (var i = data.data.players.length - 1; i >= 0; i--) {
+            $scope.connectedPlayers.push(data.data.players[i]);
+        }var n = 3-$scope.connectedPlayers.length;
+        $scope.PlayersToJoinMsg = 'Waiting for '+n+' more player(s) to connect';
+        if(data.data.status == 'closed'){
             $scope.waiting = false;
             $scope.ready = true;
         };
@@ -201,7 +208,7 @@ game325.controller('gameController', ['$rootScope', '$http', '$scope', '$state',
         if(data.player.user){
             if(data.player.user.type == 'local'){
                 userPic = '/assets/img/avatars.png';
-                backgroundPosition = 44*data.player.user.imgIndex+'px 0px';
+                backgroundPosition = 44*data.player.user.image+'px 0px';
             }else{
                 userPic = data.player.user.img;
                 backgroundPosition = '50% 50%';
@@ -213,15 +220,7 @@ game325.controller('gameController', ['$rootScope', '$http', '$scope', '$state',
                 userPic : userPic,
                 backgroundPosition : backgroundPosition
             }
-        }else{
-            $scope.msg = {
-                body : data.msg.msg,
-                userName: "Devansh",
-                userId : data.player.id,
-                userPic : "../../assets/img/devd.jpg"
-            }
         }
-
         for (var i = $scope.arrPlayers.length - 1; i >= 0; i--) {
             if($scope.arrPlayers[i].id == $scope.msg.userId){
                 if(i==1) var playerclass='left-player-profile';
@@ -254,17 +253,17 @@ game325.controller('gameController', ['$rootScope', '$http', '$scope', '$state',
         $anchorScroll();
         $location.hash('');
     })
-    socket.on('START', function (data){
-        console.log('started');
-        $scope.gameState = data.data.gameState;
-        $scope.activePlayerId = data.data.activePlayerId;
-        $scope.playerIds = data.data.playerIds;
-        $scope.gameState = data.data.gameState;
-        $scope.players = data.data.players;
-        $scope.gameTurn = data.data.gameTurn;
-        $scope.assignPlayers();    
-        $scope.updateCards();
-    });
+    // socket.on('START', function (data){
+    //     console.log('started');
+    //     $scope.gameState = data.data.gameState;
+    //     $scope.activePlayerId = data.data.activePlayerId;
+    //     $scope.playerIds = data.data.playerIds;
+    //     $scope.gameState = data.data.gameState;
+    //     $scope.players = data.data.players;
+    //     $scope.gameTurn = data.data.gameTurn;
+    //     $scope.assignPlayers();    
+    //     $scope.updateCards();
+    // });
     $scope.sendChat = function(){
         var msg = $scope.chatMsg;
         if(msg.length > 0){
@@ -454,6 +453,7 @@ game325.controller('gameController', ['$rootScope', '$http', '$scope', '$state',
         $scope.rightPlayerId = $scope.arrPlayers[2].id;
         if($scope.distributeCardsFlag){
             $scope.distributeCards(x);
+            console.log('here');
         }else{
             $scope.bottomPlayerCards = $scope.arrPlayers[0].cards;
             $scope.leftPlayerCards = $scope.arrPlayers[1].cards;
@@ -463,20 +463,20 @@ game325.controller('gameController', ['$rootScope', '$http', '$scope', '$state',
     $scope.distributeBottomPlayer = function(){
         for (var i = $scope.bottomPlayerDeck.length - 1; i >= 0; i--) {
             var a = $scope.bottomPlayerDeck.pop();
-            $scope.bottomPlayerCards.push(a);
+            $scope.bottomPlayerCards.unshift(a);
         }
     }
     $scope.distributeLeftPlayer = function(){
         for (var i = $scope.leftPlayerDeck.length - 1; i >= 0; i--) {
             var a = $scope.leftPlayerDeck.pop();
-            $scope.leftPlayerCards.push(a);
+            $scope.leftPlayerCards.unshift(a);
         }
         
     }
     $scope.distributeRightPlayer = function(){
         for (var i = $scope.rightPlayerDeck.length - 1; i >= 0; i--) {
             var a = $scope.rightPlayerDeck.pop();
-            $scope.rightPlayerCards.push(a);
+            $scope.rightPlayerCards.unshift(a);
         }
     }
     $scope.distributeCards = function(totalcards){

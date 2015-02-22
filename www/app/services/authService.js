@@ -48,14 +48,12 @@ game325.factory('AuthService', ['$http','$rootScope', 'Session','$window','$cook
     return authService;
 }]);
 game325.service('Session', function (){
-	this.create = function(id, name, image, type){
-		this.id = id;
+	this.create = function(name, image, type){
 		this.name = name;
 		this.image = image;
 		this.type = type;
 	}
 	this.destroy = function(){
-		this.id = null;
 		this.name = null;
 		this.image = null;
 		this.type = null;	

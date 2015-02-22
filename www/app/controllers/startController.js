@@ -107,19 +107,100 @@ game325.controller('errDialogController',['$scope', '$mdDialog', function($scope
             $mdDialog.hide();
         };
 }])
-game325.controller('coverController', ['$rootScope', '$http', '$scope', '$state', '$stateParams','AuthService', 'startGameService' ,'gameService', 'socket', '$timeout', 'delayService', '$mdSidenav', '$anchorScroll', '$location', '$mdDialog','$cookieStore','AUTH_EVENTS', function ($rootScope, $http, $scope, $state, $stateParams, AuthService, startGameService, gameService, socket, $timeout ,delayService, $mdSidenav, $anchorScroll, $location, $mdDialog, $cookieStore, AUTH_EVENTS){
+game325.controller('coverController', ['$rootScope', '$http', '$scope', '$state', '$stateParams','AuthService', 'startGameService' ,'gameService', 'socket', '$timeout', 'delayService', '$mdSidenav', '$anchorScroll', '$location', '$mdDialog','$cookieStore','AUTH_EVENTS','Session', function ($rootScope, $http, $scope, $state, $stateParams, AuthService, startGameService, gameService, socket, $timeout ,delayService, $mdSidenav, $anchorScroll, $location, $mdDialog, $cookieStore, AUTH_EVENTS, Session){
   $scope.className='';
+  $scope.showLoggedInOptions = false;
   $scope.changeClass = function(a){
     // $scope.className = 'hero';
     if(a == 'game-325'){
       var req = {};
+        if(Session.name && Session.type != 'local'){
+          $scope.showLoggedInOptions = true;
+        }else{
+          startGameService.start(req).then(function(res){
+            $state.go('game/:id', {id : res.data.roomId, type : res.data.type});      
+          });
+        }
+    }
+  }
+  $scope.joinGameRoomId = '';
+    $scope.showStartGame = false;
+    $scope.showCreateGame = false;
+    $scope.showJoinGame = false;
+    if($state.current.name == 'start'){
+        $scope.showStartGame = true;
+    }
+    if($state.current.name == 'create'){
+        $scope.showCreateGame = true;
+    }
+    if($state.current.name == 'join'){
+        $scope.showJoinGame = true;
+    }
+    $scope.loading = false;
+    AuthService.get().then(function (data) {
+        $scope.loggedinuser = data.data.user;
+       if(data.data.error){
+       }else{
+           // socket.emit('joinRoom', {roomId : $scope.gameId});        
+       }
+    });
+    $scope.startGame = function(){
+        var req = {};
         startGameService.start(req).then(function(res){
+          console.log(res);
           $state.go('game/:id', {id : res.data.roomId, type : res.data.type});      
         });
     }
+
+    $scope.createGame = function(){
+        var req = {};
+        startGameService.create(req).then(function(res){
+            console.log(res.data)
+          $state.go('game/:id/:type', {id : res.data.roomId, type : res.data.type});      
+        });
+    }
+    $scope.joinGame = function(){
+        var req = {
+            roomId : $scope.joinGameRoomId
+        };
+        console.log(req);
+        startGameService.join(req).then(function(res){
+            console.log(res.data)
+            if(res.data.error){
+                $scope.roomerror();
+                return false;
+            }
+          $state.go('game/:id/:type', {id : res.data.roomId, type : res.data.type});      
+        });
+        $scope.roomerror = function(ev) {
+         $mdDialog.show({
+          template:
+            '<md-dialog>' +
+            '    <md-button style="background-color: rgba(241,103,103,1)!important" ng-click="closeDialog()" aria-label="closedialog">' +
+            '      <i class="fa fa-times" style="float:right;"></i>' +
+            '    </md-button>' +
+            '  <md-content>Invalid Room!' +
+            '</md-content></md-dialog>',
+            controller: 'errDialogController'
+        });
+      }
+    }
+  $scope.loggedIn = false;
+  $scope.profile = {
+      name : '',
+      image : '',
+      backgroundPosition : ''
   }
-  $scope.start325 = function(){
-    // alert(89);
+  if(Session.name){
+    $scope.profile.name = Session.name;
+    $scope.loggedIn = true;
+  }
+  if(Session.type == 'local'){
+    $scope.profile.image = '/assets/img/avatars.png';
+    $scope.profile.backgroundPosition = 45*Session.image+'px 0px';
+  }else{
+    $scope.profile.image = Session.image;
+    $scope.profile.backgroundPosition = '50% 50%';
   }
   $scope.showProfile = function(){
     var id = $cookieStore.get('userId');

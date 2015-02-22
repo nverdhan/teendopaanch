@@ -3,7 +3,7 @@
   position: fixed;
   width: 100%;
   height: 100%;
-  background: rgba(255,255,255,0.9);
+  background: rgba(255,255,255,0.95);
   opacity: 1;
   z-index: 999;
 }
@@ -33,6 +33,9 @@
   /*background: rgba(216,212,210,0.9)*/;
   margin-top: 5%;
   -webkit-animation : bringIn-Left 0.2s linear;
+}
+.profile-info{
+  padding: 12px;
 }
 @-webkit-keyframes bringIn-Left{
   0%{
