@@ -208,7 +208,7 @@ game325.controller('gameController', ['$rootScope', '$http', '$scope', '$state',
         if(data.player.user){
             if(data.player.user.type == 'local'){
                 userPic = '/assets/img/avatars.png';
-                backgroundPosition = 44*data.player.user.image+'px 0px';
+                backgroundPosition = 45*data.player.user.image+'px 0px';
             }else{
                 userPic = data.player.user.image;
                 backgroundPosition = '50% 50%';
@@ -406,7 +406,7 @@ game325.controller('gameController', ['$rootScope', '$http', '$scope', '$state',
             $scope.playerArray = $scope.players;
             $scope.initPlayers();
             player.name = $scope.players[$scope.playerIds[i]]['name'];
-            player.img = $scope.players[$scope.playerIds[i]]['img'];
+            player.image = $scope.players[$scope.playerIds[i]]['image'];
             player.type = $scope.players[$scope.playerIds[i]]['type'];
             player.cards = $scope.players[$scope.playerIds[i]]['cards'];
             player.handsToMake = $scope.players[$scope.playerIds[i]]['handsToMake'];
@@ -1267,11 +1267,11 @@ game325.controller('gameController', ['$rootScope', '$http', '$scope', '$state',
     }
     $scope.getProfilePic = function(playerindex){
         if (typeof $scope.arrPlayers[playerindex] !== 'undefined') {
+            console.log($scope.arrPlayers[playerindex].image);
             if($scope.arrPlayers[playerindex].type == 'local'){
                 var picurl = '/assets/img/avatars.png';
                 var index = $scope.arrPlayers[playerindex].image;
-                // console.log(index);
-                var backgroundPosition = index*44+'px 0px';
+                var backgroundPosition = index*45+'px 0px';
             }else{
                 var picurl = $scope.arrPlayers[playerindex].image;
                 var backgroundPosition = '50% 50%';
@@ -1288,7 +1288,7 @@ game325.controller('gameController', ['$rootScope', '$http', '$scope', '$state',
             if($scope.arrPlayers[i].id == id){
                 return {
                         name: $scope.arrPlayers[i].name,
-                        img: $scope.arrPlayers[i].img
+                        image: $scope.arrPlayers[i].image
                     };
             };
         }
