@@ -111,7 +111,7 @@ module.exports = function (app, server){
                                     }
                                     var x = JSON.stringify(gamex);
                                     client.set('gameRoom:'+roomId, x, function(err, gameSet){
-                                        io.sockets.connected[socket.id].emit('GAME_STATUS', {'status' : gamex.status});
+                                        io.sockets.connected[socket.id].emit('GAME_STATUS', {'data' : gamex});
                                         io.sockets.connected[socket.id].emit('CONNECTED_2', {'id': socket.id, 'data' : gamex});
                                         io.sockets.connected[socket.id].emit('GAME', {'data' : gamex});
                                     });

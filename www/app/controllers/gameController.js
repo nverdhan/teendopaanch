@@ -210,7 +210,7 @@ game325.controller('gameController', ['$rootScope', '$http', '$scope', '$state',
                 userPic = '/assets/img/avatars.png';
                 backgroundPosition = 44*data.player.user.image+'px 0px';
             }else{
-                userPic = data.player.user.img;
+                userPic = data.player.user.image;
                 backgroundPosition = '50% 50%';
             }
             $scope.msg = {
@@ -1269,10 +1269,10 @@ game325.controller('gameController', ['$rootScope', '$http', '$scope', '$state',
         if (typeof $scope.arrPlayers[playerindex] !== 'undefined') {
             if($scope.arrPlayers[playerindex].type == 'local'){
                 var picurl = '/assets/img/avatars.png';
-                var index = $scope.arrPlayers[playerindex].img;
+                var index = $scope.arrPlayers[playerindex].image;
                 var backgroundPosition = index*44+'px 0px';
             }else{
-                var picurl = $scope.arrPlayers[playerindex].img;
+                var picurl = $scope.arrPlayers[playerindex].image;
                 var backgroundPosition = '50% 50%';
             }
             var x = {
