@@ -1270,6 +1270,7 @@ game325.controller('gameController', ['$rootScope', '$http', '$scope', '$state',
             if($scope.arrPlayers[playerindex].type == 'local'){
                 var picurl = '/assets/img/avatars.png';
                 var index = $scope.arrPlayers[playerindex].image;
+                // console.log(index);
                 var backgroundPosition = index*44+'px 0px';
             }else{
                 var picurl = $scope.arrPlayers[playerindex].image;

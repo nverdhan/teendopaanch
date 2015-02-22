@@ -285,6 +285,7 @@ game325.directive('showScores', ['$compile', function($compile){
 game325.directive('profileInfo', ['$compile', function ($compile){
   var x = function(content){
     var content = content.content;
+    console.log(content);
     if(content.type == 'local'){
         content.backgroundPosition = 45*content.image+'px 0px';
         content.image = '/assets/img/avatars.png';
