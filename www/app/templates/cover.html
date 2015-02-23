@@ -32,7 +32,11 @@
 			</div>
 		</div>
 		<div flex layout="vertical" class="game-325 item" ng-class="className" ng-click="changeClass('game-325')" hero-id="game-325">
-			<div flex class="item-body" ></div>
+			<div flex class="item-body" >
+				<div class='game-logo'>
+					<!-- <img src="assets/img/325img.png"> -->
+				</div>
+			</div>
 			<div class="item-bar">
 				<div flex>Teen Do Paanch</div>
 				<md-icon icon="assets/img/ic_send_24px.svg"></md-icon>
@@ -122,6 +126,8 @@
 		  var ink, d, x, y;
 		  $(".item").mouseup(function(e){
 		    if($(this).find(".item-ink").length === 0){
+		    	$(this).addClass("expanded");
+		    	console.log('added');
 		        $(this).prepend("<span class='item-ink'></span>");
 		    }
 		         
@@ -137,6 +143,11 @@
 		    y = e.pageY - $(this).offset().top - ink.height()/2;
 		     
 		    ink.css({top: y+'px', left: x+'px'}).addClass("ripple-animate");
+
+		  });
+		  $(".expanded").mouseup(function(e){
+		    $(this).removeClass("expanded");
+		    console.log('removed');
 		  });
   });
 </script>

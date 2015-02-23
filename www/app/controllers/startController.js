@@ -111,7 +111,7 @@ game325.controller('coverController', ['$rootScope', '$http', '$scope', '$state'
   $scope.className='';
   $scope.showLoggedInOptions = false;
   $scope.changeClass = function(a){
-    // $scope.className = 'hero';
+    // $scope.className = 'expanded';
     if(a == 'game-325'){
       var req = {};
         if(Session.name && Session.type != 'local'){
