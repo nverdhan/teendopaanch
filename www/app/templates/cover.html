@@ -1,7 +1,12 @@
 <div class="bgblack"></div>
 <div class='wide window-container screen screen1'>
 	<!-- <div class='left-col'> -->
+	<md-button class="back-button" aria-label="goBack">
+                <md-icon icon="assets/img/ic_arrow_back_24px.svg" style="width: 24px; height: 24px;">
+                </md-icon>
+            </md-button>
 		<div flex layout="vertical" class="center profile item"  ng-click="showProfile()">
+
 			<div flex class="item-body">
 				<div class="profile-info" ng-if="loggedIn">
 					<profile-info content="profile"></profile-info>
@@ -31,11 +36,9 @@
 				<md-icon icon="assets/img/ic_send_24px.svg"></md-icon>
 			</div>
 		</div>
-		<div flex layout="vertical" class="game-325 item" ng-class="className" ng-click="changeClass('game-325')" hero-id="game-325">
+		<div flex layout="vertical" class="game-325 item" ng-click="changeClass('game-325')">
 			<div flex class="item-body" >
-				<div class='game-logo'>
-					<!-- <img src="assets/img/325img.png"> -->
-				</div>
+				<div class='game-logo'></div>
 			</div>
 			<div class="item-bar">
 				<div flex>Teen Do Paanch</div>
@@ -43,21 +46,29 @@
 			</div>
 		</div>
 		<div flex layout="vertical" class="game-29 item">
-			<div flex class="item-body"></div>
+			<div flex class="item-body">
+				<div class='game-logo'></div>
+				<div class="coming-soon">
+					Coming Soon!
+				</div>
+			</div>
 			<div class="item-bar">
 				<div flex>Twenty-nine</div>
 				<md-icon icon="assets/img/ic_send_24px.svg"></md-icon>
 			</div>
 		</div>
-		<div flex layout="vertical" class="game-7 item">
+		<div flex layout="vertical" class="game-7 item yettocome">
 			<div flex class="item-body"></div>
 			<div class="item-bar">
 				<div flex>Satti Center</div>
 				<md-icon icon="assets/img/ic_send_24px.svg"></md-icon>
+				<div class='yettocome-msg' flex>Coming Soon!</div>
 			</div>
 		</div>
 		<div flex layout="vertical"  class="game-hearts item">
-			<div flex class="item-body"></div>
+			<div flex class="item-body">
+				<div class='game-logo'></div>
+			</div>
 			<div class="item-bar">
 				<div flex>Hearts</div>
 				<md-icon icon="assets/img/ic_send_24px.svg"></md-icon>
@@ -126,11 +137,9 @@
 		  var ink, d, x, y;
 		  $(".item").mouseup(function(e){
 		    if($(this).find(".item-ink").length === 0){
-		    	$(this).addClass("expanded");
-		    	console.log('added');
 		        $(this).prepend("<span class='item-ink'></span>");
 		    }
-		         
+		    
 		    ink = $(this).find(".item-ink");
 		    ink.removeClass("ripple-animate");
 		     
@@ -145,9 +154,15 @@
 		    ink.css({top: y+'px', left: x+'px'}).addClass("ripple-animate");
 
 		  });
-		  $(".expanded").mouseup(function(e){
-		    $(this).removeClass("expanded");
-		    console.log('removed');
+		  $(".item").click(function(e){
+		  	if(!$(this).hasClass("expanded")){
+		    	$(this).addClass("expanded");	
+		    	$(this.parentNode).addClass("selectiondone");
+		    }
+		});
+		  $('.back-button').click(function(e){
+		  		$(this.parentNode).removeClass("selectiondone");
+		  		$('.expanded').removeClass('expanded');
 		  });
   });
 </script>
