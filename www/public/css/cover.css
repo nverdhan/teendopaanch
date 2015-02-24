@@ -73,7 +73,7 @@
     width: 33.3333%;
     height: 66.6666%;
 }
-.wide .game-29{
+.wide .game-a{
     position: absolute;
     left: 66.6666%;
     top:66.66666%;
@@ -81,27 +81,27 @@
     order:11;
 }
 
-.wide .game-hearts{
+.wide .game-b{
     position: absolute;
     left: 33.3333%;
     top:66.66666%;
     order:7;
 }
-.wide .game-a{
+.wide .game-c{
     position: absolute;
     left: 49.99999983%;
     top:66.66666%;
     order:9;
 }
 
-.wide .game-b{
+.wide .game-hearts{
     position: absolute;
     left: 83.333333335%;
     top:33.33333335%;
     order:10;
 }
 
-.wide .game-c{
+.wide .game-29{
     position: absolute;
     left: 66.666666%;
     top:33.333333%;
@@ -113,36 +113,36 @@
 .profile .item-bar, .game-325 .item-bar{
     background-color: #ff5252;
 }
-.game-b{
+.game-hearts{
     background-color: #CE93D8;
     }
-.game-b .item-bar{
-    background-color: ;
+.game-hearts .item-bar, .game-hearts .coming-soon{
+    background-color: #AB47BC   ;
 }
-.game-10pakad, .game-hearts{
+.game-10pakad, .game-b{
     background-color: #b9f6ca;
 }
-.game-10pakad .item-bar, .game-hearts .item-bar{
+.game-10pakad .item-bar, .game-b .item-bar,.game-10pakad .coming-soon{
     background-color: #1de9b6;
     color: #424242;
 }
 .game-7, .game-a{
     background-color: #FFF59D;
 }
-.game-7 .item-bar, .game-a .item-bar{
+.game-7 .item-bar, .game-a .item-bar, .game-7 .coming-soon{
     background-color: #ffeb3b;
     color: #424242;
 }
-.leaderboard, .game-c{
+.leaderboard, .game-29{
     background-color: #f5f5f5;
 }
-.leaderboard .item-bar, .game-c .item-bar{
+.leaderboard .item-bar, .game-29 .item-bar, .game-29 .coming-soon{
     background-color: #999999;
 }
-.game-29, .aboutus{
+.game-c, .aboutus{
     background-color: #80D8FF;
 }
-.game-29 .item-bar, .aboutus .item-bar{
+.game-c .item-bar, .aboutus .item-bar{
     background-color: #2196F3;
 }
 .item-body{
@@ -172,11 +172,11 @@
   text-decoration:none;
   position:relative;
   overflow:hidden;
-  transition-delay: 0.2s;
-  -webkit-transition: all 0.1s ease;
-  -moz-transition: all 0.1s ease;
-  -o-transition: all 0.1s ease;
-  transition: all 0.1s ease;
+  transition-delay: 1s;
+  -webkit-transition: all 0.2s ease;
+  -moz-transition: all 0.2s ease;
+  -o-transition: all 0.2s ease;
+  transition: all 0.2s ease;
   z-index:0;
 }
 .item-ink {
@@ -233,20 +233,24 @@
 }
 .game-logo{
     margin: auto;
-    position: relative;
-    width: 150px;
-    bottom: -25%;
-    min-height: 150px;
+    position: absolute;
+    /*width: 150px;*/
+    bottom: 0;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 150px; 
+    max-width: 100%;
     background-image: url('../../assets/img/29back.png');
     background-position: 50% 50%;
     background-size: cover!important;
     z-index: 2;
     opacity: 1;
-    transition-delay: 0.4s;
-    -webkit-transition: opacity 0.5s;
-    -moz-transition: opacity 0.5s;
-    -o-transition: opacity 0.5s;
-    transition: opacity 0.5s;
+    transition-delay: 0.2s;
+    -webkit-transition: opacity 0.2s;
+    -moz-transition: opacity 0.2s;
+    -o-transition: opacity 0.2s;
+    transition: opacity 0.2s;
 
 }
 .item.expanded{
@@ -256,7 +260,7 @@
     left: 0!important;
     top: 0!important; 
     z-index: 10;
-    transition-delay: 0.1s;`
+    transition-delay: 0.2s;
 }
 .expanded .item-bar{
     width: 40%;
@@ -265,7 +269,7 @@
     -moz-transition: all 0.1s ease;
     -o-transition: all 0.1s ease;
     transition: all 0.1s ease;
-    transition-delay: 0.1s;
+    transition-delay: 0.2s;
 }
 .back-button{
     border-radius: 50% !important;
@@ -290,13 +294,13 @@
 }
 .expanded .game-logo{
     opacity: 0;
-    transition-delay: 0s;
-    -webkit-transition: opacity 0.1s;
-    -moz-transition: opacity 0.1s;
-    -o-transition: opacity 0.1s;
-    transition: opacity 0.1s;      
+    transition-delay: 0.2s;
+    -webkit-transition: opacity 0.2s;
+    -moz-transition: opacity 0.2s;
+    -o-transition: opacity 0.2s;
+    transition: opacity 0.2s;      
 }
-.coming-soon{
+.internal-slider-1{
     width: 30%;
     height: 80%;
     position: absolute;
@@ -312,55 +316,71 @@
     font-size: 40pt;
     font-weight: 400;
     text-align: center;
+    color: #424242;
 }
-.expanded .coming-soon{
+
+.expanded .internal-slider-1{
     width: 30%;
     height: 80%;
     top: 20%;
     transition-delay: 0.3s;
 }
-.yettocome.item-bar{
-    width: 100%;
-    display: flex;
-    flex-flow: row wrap;
-    align-items: flex-start;
-    height: 48px;
-    padding: 16px;
-    font-size: 14px;
-    color: #f5f5f5;
-    z-index: 3;
+.leaderboard.expanded .internal-slider-1 {
+    background-color: #E0E0E0;
+    font-size: 25pt;
+    padding: 12px;
+}
+.next-icon-small{
+    opacity: 1;
+    visibility: visible;
     transition-delay: 0.2s;
 }
-.expanded.yettocome .item-bar{
-    height: 80%;
-    position: absolute;
-    left: 30%;
-    top: 20%;
-    margin: 0 auto;
-    width: 40%;
-    margin: 0 auto;
-    -webkit-transition: all 0.1s ease;
-    -moz-transition: all 0.1s ease;
-    -o-transition: all 0.1s ease;
-    transition: all 0.1s ease;
-    transition-delay: 0s;
-}
-.yettocome-msg{
+.expanded .next-icon-small{
+    opacity: 0;
     visibility: hidden;
-    min-width: 100%;
-    padding: 16px;
 }
-.expanded .yettocome-msg{
-    visibility: visible;
+md-radio-group.favgame-select{
+    border:none!important;
+    font-size: 16pt;
+    text-align: left;
+}
+.profile .profile-info{
+    padding-top: 40px;
+    padding-left: 12px;
+    padding-right: 12px;
+    padding-bottom: 12px;
+}
+.coming-soon{
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background-color: white;
+    color: black;
+    font-size: 11px;
     position: absolute;
-    min-width: 100%;
-    height: 100%;
-    top: 50px;
-    left: 16px;
-    background-color: tomato;
-    color: #f5f5f5;
-    margin: 0 -16px;
-    font-size: 40pt;
-    font-weight: 400;
+    right: 5px;
+    top: 5px;
+    z-index: 13;
     text-align: center;
+    padding: 19px 0 0 0;
+    cursor: pointer;
+    -webkit-transform:scale(1);
+     -moz-transform:scale(1);
+       -o-transform:scale(1);
+          transform:scale(1);
+    transition-delay: 0s;
+    -webkit-transition: all 0.3s;
+    -moz-transition: all 0.3s;
+    -o-transition: all 0.3s;
+    transition: all 0.3s; 
+
+}
+.expanded .coming-soon{
+    right: 70%;
+    top: 20%;
+    transition-delay: 0.2s;
+    -webkit-transform:scale(2);
+     -moz-transform:scale(2);
+       -o-transform:scale(2);
+          transform:scale(2);
 }

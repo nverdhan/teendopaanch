@@ -1,6 +1,6 @@
 // var game325 = angular.module('game325', ['ng','ui.router','ngAria','ngMaterial','ngAnimate','btford.socket-io','ngAnimate','alAngularHero']);
 
-var game325 = angular.module('game325', ['ng','ui.router','ngAria','ngMaterial','ngAnimate','btford.socket-io','ngAnimate', 'ngCookies', 'alAngularHero']);
+var game325 = angular.module('game325', ['ng','ui.router','ngAria','ngMaterial','ngAnimate','btford.socket-io','ngAnimate', 'ngCookies']);
 // var game325 = angular.module('game325', ['ng','ui.router','ngAr?ia','ngMaterial','ngAnimate','btford.socket-io','ngAnimate', 'ngCookies']);
 
 game325.constant('AUTH_EVENTS', {
