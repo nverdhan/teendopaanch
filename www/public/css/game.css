@@ -16,6 +16,7 @@ body {
     left: 0;
     right: 0;
     margin: 0 0;
+    padding: 10px;
 }
 .center{
     position: relative;
@@ -347,9 +348,10 @@ bottom: 0px;
     -webkit-transition: 0.5s all ease-in-out;
     transition: 0.5s all ease-in-out;
 }
-.card{
-    -webkit-transition: 0.5s all ease-in-out;
-    transition: 0.5s all ease-in-out;
+.card{ 
+    /*Made transition faster-nv*/
+    -webkit-transition: 0.1s all ease-in-out;
+    transition: 0.1s all ease-in-out;
 }
 .playingCards ul.table, .playingCards ul.hand, .playingCards ul.deck{
     position: relative;
@@ -440,6 +442,7 @@ div.clear {
 .allDeck{
     position: absolute;
     left: 0;
+    /*bottom: 10;*/
 }
 .allDeck ul{
     /*position: absolute;*/

@@ -242,6 +242,7 @@ div.profile h1{
 .push-wrap{
 	height: 100%;
 	max-width: 100%;
+  overflow: hidden;
 }
 .bcktrans{
 	background-color: rgba(0,0,0,0)!important;
@@ -503,6 +504,13 @@ sub {
   	color: black;
   	font-size: 12pt;
     margin-left: 5px;
+    width: 200px;
+    text-align: left;
+    overflow: hidden;
+}
+.right-player .ball .name{
+  left: -222px!important;
+  text-align: end!important;
 }
 .ball .notif {
   position: absolute;
@@ -510,6 +518,9 @@ sub {
   left: 60px;
   width: 183px;
   opacity: 0;
+}
+.right-player .ball .notif{
+  left: -200px!important;
 }
 .ball .notif .bar {
   position: relative;
@@ -664,7 +675,24 @@ sub {
     height: 113.44px;
     width: 80px;
 }
-
+.sidebutton-bar{
+  width: 60px;
+  padding: 2px;
+  right: 0;
+  top: 0;
+  position: absolute;
+  height: 100%;
+}
+@media (min-width: 960px){
+  .sidebutton-bar{
+    right: 340px;
+  }
+}
+md-button.md-fab.sidebutton{
+  height: 45px;
+  width: 45px;
+  border-radius: 50%;
+}
 /*Pic anim*/
 /*.player-active::before, .player-active::after {
   position: absolute;

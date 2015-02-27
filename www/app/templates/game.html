@@ -114,14 +114,16 @@
                     </ul>
                 </div>
             </div>
-            <md-button class="md-fab md-fab-bottom-left md-primary" aria-label="Scores" style="position:fixed;" ng-click="toggleScores()">
-                <md-icon icon="assets/img/scoreicon.svg" style="width: 24px; height: 24px;">
-                </md-icon>
-            </md-button>
-            <md-button class="md-fab md-fab-top-right md-primary" aria-label="Scores" style="position:fixed;" ng-click="toggleRight()" hide-md>
-                <md-icon icon="assets/img/ic_chat_24px.svg" style="width: 24px; height: 24px;">
-                </md-icon>
-            </md-button>
+            <div class='sidebutton-bar'>
+                <md-button class="md-fab md-primary sidebutton" aria-label="Scores" style="position:fixed;" ng-click="toggleScores()">
+                    <md-icon icon="assets/img/scoreicon.svg" style="width: 24px; height: 24px;">
+                    </md-icon>
+                </md-button>
+                <md-button class="md-fab md-primary sidebutton" aria-label="Scores" style="position:fixed;" ng-click="toggleRight()" hide-md>
+                    <md-icon icon="assets/img/ic_chat_24px.svg" style="width: 24px; height: 24px;">
+                    </md-icon>
+                </md-button>
+            </div>
         </div>
     <md-sidenav class="md-sidenav-right md-whiteframe-z2" component-id="right" is-locked-open="$media('md')" flex ng-show="ready" layout="vertical" layout-fill style="max-height:100%!important; background-color: #f6f6f6;">
         <md-toolbar class="chat-head">
