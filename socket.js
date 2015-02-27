@@ -89,7 +89,6 @@ module.exports = function (app, server){
                         player.image = data.user.image;
                         player.type = data.user.type;
                     }
-                    console.log(player);
                     if(gamex.gamePaused){
                             for (var i = gamex.players.length - 1; i >= 0; i--) {
                                 if(gamex.players[i].id == undefined){
@@ -116,7 +115,7 @@ module.exports = function (app, server){
                                         io.sockets.connected[socket.id].emit('GAME', {'data' : gamex});
                                     });
                                 }else{
-                                    io.sockets.in(roomId).emit('RECONNECTED', {'id' : player.id});
+                                    io.sockets.connected[gamex.players[i].id].emit('RECONNECTED', {'id' : player.id});
                                 }
                             };
                         return false;
