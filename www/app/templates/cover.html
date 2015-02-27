@@ -1,7 +1,12 @@
 <div class="bgblack"></div>
 <div class='wide window-container screen screen1'>
 	<!-- <div class='left-col'> -->
+	<md-button class="back-button" aria-label="goBack">
+                <md-icon icon="assets/img/ic_arrow_back_24px.svg" style="width: 24px; height: 24px;">
+                </md-icon>
+    </md-button>
 		<div flex layout="vertical" class="center profile item"  ng-click="showProfile()">
+
 			<div flex class="item-body">
 				<div class="profile-info" ng-if="loggedIn">
 					<profile-info content="profile"></profile-info>
@@ -14,77 +19,136 @@
 			</div>
 			<div class="item-bar">
 				<div flex>Profile</div>
-				<md-icon icon="assets/img/ic_send_24px.svg"></md-icon>
+				<md-icon  class = "next-icon-small" icon="assets/img/ic_send_24px.svg"></md-icon>
 			</div>
 		</div>
 		<div flex layout="vertical" class="leaderboard item">
-			<div flex class="item-body"></div>
-			<div class="item-bar">
+			<div flex class="item-body">
+				<div class='game-logo' ng-style="getGameLogo('leaderboard')"></div>
+				<div class="internal-slider-1 md-whiteframe-z2">
+					Leaderboard
+				</div>
+			</div>
+			<div class="item-bar md-whiteframe-z2">
 				<div flex>Leaderboard</div>
-				<md-icon icon="assets/img/ic_send_24px.svg"></md-icon>
+				<md-icon  class = "next-icon-small" icon="assets/img/ic_send_24px.svg"></md-icon>
 			</div>
 		</div>
 		<div flex layout="vertical" class="aboutus item">
-			<div flex class="item-body"></div>
+			<div flex class="item-body">
+				<div class='game-logo' ng-style="getGameLogo('aboutus')"></div>
+				<div class="internal-slider-1">
+					Ankit hi dude hai!
+				</div>
+			</div>
 			<div class="item-bar">
 				<div flex>About Us</div>
-				<md-icon icon="assets/img/ic_send_24px.svg"></md-icon>
+				<md-icon  class = "next-icon-small" icon="assets/img/ic_send_24px.svg"></md-icon>
 			</div>
 		</div>
-		<div flex layout="vertical" class="game-325 item" ng-class="className" ng-click="changeClass('game-325')" hero-id="game-325">
-			<div flex class="item-body" ></div>
+		<div flex layout="vertical" class="game-325 item">
+			<div flex class="item-body" >
+				<div class='game-logo' ng-style="getGameLogo('game-325')"></div>
+				<div class="internal-slider-1 md-whiteframe-z1" ng-click="changeClass('game-325')">
+					Click on slider to start game
+				</div>
+			</div>
 			<div class="item-bar">
 				<div flex>Teen Do Paanch</div>
-				<md-icon icon="assets/img/ic_send_24px.svg"></md-icon>
+				<md-icon  class = "next-icon-small" icon="assets/img/ic_send_24px.svg"></md-icon>
 			</div>
 		</div>
 		<div flex layout="vertical" class="game-29 item">
-			<div flex class="item-body"></div>
+			<div flex class="item-body">
+				<div class='game-logo' ng-style="getGameLogo('game-29')"></div>
+				<div class="internal-slider-1">
+					Internal Slider
+				</div>
+				<div class="coming-soon md-whiteframe-z1">COMING SOON!</div>
+			</div>
 			<div class="item-bar">
 				<div flex>Twenty-nine</div>
-				<md-icon icon="assets/img/ic_send_24px.svg"></md-icon>
+				<md-icon  class = "next-icon-small" icon="assets/img/ic_send_24px.svg"></md-icon>
 			</div>
 		</div>
 		<div flex layout="vertical" class="game-7 item">
-			<div flex class="item-body"></div>
+			<div flex class="item-body">
+				<div class='game-logo' ng-style="getGameLogo('game-7')"></div>
+				<div class="internal-slider-1">
+					Internal Slider
+				</div>
+				<div class="coming-soon md-whiteframe-z1">COMING SOON!</div>
+			</div>
 			<div class="item-bar">
 				<div flex>Satti Center</div>
-				<md-icon icon="assets/img/ic_send_24px.svg"></md-icon>
+				<md-icon  class = "next-icon-small" icon="assets/img/ic_send_24px.svg"></md-icon>
 			</div>
 		</div>
 		<div flex layout="vertical"  class="game-hearts item">
-			<div flex class="item-body"></div>
+			<div flex class="item-body">
+				<div class='game-logo' ng-style="getGameLogo('game-hearts')"></div>
+				<div class="internal-slider-1">
+					Internal Slider
+				</div>
+				<div class="coming-soon md-whiteframe-z1">COMING SOON!</div>
+			</div>
 			<div class="item-bar">
 				<div flex>Hearts</div>
-				<md-icon icon="assets/img/ic_send_24px.svg"></md-icon>
+				<md-icon  class = "next-icon-small" icon="assets/img/ic_send_24px.svg"></md-icon>
 			</div>
 		</div>
 		<div flex layout="vertical" class="game-10pakad item">
-			<div flex class="item-body"></div>
+			<div flex class="item-body">
+				<div class='game-logo' ng-style="getGameLogo('game-10pakad')"></div>
+				<div class="internal-slider-1">
+					Internal Slider
+				</div>
+				<div class="coming-soon md-whiteframe-z1">COMING SOON!</div>
+			</div>
 			<div class="item-bar">
 				<div flex>Dehla Pakad</div>
-				<md-icon icon="assets/img/ic_send_24px.svg"></md-icon>
+				<md-icon  class = "next-icon-small" icon="assets/img/ic_send_24px.svg"></md-icon>
 			</div>
 		</div>
 		<div flex layout="vertical" class="game-a item">
-			<div flex class="item-body"></div>
+			<div flex class="item-body">
+				<div class='game-logo' ng-style="getGameLogo('game-a')"></div>
+				<div class="internal-slider-1">
+					Game Statistics appear here.
+				</div>
+			</div>
 			<div class="item-bar">
-				<div flex>Game on demand</div>
-				<md-icon icon="assets/img/ic_send_24px.svg"></md-icon>
+				<div flex>Game Statistics</div>
+				<md-icon  class = "next-icon-small" icon="assets/img/ic_send_24px.svg"></md-icon>
 			</div>
 		</div>
 		<div flex layout="vertical" class="game-b item">
-			<div flex class="item-body"></div>
+			<div flex class="item-body">
+				<div class='game-logo' ng-style="getGameLogo('game-b')"></div>
+				<div class="internal-slider-1" style="font-size:28px;">
+					Tell us your favorite card game, and we'll make for you first!
+					<div style="padding-left: 80px; padding-top: 20px;">
+					<md-radio-group class='favgame-select' ng-model="favgame">
+				      <md-radio-button value="game-29">Game 29</md-radio-button>
+				      <md-radio-button value="game-hearts"> Hearts </md-radio-button>
+				      <md-radio-button value="game-10pakad">Dehla Pakad</md-radio-button>
+				      <md-radio-button value="game-7">Satti Center</md-radio-button>
+				    </md-radio-group>
+				    </div>
+				</div>
+			</div>
 			<div class="item-bar">
-				<div flex>Dude's Special</div>
-				<md-icon icon="assets/img/ic_send_24px.svg"></md-icon>
+				<div flex>Game on demand!</div>
+				<md-icon  class = "next-icon-small" icon="assets/img/ic_send_24px.svg"></md-icon>
 			</div>
 		</div>
 		<div flex layout="vertical" class="game-c item">
-			<div flex class="item-body"></div>
+			<div flex class="item-body">
+				<div class='game-logo' ng-style="getGameLogo('game-c')"></div>
+			</div>
 			<div class="item-bar">
-				<div flex>For our very own DevD</div>
-				<md-icon icon="assets/img/ic_send_24px.svg"></md-icon>
+				<div flex>Discuss here!</div>
+				<md-icon  class = "next-icon-small" icon="assets/img/ic_send_24px.svg"></md-icon>
 			</div>
 		</div>
 </div> 
@@ -124,7 +188,7 @@
 		    if($(this).find(".item-ink").length === 0){
 		        $(this).prepend("<span class='item-ink'></span>");
 		    }
-		         
+		    
 		    ink = $(this).find(".item-ink");
 		    ink.removeClass("ripple-animate");
 		     
@@ -137,6 +201,17 @@
 		    y = e.pageY - $(this).offset().top - ink.height()/2;
 		     
 		    ink.css({top: y+'px', left: x+'px'}).addClass("ripple-animate");
+
+		  });
+		  $(".item").click(function(e){
+		  	if(!$(this).hasClass("expanded")){
+		    	$(this).addClass("expanded");	
+		    	$(this.parentNode).addClass("selectiondone");
+		    }
+		});
+		  $('.back-button').click(function(e){
+		  		$(this.parentNode).removeClass("selectiondone");
+		  		$('.expanded').removeClass('expanded');
 		  });
   });
 </script>

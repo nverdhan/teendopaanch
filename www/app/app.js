@@ -1,6 +1,6 @@
 // var game325 = angular.module('game325', ['ng','ui.router','ngAria','ngMaterial','ngAnimate','btford.socket-io','ngAnimate','alAngularHero']);
 
-var game325 = angular.module('game325', ['ng','ui.router','ngAria','ngMaterial','ngAnimate','btford.socket-io','ngAnimate', 'ngCookies', 'alAngularHero']);
+var game325 = angular.module('game325', ['ng','ui.router','ngAria','ngMaterial','ngAnimate','btford.socket-io','ngAnimate', 'ngCookies']);
 // var game325 = angular.module('game325', ['ng','ui.router','ngAr?ia','ngMaterial','ngAnimate','btford.socket-io','ngAnimate', 'ngCookies']);
 
 game325.constant('AUTH_EVENTS', {
@@ -285,6 +285,7 @@ game325.directive('showScores', ['$compile', function($compile){
 game325.directive('profileInfo', ['$compile', function ($compile){
   var x = function(content){
     var content = content.content;
+    console.log(content);
     if(content.type == 'local'){
         content.backgroundPosition = 45*content.image+'px 0px';
         content.image = '/assets/img/avatars.png';

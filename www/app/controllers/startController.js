@@ -111,7 +111,7 @@ game325.controller('coverController', ['$rootScope', '$http', '$scope', '$state'
   $scope.className='';
   $scope.showLoggedInOptions = false;
   $scope.changeClass = function(a){
-    // $scope.className = 'hero';
+    // $scope.className = 'expanded';
     if(a == 'game-325'){
       var req = {};
         if(Session.name && Session.type != 'local'){
@@ -121,6 +121,73 @@ game325.controller('coverController', ['$rootScope', '$http', '$scope', '$state'
             $state.go('game/:id', {id : res.data.roomId, type : res.data.type});      
           });
         }
+    }
+  }
+
+  $scope.getGameLogo = function(className){
+    var logoimg = '';
+    var w = 80;
+    var h = 80;
+    var t = -40;
+
+    switch(className){
+      case 'aboutus':
+        logoimg = 'about-us.png';
+        w = 120;
+        h = 120;
+        break;
+      case 'leaderboard':
+        logoimg = 'leaderboard.png';
+        w= 200;
+        h= 200;
+        break;
+      case 'game-325':
+        logoimg = '325img.svg';
+        w = 200;
+        h = 200;
+        break;
+      case 'game-hearts':
+        logoimg = 'hearts.png';
+        break;
+      case 'game-29':
+        logoimg = 'game-29.png';
+        w = 120;
+        h = 120;
+        break;
+      case 'game-7':
+        logoimg = 'satti-center.png';
+        break;  
+      case 'game-10pakad':
+        logoimg = '10-pakad.png';
+        w = 120;
+        h = 120;
+        break;
+      case 'game-a':
+        logoimg = 'game-stats.png';
+        w = 100;
+        h = 100;
+        break;
+      case 'game-c':
+        logoimg = 'discuss.png';
+        w = 120;
+        h = 120;
+        break;
+      case 'game-b':
+        logoimg = 'demand.png';
+        break;
+      default: 
+        logoimg = 'ankit.jpg';
+        w = 80;
+        h = 80;
+        t = 0;
+        break;
+    }
+    logoimg = '../../assets/img/' + logoimg;
+    return{
+      'background-image' : 'url('+logoimg+')',
+      'width' : w+'px',
+      'height' : h + 'px',
+      'top' : t + 'px'
     }
   }
   $scope.joinGameRoomId = '';

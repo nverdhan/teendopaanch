@@ -28,31 +28,42 @@
     background-color: tomato;
     flex: 0 0 auto;
     align-self: start;
-    /*margin: 5px 5px;*/
     border: 5px solid #424242;
-    /*min-width: 200px;*/
-    /*min-height: 100px;*/
     height: 33.33333%;
     width: 16.66665%;
     order: 200;
 }
 .wide .profile{
+    position: absolute;
     order: 1;
+    top: 0;
+    left: 0;
 }
 
 .wide .aboutus{
+    position: absolute;
     order: 2;
+    top: 0;
+    left: 16.6666665%;
 }
 .wide .game-325{
+    top: 0;
+    left: 33.333333%;
+    position: absolute;
     order: 3;
     width: 33.3333%;
     height: 66.6666%;
 }
 .wide .game-10pakad{
+    position: absolute;
     order: 4;
+    top: 0;
+    left: 66.666666%;
 }
 .wide .game-7{
     order: 5;
+    top: 0;
+    left: 83.333333%;
 }
 .wide .leaderboard{
     position: absolute;
@@ -62,7 +73,7 @@
     width: 33.3333%;
     height: 66.6666%;
 }
-.wide .game-29{
+.wide .game-a{
     position: absolute;
     left: 66.6666%;
     top:66.66666%;
@@ -70,27 +81,27 @@
     order:11;
 }
 
-.wide .game-hearts{
+.wide .game-b{
     position: absolute;
     left: 33.3333%;
     top:66.66666%;
     order:7;
 }
-.wide .game-a{
+.wide .game-c{
     position: absolute;
     left: 49.99999983%;
     top:66.66666%;
     order:9;
 }
 
-.wide .game-b{
+.wide .game-hearts{
     position: absolute;
     left: 83.333333335%;
     top:33.33333335%;
     order:10;
 }
 
-.wide .game-c{
+.wide .game-29{
     position: absolute;
     left: 66.666666%;
     top:33.333333%;
@@ -102,49 +113,52 @@
 .profile .item-bar, .game-325 .item-bar{
     background-color: #ff5252;
 }
-.game-b{
+.game-hearts{
     background-color: #CE93D8;
     }
-.game-b .item-bar{
-    background-color: ;
+.game-hearts .item-bar, .game-hearts .coming-soon{
+    background-color: #AB47BC   ;
 }
-.game-10pakad, .game-hearts{
+.game-10pakad, .game-b{
     background-color: #b9f6ca;
 }
-.game-10pakad .item-bar, .game-hearts .item-bar{
+.game-10pakad .item-bar, .game-b .item-bar,.game-10pakad .coming-soon{
     background-color: #1de9b6;
     color: #424242;
 }
 .game-7, .game-a{
     background-color: #FFF59D;
 }
-.game-7 .item-bar, .game-a .item-bar{
+.game-7 .item-bar, .game-a .item-bar, .game-7 .coming-soon{
     background-color: #ffeb3b;
     color: #424242;
 }
-.leaderboard, .game-c{
+.leaderboard, .game-29{
     background-color: #f5f5f5;
 }
-.leaderboard .item-bar, .game-c .item-bar{
+.leaderboard .item-bar, .game-29 .item-bar, .game-29 .coming-soon{
     background-color: #999999;
 }
-.game-29, .aboutus{
+.game-c, .aboutus{
     background-color: #80D8FF;
 }
-.game-29 .item-bar, .aboutus .item-bar{
+.game-c .item-bar, .aboutus .item-bar{
     background-color: #2196F3;
 }
 .item-body{
     /*background-color: yellow;*/
 }
 .item-bar{
+    width: 100%;
     display: flex;
-    flex-flow: row nowrap;
-    align-items: center;
+    flex-flow: row wrap;
+    align-items: flex-start;
     height: 48px;
-    padding: 0 16px;
+    padding: 16px;
     font-size: 14px;
     color: #f5f5f5;
+    z-index: 3;
+    transition-delay: 0.2s;
 }
 .item-bar>md-icon{
     display: inline-block;
@@ -158,6 +172,7 @@
   text-decoration:none;
   position:relative;
   overflow:hidden;
+  transition-delay: 1s;
   -webkit-transition: all 0.2s ease;
   -moz-transition: all 0.2s ease;
   -o-transition: all 0.2s ease;
@@ -216,34 +231,156 @@
 .hero-transition.ng-leave {
     visibility: visible;
 }
-.page-transition.ng-enter .screen2 p, .page-transition.ng-enter .screen3 p, .page-transition.ng-enter .screen4 .list {
-    opacity: 0;
-    transition: transform 300ms ease-in-out 0s;
-}
-.page-transition.ng-enter.ng-enter-active .screen2 p, .page-transition.ng-enter.ng-enter-active .screen3 p, .page-transition.ng-enter.ng-enter-active .screen4 .list {
-    opacity: 1;
-    transform: none;
-    transition-delay: 200ms;
-}
-.page-transition.ng-enter .screen2 p {
-    transform: scale(0.6);
-}
-.page-transition.ng-enter .screen3 p {
-    transform: translate3d(0px, -200px, 0px);
-}
-.page-transition.ng-enter .screen4 .list {
-    transform: translate3d(0px, 100px, 0px);
-}
-.screen {
-    bottom: 0;
-    left: 0;
-    padding: 16px;
+.game-logo{
+    margin: auto;
     position: absolute;
-    right: 0;
+    /*width: 150px;*/
+    bottom: 0;
     top: 0;
+    left: 0;
+    right: 0;
+    height: 150px; 
+    max-width: 100%;
+    background-image: url('../../assets/img/29back.png');
+    background-position: 50% 50%;
+    background-size: cover!important;
+    z-index: 2;
+    opacity: 1;
+    transition-delay: 0.2s;
+    -webkit-transition: opacity 0.2s;
+    -moz-transition: opacity 0.2s;
+    -o-transition: opacity 0.2s;
+    transition: opacity 0.2s;
+
 }
-.screen1 {
-    overflow-y: scroll;
-    padding: 0;
+.item.expanded{
+    height: 100%!important;
+    width: 100%!important;
+    position: absolute!important;
+    left: 0!important;
+    top: 0!important; 
+    z-index: 10;
+    transition-delay: 0.2s;
+}
+.expanded .item-bar{
+    width: 40%;
+    margin: 0 auto;
+    -webkit-transition: all 0.1s ease;
+    -moz-transition: all 0.1s ease;
+    -o-transition: all 0.1s ease;
+    transition: all 0.1s ease;
+    transition-delay: 0.2s;
+}
+.back-button{
+    border-radius: 50% !important;
+    position: fixed;
+    left: -20px;
+    top: 5px;
+    width: 45px;
+    z-index: 12;
+    opacity: 0;
+    visibility: hidden; 
+    transition-delay: 0.2s;
+    -webkit-transition: all 0.2s ease;
+    -moz-transition: all 0.2s ease;
+    -o-transition: all 0.2s ease;
+    transition: all 0.2s ease;   
+}
+.selectiondone .back-button{
+    left: 5px;
+    visibility: visible;
+    opacity: 1;
+    transition-delay: 0.2s;
+}
+.expanded .game-logo{
+    opacity: 0;
+    transition-delay: 0.2s;
+    -webkit-transition: opacity 0.2s;
+    -moz-transition: opacity 0.2s;
+    -o-transition: opacity 0.2s;
+    transition: opacity 0.2s;      
+}
+.internal-slider-1{
+    width: 30%;
+    height: 80%;
+    position: absolute;
+    margin: 0 auto;
+    left: 35%;
+    top: 100%;
+    z-index: 2;
+    /*background-color: rgba(0,0,0,0.01);*/
+    -webkit-transition: all 0.2s ease;
+    -moz-transition: all 0.2s ease;
+    -o-transition: all 0.2s ease;
+    transition: all 0.2s ease;  
+    font-size: 40pt;
+    font-weight: 400;
+    text-align: center;
+    color: #424242;
 }
 
+.expanded .internal-slider-1{
+    width: 30%;
+    height: 80%;
+    top: 20%;
+    transition-delay: 0.3s;
+}
+.leaderboard.expanded .internal-slider-1 {
+    background-color: #E0E0E0;
+    font-size: 25pt;
+    padding: 12px;
+}
+.next-icon-small{
+    opacity: 1;
+    visibility: visible;
+    transition-delay: 0.2s;
+}
+.expanded .next-icon-small{
+    opacity: 0;
+    visibility: hidden;
+}
+md-radio-group.favgame-select{
+    border:none!important;
+    font-size: 16pt;
+    text-align: left;
+}
+.profile .profile-info{
+    padding-top: 40px;
+    padding-left: 12px;
+    padding-right: 12px;
+    padding-bottom: 12px;
+}
+.coming-soon{
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background-color: white;
+    color: black;
+    font-size: 11px;
+    position: absolute;
+    right: 5px;
+    top: 5px;
+    z-index: 13;
+    text-align: center;
+    padding: 19px 0 0 0;
+    cursor: pointer;
+    -webkit-transform:scale(1);
+     -moz-transform:scale(1);
+       -o-transform:scale(1);
+          transform:scale(1);
+    transition-delay: 0s;
+    -webkit-transition: all 0.3s;
+    -moz-transition: all 0.3s;
+    -o-transition: all 0.3s;
+    transition: all 0.3s; 
+
+}
+.expanded .coming-soon{
+    right: 70%;
+    top: 20%;
+    transition-delay: 0.2s;
+    -webkit-transform:scale(2);
+     -moz-transform:scale(2);
+       -o-transform:scale(2);
+          transform:scale(2);
+}
