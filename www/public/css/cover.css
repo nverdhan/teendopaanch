@@ -19,19 +19,28 @@
     flex-flow: row wrap;
     justify-content: start;
     align-items: stretch;
-    font-family: 'Roboto';
+    /*font-family: 'Roboto';
     font-style: normal;
-    font-weight: 500;
+    font-weight: 500;*/
     /*overflow-x: hidden;*/
 }
 .item{
-    background-color: tomato;
     flex: 0 0 auto;
     align-self: start;
     border: 5px solid #424242;
     height: 33.33333%;
     width: 16.66665%;
     order: 200;
+    border: 5px solid #424242;
+}
+.window-container{
+    overflow: hidden;   
+}
+
+.win-loaded .item{
+    margin: 0 0;
+}
+.preload .item{
 }
 .wide .profile{
     position: absolute;
@@ -39,12 +48,18 @@
     top: 0;
     left: 0;
 }
+.preload .profile{
+    margin-left: 100%;
+}
 
 .wide .aboutus{
     position: absolute;
     order: 2;
     top: 0;
     left: 16.6666665%;
+}
+.preload .aboutus{
+    margin-left: 116%;
 }
 .wide .game-325{
     top: 0;
@@ -54,16 +69,25 @@
     width: 33.3333%;
     height: 66.6666%;
 }
+.preload .game-325{
+    margin-top: 133%;
+}
 .wide .game-10pakad{
     position: absolute;
     order: 4;
     top: 0;
     left: 66.666666%;
 }
+.preload .game-10pakad{
+    margin-left: 166.66%;
+}
 .wide .game-7{
     order: 5;
     top: 0;
     left: 83.333333%;
+}
+.preload .game-7{
+    margin-left: 183.333%;
 }
 .wide .leaderboard{
     position: absolute;
@@ -73,6 +97,9 @@
     width: 33.3333%;
     height: 66.6666%;
 }
+.preload .leaderboard{
+    margin-top: 100%;
+}
 .wide .game-a{
     position: absolute;
     left: 66.6666%;
@@ -80,12 +107,17 @@
     width: 33.33333%;
     order:11;
 }
-
+.preload .game-a{
+    margin-left: 200%;
+}
 .wide .game-b{
     position: absolute;
     left: 33.3333%;
     top:66.66666%;
     order:7;
+}
+.preload .game-b{
+    margin-top: 500%;
 }
 .wide .game-c{
     position: absolute;
@@ -93,12 +125,17 @@
     top:66.66666%;
     order:9;
 }
-
+.preload .game-c{
+    margin-top: 1000%;
+}
 .wide .game-hearts{
     position: absolute;
     left: 83.333333335%;
     top:33.33333335%;
     order:10;
+}
+.preload .game-hearts{
+    margin-left: 600%; 
 }
 
 .wide .game-29{
@@ -106,6 +143,9 @@
     left: 66.666666%;
     top:33.333333%;
     order:8;
+}
+.preload .game-29{
+    margin-top: 100%;
 }
 .profile, .game-325{
     background-color: #ff8a80;
@@ -210,27 +250,6 @@
     100% {opacity: 0; transform: scale(2.5);}
 }
 
-.page-transition.ng-enter, .page-transition.ng-leave {
-    bottom: 0;
-    left: 0;
-    position: absolute;
-    right: 0;
-    top: 0;
-    transform-style: preserve-3d;
-    transition: opacity 500ms ease-in-out 0s;
-}
-.page-transition.ng-enter, .page-transition.ng-leave.ng-leave-active {
-    opacity: 0;
-}
-.page-transition.ng-enter.ng-enter-active {
-    opacity: 1;
-}
-.hero-transition.hero-leave {
-    visibility: hidden;
-}
-.hero-transition.ng-leave {
-    visibility: visible;
-}
 .game-logo{
     margin: auto;
     position: absolute;
@@ -291,6 +310,9 @@
     visibility: visible;
     opacity: 1;
     transition-delay: 0.2s;
+}
+.back-button:hover{
+    background-color: rgba(0,0,0,0)!important;
 }
 .expanded .game-logo{
     opacity: 0;

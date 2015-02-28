@@ -1376,6 +1376,9 @@ game325.controller('gameController', ['$rootScope', '$http', '$scope', '$state',
             };
         }
     }
+    $scope.exitGame = function(){
+        console.log('exit game request!');
+    }
 }])
 game325.directive('ngEnter', function() {
         return function(scope, element, attrs) {

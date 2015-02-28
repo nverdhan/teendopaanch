@@ -26,7 +26,7 @@
     <!-- Ank -->
     <script type="text/javascript" src="public/js/angular-ui-router.min.js"></script>
     <script type="text/javascript" src="public/js/socket.min.js"></script>
-    <link href='http://fonts.googleapis.com/css?family=Merriweather' rel='stylesheet' type='text/css'>
+    <!-- <link href='http://fonts.googleapis.com/css?family=Merriweather' rel='stylesheet' type='text/css'> -->
     <link href='http://fonts.googleapis.com/css?family=Roboto:400,500,700' rel='stylesheet' type='text/css'>
     <script type="text/javascript" src="app/app.js"></script>
     <script type="text/javascript" src="app/config.js"></script>
@@ -47,6 +47,6 @@
     <!--div class="lightbox" id="searchDialog" ng-class="{true: 'open'}[searchDialogVisible]"></div-->
 </div>
     <div class='bckimg' ng-hide="uiRouterState.current.name == 'cover'"> </div>
-    <div flex class="content page-transition hero-transition" ng-view ui-view></div>
-    <div class="view-main" ></div> 
+    <div flex class="content" ng-view ui-view></div>
+    <!-- <div class="view-main" ></div>  -->
 </body>

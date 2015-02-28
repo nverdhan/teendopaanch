@@ -41,7 +41,7 @@
                             <a class="card back"></a>
                         </li>
                     </ul> -->
-                    <div class="statistics">{{ arrPlayers[1].handsToMake }} / {{ arrPlayers[1].handsMade }}</div>
+                    <div class="statistics">{{ arrPlayers[1].handsMade }} / {{ arrPlayers[1].handsToMake }} </div>
                 </div>
                 <div class="right-player playingCards" ng-style="getPlayerCardsCSS(2);">
                     <div class="right-player-profile players-profile">
@@ -62,7 +62,7 @@
                             <a class="card back"></a>
                         </li>
                     </ul-->
-                    <div class="statistics">{{ arrPlayers[2].handsToMake }} / {{ arrPlayers[2].handsMade }}</div>
+                    <div class="statistics">{{ arrPlayers[2].handsMade }} / {{ arrPlayers[2].handsToMake }} </div>
                 </div>
                 <div class="bottom-player playingCards simpleCards firstperson" ng-style="getPlayerCardsCSS(0);">
                     <!--div class="card-to-play"></div-->
@@ -72,7 +72,7 @@
                             </a>
                         </li>
                     </ul-->
-                    <div class="statistics">{{ arrPlayers[0].handsToMake }} / {{ arrPlayers[0].handsMade }}</div>
+                    <div class="statistics">{{ arrPlayers[0].handsMade }} / {{ arrPlayers[0].handsToMake }} </div>
                 </div>
                 <!--div class="set-trump playingCards simpleCards" ng-show="gameState == 'SET_TRUMP' && playerId == activePlayerId" ng-style="getTrumpDivCSS()"-->
                     <!--ul class="table trump-ul" style="width:100%;"-->
@@ -115,14 +115,19 @@
                 </div>
             </div>
             <div class='sidebutton-bar'>
-                <md-button class="md-fab md-primary sidebutton" aria-label="Scores" style="position:fixed;" ng-click="toggleScores()">
+                <md-button class="md-fab sidebutton exitgame" aria-label="Scores" style="position:fixed;" ng-click="exitGame()">
+                    <md-icon icon="assets/img/ic_close_24px.svg" style="width: 24px; height: 24px;">
+                    </md-icon>
+                </md-button>
+                <md-button class="md-fab sidebutton showscore" aria-label="Scores" style="position:fixed;" ng-click="toggleScores()">
                     <md-icon icon="assets/img/scoreicon.svg" style="width: 24px; height: 24px;">
                     </md-icon>
                 </md-button>
-                <md-button class="md-fab md-primary sidebutton" aria-label="Scores" style="position:fixed;" ng-click="toggleRight()" hide-md>
+                <md-button class="md-fab sidebutton chat" aria-label="Scores" style="position:fixed;" ng-click="toggleRight()" hide-md>
                     <md-icon icon="assets/img/ic_chat_24px.svg" style="width: 24px; height: 24px;">
                     </md-icon>
                 </md-button>
+                <div class="ball selfprofile sidebutton" ng-style="getProfilePic(0);" ng-class="{'player-active':arrPlayers[0].id == activePlayerId}"></div>
             </div>
         </div>
     <md-sidenav class="md-sidenav-right md-whiteframe-z2" component-id="right" is-locked-open="$media('md')" flex ng-show="ready" layout="vertical" layout-fill style="max-height:100%!important; background-color: #f6f6f6;">

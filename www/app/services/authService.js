@@ -35,7 +35,7 @@ game325.factory('AuthService', ['$http','$rootScope', 'Session','$window','$cook
     				})
     }
     authService.isAuthenticated = function(){
-    	console.log($cookieStore.get('userid'));
+    	// console.log($cookieStore.get('userId'));
     	if($cookieStore.get('userId') != 'anon'){
     		return true;
     	}else{

@@ -243,9 +243,17 @@ game325.config(['$httpProvider', function ($httpProvider) {
 game325.directive('showScores', ['$compile', function($compile){
     var a = function(content){
         var content = content.content;
+        console.log(content);
+        if(content.type == 'local'){
+                content.userPic = '/assets/img/avatars.png';
+                content.backgroundPosition = 45*content.image+'px 0px';
+            }else{
+                content.userPic = content.image;
+                content.backgroundPosition = '50% 50%';
+            }
         var x = '<md-item>'+
         '<md-item-content>'+
-          '<div class="md-tile-left ball" style="background: #fff url('+content.img+') no-repeat center center; background-size: cover; margin-right:10px;">'+
+          '<div class="md-tile-left ball" style="background: #fff url('+content.userPic+');background-position:'+content.backgroundPosition+'; background-size: cover; margin-right: 0;">'+
           '</div>'+
           '<div class="md-tile-content">'+
             '<div layout="horizontal">'+
@@ -285,7 +293,7 @@ game325.directive('showScores', ['$compile', function($compile){
 game325.directive('profileInfo', ['$compile', function ($compile){
   var x = function(content){
     var content = content.content;
-    console.log(content);
+    // console.log(content);
     if(content.type == 'local'){
         content.backgroundPosition = 45*content.image+'px 0px';
         content.image = '/assets/img/avatars.png';

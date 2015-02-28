@@ -1,5 +1,5 @@
 <div class="bgblack"></div>
-<div class='wide window-container screen screen1'>
+<div class='wide window-container preload'>
 	<!-- <div class='left-col'> -->
 	<md-button class="back-button" aria-label="goBack">
                 <md-icon icon="assets/img/ic_arrow_back_24px.svg" style="width: 24px; height: 24px;">
@@ -182,7 +182,19 @@
 </div>
 </div>
 <script type="text/javascript">
+
+
 	  $( document ).ready(function(){
+	  	
+	  	if($(".window-container").hasClass('preload')){	
+	  		setTimeout(function() {
+      			$(".window-container").removeClass("preload");
+  				$(".window-container").addClass("win-loaded");
+  				console.log('loaded-2');
+			}, 1);
+			console.log('timeout set');
+  		}
+	  	
 		  var ink, d, x, y;
 		  $(".item").mouseup(function(e){
 		    if($(this).find(".item-ink").length === 0){
