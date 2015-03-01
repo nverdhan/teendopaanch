@@ -12,7 +12,7 @@ game325.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', fun
         .state('home', {
             url : '/home', // this was / nv
             controller : 'startController',
-            templateUrl : 'app/templates/home.html',
+            templateUrl : 'app/templates/homenew.html',
                 data : {
                     requiresAuth : true
                 }

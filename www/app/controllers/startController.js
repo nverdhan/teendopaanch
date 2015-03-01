@@ -48,6 +48,11 @@ game325.controller('startController', ['$http', '$scope', 'startGameService','$s
           $state.go('game/:id/:type', {id : res.data.roomId, type : res.data.type});      
         });
     }
+    $scope.goToCover = function(){
+      setTimeout(function(){
+        $state.go('cover');
+      }, 0);
+    }
     $scope.joinGame = function(){
         var req = {
             roomId : $scope.joinGameRoomId
@@ -110,6 +115,13 @@ game325.controller('errDialogController',['$scope', '$mdDialog', function($scope
 game325.controller('coverController', ['$rootScope', '$http', '$scope', '$state', '$stateParams','AuthService', 'startGameService' ,'gameService', 'socket', '$timeout', 'delayService', '$mdSidenav', '$anchorScroll', '$location', '$mdDialog','$cookieStore','AUTH_EVENTS','Session', function ($rootScope, $http, $scope, $state, $stateParams, AuthService, startGameService, gameService, socket, $timeout ,delayService, $mdSidenav, $anchorScroll, $location, $mdDialog, $cookieStore, AUTH_EVENTS, Session){
   $scope.className='';
   $scope.showLoggedInOptions = false;
+
+  $scope.start325Game = function(){
+    setTimeout(function(){
+      $state.go('home');
+    },800)
+    
+  }
   $scope.changeClass = function(a){
     // $scope.className = 'expanded';
     if(a == 'game-325'){
@@ -183,6 +195,11 @@ game325.controller('coverController', ['$rootScope', '$http', '$scope', '$state'
         break;
     }
     logoimg = '../../assets/img/' + logoimg;
+    if(window.innerWidth < 700 || window.innerHeight < 500){
+      w = w/2;
+      h = h/2;
+      t = t/2;
+    }
     return{
       'background-image' : 'url('+logoimg+')',
       'width' : w+'px',
