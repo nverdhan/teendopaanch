@@ -8,6 +8,22 @@
     width: 100%;
     z-index: 1;
 }
+.username >label{
+    transform-origin: center center 0;
+}
+.username >input{
+    width: 100%;
+}
+.md-dialog-container{
+    z-index: 10001;
+}
+md-dialog{
+    z-index: 10002;
+}
+md-backdrop{
+    z-index: 10000;
+}
+
 .window-container{
     position: relative;
     height: 100%;
@@ -365,6 +381,7 @@
     font-weight: 400;
     text-align: center;
     color: #424242;
+    overflow: auto;
 }
 
 .expanded .internal-slider-1{

@@ -1,4 +1,5 @@
-game325.controller('startController', ['$http', '$scope', 'startGameService','$state', 'AuthService' ,'$window' , '$mdDialog', function ($http, $scope, startGameService, $state, AuthService, $window, $mdDialog){
+// game325.controller('startController', ['$http', '$scope', 'startGameService','$state', 'AuthService' ,'$window' , '$mdDialog', function ($http, $scope, startGameService, $state, AuthService, $window, $mdDialog){
+game325.controller('startController', ['$rootScope', '$http', '$scope', '$state', '$stateParams','AuthService', 'startGameService' ,'gameService', 'socket', '$timeout', 'delayService', '$mdSidenav', '$anchorScroll', '$location', '$mdDialog','$cookieStore','AUTH_EVENTS','Session', 'errService', function ($rootScope, $http, $scope, $state, $stateParams, AuthService, startGameService, gameService, socket, $timeout ,delayService, $mdSidenav, $anchorScroll, $location, $mdDialog, $cookieStore, AUTH_EVENTS, Session, errService){
 //     AuthService.get().then(function(res){
 //        console.log(res);
 //         if(res.data.error == "401"){
@@ -8,10 +9,13 @@ game325.controller('startController', ['$http', '$scope', 'startGameService','$s
 //            $state.go('start');
 //         }
 //     });
+    // $scope.showLoggedInOptions = false;
+
     $scope.joinGameRoomId = '';
     $scope.showStartGame = false;
     $scope.showCreateGame = false;
     $scope.showJoinGame = false;
+    $scope.showLoggedInOptions = $rootScope.showLoggedInOptions;
     if($state.current.name == 'start'){
         $scope.showStartGame = true;
     }
@@ -33,6 +37,19 @@ game325.controller('startController', ['$http', '$scope', 'startGameService','$s
     // $scope.twitterAuth = function(){
     //     $window.location.href = "http://127.0.0.1:3000/auth/twitter"
     // }
+      $scope.changeClass = function(a){
+          if(a == 'game-325'){
+            var req = {};
+              if(Session.name && Session.type != 'local'){
+                $scope.showLoggedInOptions = true;
+              }else{
+                startGameService.start(req).then(function(res){
+                  $state.go('game/:id', {id : res.data.roomId, type : res.data.type});      
+                });
+              }
+          }
+        }
+
     $scope.startGame = function(){
         var req = {};
         startGameService.start(req).then(function(res){
@@ -84,27 +101,30 @@ game325.controller('startController', ['$http', '$scope', 'startGameService','$s
         
 
     }
-        $scope.toggleScores = function(ev){
-        // if($scope.showScores == false){
-        //     $scope.showScores = true;
-        // }else{
-        //     $scope.showScores = false;
-        // }
-         $mdDialog.show({
-          // template:
-          //   '<md-dialog>' +
-          //   '    <md-button style="background-color: rgba(241,103,103,1)!important" ng-click="closeDialog()">' +
-          //   '      <i class="fa fa-times" style="float:right;"></i>' +
-          //   '    </md-button>' +
-          //   '  <md-content>Invalid Room!' +
-          //   // '  <div class="md-actions">' +
-            
-          //   // '  </div>' +
-          //   '</md-content></md-dialog>',
-            templateUrl: 'app/templates/scoredialog.html',
-            controller: 'scoreDialogController'
-        });
-    }
+              $scope.loggedIn = false;
+          $scope.profile = {
+              name : '',
+              image : '',
+              backgroundPosition : ''
+          }
+          if(Session.name){
+            $scope.profile.name = Session.name;
+            $scope.loggedIn = true;
+          }
+          if(Session.type == 'local'){
+            $scope.profile.image = '/assets/img/avatars.png';
+            $scope.profile.backgroundPosition = 45*Session.image+'px 0px';
+          }else{
+            $scope.profile.image = Session.image;
+            $scope.profile.backgroundPosition = '50% 50%';
+          }
+          $scope.showProfile = function(){
+            var id = $cookieStore.get('userId');
+            id = JSON.parse(id);
+            if(id.type == 'local'){
+              $rootScope.$broadcast(AUTH_EVENTS.notAuthenticated);
+            }
+          }
 }]);
 
 game325.controller('errDialogController',['$scope', '$mdDialog', function($scope, $mdDialog){
@@ -112,29 +132,35 @@ game325.controller('errDialogController',['$scope', '$mdDialog', function($scope
             $mdDialog.hide();
         };
 }])
-game325.controller('coverController', ['$rootScope', '$http', '$scope', '$state', '$stateParams','AuthService', 'startGameService' ,'gameService', 'socket', '$timeout', 'delayService', '$mdSidenav', '$anchorScroll', '$location', '$mdDialog','$cookieStore','AUTH_EVENTS','Session', function ($rootScope, $http, $scope, $state, $stateParams, AuthService, startGameService, gameService, socket, $timeout ,delayService, $mdSidenav, $anchorScroll, $location, $mdDialog, $cookieStore, AUTH_EVENTS, Session){
+game325.controller('coverController', ['$rootScope', '$http', '$scope', '$state', '$stateParams','AuthService', 'startGameService' ,'gameService', 'socket', '$timeout', 'delayService', '$mdSidenav', '$anchorScroll', '$location', '$mdDialog','$cookieStore','AUTH_EVENTS','Session', 'errService', function ($rootScope, $http, $scope, $state, $stateParams, AuthService, startGameService, gameService, socket, $timeout ,delayService, $mdSidenav, $anchorScroll, $location, $mdDialog, $cookieStore, AUTH_EVENTS, Session, errService){
   $scope.className='';
-  $scope.showLoggedInOptions = false;
+  $scope.showLoggedInOptions  = false;
 
   $scope.start325Game = function(){
+    if(Session.name && Session.type != 'local'){
+          $rootScope.showLoggedInOptions = true;
+        }else{
+          $rootScope.showLoggedInOptions = false;
+        }
+    $scope.showLoggedInOptions = $rootScope.showLoggedInOptions;
     setTimeout(function(){
       $state.go('home');
     },800)
     
   }
-  $scope.changeClass = function(a){
-    // $scope.className = 'expanded';
-    if(a == 'game-325'){
-      var req = {};
-        if(Session.name && Session.type != 'local'){
-          $scope.showLoggedInOptions = true;
-        }else{
-          startGameService.start(req).then(function(res){
-            $state.go('game/:id', {id : res.data.roomId, type : res.data.type});      
-          });
-        }
-    }
-  }
+  // $scope.changeClass = function(a){
+  //   // $scope.className = 'expanded';
+  //   if(a == 'game-325'){
+  //     var req = {};
+  //       if(Session.name && Session.type != 'local'){
+  //         $scope.showLoggedInOptions = true;
+  //       }else{
+  //         startGameService.start(req).then(function(res){
+  //           $state.go('game/:id', {id : res.data.roomId, type : res.data.type});      
+  //         });
+  //       }
+  //   }
+  // }
 
   $scope.getGameLogo = function(className){
     var logoimg = '';

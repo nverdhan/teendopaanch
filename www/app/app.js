@@ -386,7 +386,7 @@ game325.directive('loginDialog', function (AUTH_EVENTS) {
     }
   };
 });
-game325.controller('registerCtrl', ['$rootScope', '$scope','$cookieStore','$window', 'AUTH_EVENTS','Session', function ($rootScope, $scope, $cookieStore, $window, AUTH_EVENTS, Session){
+game325.controller('registerCtrl', ['$rootScope', '$scope','$cookieStore','$window', 'AUTH_EVENTS','Session', 'errService', function ($rootScope, $scope, $cookieStore, $window, AUTH_EVENTS, Session, errService){
     // var id = $cookieStore.get('userId');
     $scope.showLoggedInProfile = false;
     $scope.loginFB = true;
@@ -439,11 +439,19 @@ game325.controller('registerCtrl', ['$rootScope', '$scope','$cookieStore','$wind
     }
     $scope.showNameTooltip = false;
     $scope.register = function (){
-        if($scope.user.name.length == ''){
+        console.log($scope.user);
+        if($scope.user.name.length == '' && $scope.avatars.indexOf($scope.user.image) != -1){
             $scope.showUserError = true;
+            errService.showErrSimple('Please select a username!');
         }
-        if($scope.avatars.indexOf($scope.user.image) == -1){
+        if($scope.avatars.indexOf($scope.user.image) == -1 && $scope.user.name.length != ''){
             $scope.showUserImageError = true;
+            errService.showErrSimple('Please select an avatar!');
+        }
+        if($scope.avatars.indexOf($scope.user.image) == -1 && $scope.user.name.length == ''){
+            $scope.showUserImageError = true;
+            $scope.showUserError = true;
+            errService.showErrSimple('Please select a username and an avatar!');
         }
         if($scope.showUserError || $scope.showUserImageError){
            return false; 

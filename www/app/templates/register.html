@@ -16,19 +16,20 @@
 		<div ng-if="loginAnon && !showLoggedInProfile" flex>
 			<div class="center" style="max-width:289px;">
 				<md-content md-theme="docs-dark" class="md-padding" layout="row" layout-sm="column" style="font-size:1.2em">
-				<md-input-group tabindex="-1" ng-disabled="isDisabled" ng-model="joinGameRoomId" flex="" label="Room ID" class="ng-isolate-scope md-default-theme ng-valid" aria-invalid="false">
+				<!-- <md-input-group tabindex="-1" ng-disabled="isDisabled" ng-model="joinGameRoomId" flex="" label="Room ID" class="ng-isolate-scope md-default-theme ng-valid" aria-invalid="false">
 					<label for="001" class="ng-binding">Name</label>
 					<input type="text" ng-model="user.name" ng-keyup="enterName()" id="001" tabindex="0" aria-disabled="false" aria-invalid="false" class="ng-valid ng-touched">
-				</md-input-group>
+				</md-input-group> -->
+				<md-text-float class="username" label="Name" flex ng-model="user.name"> </md-text-float>
 				</md-content>
-			    <div ng-if="showUserError" class="center error">
+			   <!--  <div ng-if="showUserError" class="center error">
 						<div>please enter name</div>
-				</div>
+				</div> -->
 				<div class="avatar-img" ng-repeat="avatar in avatars" ng-style="getAvatar($index)" ng-click="selectAvatar($index)" ng-class="{true : 'selected-avatar'}[user.image == $index]"></div>
 				<div class="clear"></div>
-				<div ng-if="showUserImageError" class="center error">
+				<!-- <div ng-if="showUserImageError" class="center error">
 						<div>please select an avatar</div>
-				</div>
+				</div> -->
 			</div>
 		</div>
 		<md-divider></md-divider>

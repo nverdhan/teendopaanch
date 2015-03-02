@@ -29,7 +29,7 @@
 						      		</div>
 						      	</md-button>
 							</div>
-							<div ng-click="changeClass('game-325')" ng-hide="showLoggedInOptions" ng-controller='coverController'>
+							<div ng-click="changeClass('game-325')" ng-hide="showLoggedInOptions">
 								<md-button class="redcol home-elem md-raised" aria-label="randomGameStart">
 									<div flex layout="horizontal" layout-align="center center">
 									<div style="margin-right:15px;"><i class="fa fa-random fa-2x"></i> </div>
@@ -72,43 +72,3 @@
 			</div>
 	</div>
 </div>
-
-
-<!-- <div class='homepage'>
-<div class='profile flex' layout="horizontal" layout-align="center center">
-    <h1>
-    	<div class="ball" style="background: #fff url({{loggedinuser.img}}) no-repeat center center; background-size: cover; position:relative; float:left;" ></div>
-			<span>Welcome {{loggedinuser.name}} </span>
-	</h1>
-		
- </div>
-    <md-divider></md-divider>
-    <br></br>
- <div class="flex" layout="vertical" layout-align="center center">
-	<div ng-click="startGame()">
-		<md-button class="redcol home-elem md-raised" aria-label="randomGameStart">
-			<div flex layout="horizontal" layout-align="center center">
-			<div style="margin-right:15px;"><i class="fa fa-random fa-2x"></i> </div>
-			<div><h2>Join a random game</h2> </div>
-      		</div>
-      	</md-button>
-	</div>
-	<div>
-		<md-card class="home-elem bluecol" flex layout='vertical' layout-align="center center" style="padding-bottom:30px">
-			<h3>
-			Create private room and invite your friends
-			</h3>
-			<md-button class="bluecoldark md-raised" ng-click="createGame()" aria-label="privateGameStart">
-				Create Room
-			</md-button>
-			<h3>Or join an existing room</h3>
-			<md-text-float label="Room ID" flex ng-model="joinGameRoomId"> </md-text-float>
-			<md-button class="bluecoldark md-raised" ng-click="joinGame()" aria-label="privateGameJoin">
-				Join
-			</md-button>
-		</md-card>
-	</div>
-</div>
-</div>
-
- -->
