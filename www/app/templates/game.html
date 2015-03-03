@@ -89,19 +89,19 @@
                 </div-->
                 <div class="allDeck playingCards simpleCards" ng-style="getDeckPosition()" >
                     <ul class="leftPlayer hand">
-                        <li ng-repeat = "card in leftPlayerDeck" class="leftPlayerDeck" style="left:0;">
+                        <li ng-repeat = "card in leftPlayerDeck" class="leftPlayerDeck" style="left:0;"  ng-click="play(card, playerIds[1], $event)">
                             <a ng-if="card" class="card front" ng-style="getCardPic(card)"></a>
                             <a class="card back"></a>
                         </li>
                     </ul>
                     <ul class="rightPlayer hand">
-                        <li ng-repeat = "card in rightPlayerDeck" class="rightPlayerDeck" style="left:0;">
+                        <li ng-repeat = "card in rightPlayerDeck" class="rightPlayerDeck" style="left:0;"  ng-click="play(card, playerIds[2], $event)">
                             <a ng-if="card" class="card front" ng-style="getCardPic(card)"></a>
                             <a class="card back"></a>
                         </li>
                     </ul>
                     <ul class="bottomPlayer hand">
-                        <li ng-repeat = "card in bottomPlayerDeck" class="bottomPlayerDeck" style="left:0;" ng-click="play(card, playerId, $event)">
+                        <li ng-repeat = "card in bottomPlayerDeck" class="bottomPlayerDeck" style="left:0;" ng-click="play(card, playerIds[0], $event)">
                             <a ng-if="card" class="card front" ng-style="getCardPic(card)"></a>
                             <a class="card back"></a>
                         </li>
@@ -132,13 +132,12 @@
         </div>
     <md-sidenav class="md-sidenav-right md-whiteframe-z2" component-id="right" is-locked-open="$media('md')" flex ng-show="ready" layout="vertical" layout-fill style="max-height:100%!important; background-color: #f6f6f6;">
         <md-toolbar class="chat-head">
-              <span class="md-toolbar-tools" flex layout="horizontal" layout-fill>
-                <h3 flex="90">Chat</h3>
-              <md-button class="md-fab md-fab-top-right md-primary" aria-label="Scores" ng-click="closeRight()" hide-md>
-                <md-icon icon="assets/img/ic_arrow_back_24px.svg" style="width: 24px; height: 24px;">
-                </md-icon>
-            </md-button>
-                </span>
+                <div class="md-toolbar-tools" flex layout="horizontal" layout-fill>
+                    <h3 flex="90">Chat</h3>
+                    <md-button class="md-fab md-fab-top-right md-primary" aria-label="Scores" ng-click="closeRight()" hide-md>
+                        <md-icon icon="assets/img/ic_arrow_back_24px.svg" style="width: 24px; height: 24px;"></md-icon>
+                    </md-button>
+                </div>
         </md-toolbar>
           <md-content class="md-padding chat-container" flex layout="vertical" layout-align="end center" style="padding-bottom: 0px;">
             <md-content flex class="chat-hist">

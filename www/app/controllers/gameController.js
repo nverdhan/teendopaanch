@@ -163,8 +163,6 @@ game325.controller('gameController', ['$rootScope', '$http', '$scope', '$state',
                 'top': topshift + 'px'
             }
         }
-
-
     }
     $scope.closeScores = function (){
         $scope.showScores = false;
@@ -223,7 +221,7 @@ game325.controller('gameController', ['$rootScope', '$http', '$scope', '$state',
                     };
                     break;
             }
-        };
+        }
     }
     $scope.getMsgTemplate = function (content){
         var x ='<md-item>'+
@@ -433,7 +431,6 @@ game325.controller('gameController', ['$rootScope', '$http', '$scope', '$state',
             player.handsToMake = $scope.players[$scope.playerIds[i]]['handsToMake'];
             player.scores = $scope.players[$scope.playerIds[i]]['scores'];
             player.cardPlayed = $scope.players[$scope.playerIds[i]]['cardPlayed'];
-            // player.call($scope.players[$scope.playerIds[i]]);
             // var keys = Object.keys(player);
             // for (var j = keys.length - 1; j >= 0; j--){
             //     if($scope.players[$scope.playerIds[i]][keys[j]]){
@@ -468,14 +465,10 @@ game325.controller('gameController', ['$rootScope', '$http', '$scope', '$state',
             $scope.if15distributed = false;
             $scope.distributeCardsFlag = false;
         }
-        // console.log($scope.distributeCardsFlag+'---'+$scope.gameTurn%30);
         $scope.leftPlayerId = $scope.arrPlayers[1].id;
         $scope.rightPlayerId = $scope.arrPlayers[2].id;
         if($scope.gameTurn%30 == 1 && $scope.distributeCardsFlag){
-            
-            
-            
-            for (var i = 0; i < 5; i++) {
+            for (var i = 0; i < 5; i++){
                 var b = $scope.arrPlayers[0].cards.pop();
                 $scope.bottomPlayerDeck.push(b);
                 var l = $scope.arrPlayers[1].cards.pop();
@@ -523,7 +516,6 @@ game325.controller('gameController', ['$rootScope', '$http', '$scope', '$state',
             var a = $scope.leftPlayerDeck.pop();
             $scope.leftPlayerCards.unshift(a);
         }
-        
     }
     $scope.distributeRightPlayer = function(){
         for (var i = $scope.rightPlayerDeck.length - 1; i >= 0; i--) {
@@ -599,53 +591,186 @@ game325.controller('gameController', ['$rootScope', '$http', '$scope', '$state',
     }
     $scope.withDrawEnabled = false;
     $scope.moveWithdrawnCard = function(){
+        var fullDeckWidth = 9*($scope.cardLeftMargin) + $scope.cardSize.x;
+        var initialP, finalP, cardIndex, playerDeck, cssFinal;
         for (var i = $scope.arrPlayers.length - 1; i >= 0; i--) {
             if($scope.arrPlayers[i].id == $scope.otherPlayerId){
                 $scope.arrPlayers[i].cards.pop();
-                var initialClass = $scope.getInitialPosition($scope.arrPlayers[i].position);    
+                initialP = i;
+                // var initialClass = $scope.getInitialPosition($scope.arrPlayers[i].position);    
             }
         };
         for (var i = $scope.arrPlayers.length - 1; i >= 0; i--) {
             if($scope.arrPlayers[i].id == $scope.activePlayerId){
-                var finalClass = $scope.getFinalPosition($scope.arrPlayers[i].position);    
+                finalP = i;
+                // var finalClass = $scope.getFinalPosition($scope.arrPlayers[i].position);
             }
         }
-        $scope.movingCard = $scope.cardWithdrawn;
-        $('.movingCard').addClass(initialClass);
-        angular.element('.movingCard').removeClass('rightMovedCard leftMovedCard bottomMovedCard');
-        $timeout(function(){
-            $('.movingCard').removeClass(initialClass);
-            $('.movingCard').addClass(finalClass);
-                
-        },60);
-        delayService.asyncTask(60, $scope.updateCards);
+        if(initialP == 0){
+            playerDeck = $scope.bottomPlayerDeck;
+        }
+        if(initialP == 1){
+            playerDeck = $scope.leftPlayerDeck;
+        }
+        if(initialP == 2){
+            playerDeck = $scope.rightPlayerDeck;
+        }
+        if(finalP == 0){
+            var n = $scope.bottomPlayerDeck.length;
+            var leftX = 0.5*($scope.gameWindow.x + (n - 1)*($scope.cardLeftMargin) - $scope.cardSize.x);
+            var leftY = 0;
+        }
+        if(finalP == 1){
+            var n = $scope.leftPlayerDeck.length
+            var leftX = 0.5*(fullDeckWidth +  (n - 1)*($scope.cardLeftMargin) - $scope.cardSize.x);
+            var leftY = -($scope.gameWindow.y - $scope.cardSize.y - 60 - 2*$scope.gameWindow.padding);
+        }
+        if(finalP == 1){
+            var n = $scope.rightPlayerDeck.length
+            var leftX = $scope.gameWindow.x -0.5*(fullDeckWidth - (n - 1)*($scope.cardLeftMargin) + $scope.cardSize.x);
+            var leftY = -($scope.gameWindow.y - $scope.cardSize.y - 60 - 2*$scope.gameWindow.padding);
+        }
+        cssFinal = {
+                'transform' : 'translate('+leftX+'px '+leftY+'px 0px)'
+            }
+        for (var i = 0; i < playerDeck.length;  i++){
+            if(playerDeck[i].suit == $scope.cardWithdrawn.suit && playerDeck[i].rank == $scope.cardWithdrawn.rank){
+                cardIndex = i;
+            }
+        }
+        cardIndex = cardIndex+1;
+        if(initialP == 0){
+            var x = function(){
+                $scope.bottomPlayerDeck.splice(cardIndex-1,1);   
+            }
+            angular.element('.bottomPlayerDeck:nth-child('+cardIndex+')').css(cssFinal);
+            delayService.asyncTask(500, x);
+        }
+        if(initialP == 1){
+            var x = function(){
+                $scope.leftPlayerDeck.splice(cardIndex-1,1);   
+            }
+            angular.element('.leftPlayerDeck:nth-child('+cardIndex+')').css(cssFinal);
+            if(finalP == 0){
+                angular.element('.leftPlayerDeck:nth-child('+cardIndex+') .front').addClass('frontRotated');
+                angular.element('.leftPlayerDeck:nth-child('+cardIndex+') .front').addClass('backRotated');    
+            }
+            delayService.asyncTask(500, x);
+        }
+        if(initialP == 2){
+            var x = function(){
+                $scope.rightPlayerDeck.splice(cardIndex-1,1);   
+            }
+            angular.element('.rightPlayerDeck:nth-child('+cardIndex+')').css(cssFinal);
+            if(finalP == 0){
+                angular.element('.rightPlayerDeck:nth-child('+cardIndex+') .front').addClass('frontRotated');
+                angular.element('.rightPlayerDeck:nth-child('+cardIndex+') .back').addClass('backRotated');    
+            }
+            delayService.asyncTask(500, x);
+        }
+        
     }
     $scope.moveReturnedCard = function(){
-        for (var i = $scope.arrPlayers.length - 1; i >= 0; i--) {
-            if($scope.arrPlayers[i].id == $scope.activePlayerId){
-                $scope.arrPlayers[i].cards.pop();
-                var initialClass = $scope.getInitialPosition($scope.arrPlayers[i].position);    
-            }
-        }
+        // for (var i = $scope.arrPlayers.length - 1; i >= 0; i--) {
+        //     if($scope.arrPlayers[i].id == $scope.activePlayerId){
+        //         $scope.arrPlayers[i].cards.pop();
+        //         var initialClass = $scope.getInitialPosition($scope.arrPlayers[i].position);    
+        //     }
+        // }
+        // for (var i = $scope.arrPlayers.length - 1; i >= 0; i--) {
+        //     if($scope.arrPlayers[i].id == $scope.otherPlayerId){
+        //         var finalClass = $scope.getFinalPosition($scope.arrPlayers[i].position);    
+        //     }
+        // }
+        // $scope.movingCard = $scope.cardReturned;
+        // angular.element('.movingCard').removeClass('rightmovingCard leftmovingCard bottommovingCard');
+        // $('.movingCard').addClass(initialClass);
+        // $timeout(function(){
+        //     $('.movingCard').removeClass(initialClass);
+        //     $('.movingCard').addClass(finalClass);
+        // },60);
+        // delayService.asyncTask(60, $scope.updateCards);
+        // if($scope.gameState == 'playCard'){
+        //     for (var i = $scope.arrPlayers.length - 1; i >= 0; i--){
+        //         if($scope.arrPlayers[i].handsToMake == 5){
+        //             $scope.activePlayerId = $scope.arrPlayers[i].id;
+        //         }
+        //     }
+        // }
+        var fullDeckWidth = 9*($scope.cardLeftMargin) + $scope.cardSize.x;
+        var initialP, finalP, cardIndex, playerDeck, cssFinal;
         for (var i = $scope.arrPlayers.length - 1; i >= 0; i--) {
             if($scope.arrPlayers[i].id == $scope.otherPlayerId){
-                var finalClass = $scope.getFinalPosition($scope.arrPlayers[i].position);    
+                $scope.arrPlayers[i].cards.pop();
+                initialP = i;
+                // var initialClass = $scope.getInitialPosition($scope.arrPlayers[i].position);    
+            }
+        };
+        for (var i = $scope.arrPlayers.length - 1; i >= 0; i--) {
+            if($scope.arrPlayers[i].id == $scope.activePlayerId){
+                finalP = i;
+                // var finalClass = $scope.getFinalPosition($scope.arrPlayers[i].position);
             }
         }
-        $scope.movingCard = $scope.cardReturned;
-        angular.element('.movingCard').removeClass('rightmovingCard leftmovingCard bottommovingCard');
-        $('.movingCard').addClass(initialClass);
-        $timeout(function(){
-            $('.movingCard').removeClass(initialClass);
-            $('.movingCard').addClass(finalClass);
-        },60);
-        delayService.asyncTask(60, $scope.updateCards);
-        if($scope.gameState == 'playCard'){
-            for (var i = $scope.arrPlayers.length - 1; i >= 0; i--){
-                if($scope.arrPlayers[i].handsToMake == 5){
-                    $scope.activePlayerId = $scope.arrPlayers[i].id;
-                }
+        if(initialP == 0){
+            playerDeck = $scope.bottomPlayerDeck;
+        }
+        if(initialP == 1){
+            playerDeck = $scope.leftPlayerDeck;
+        }
+        if(initialP == 2){
+            playerDeck = $scope.rightPlayerDeck;
+        }
+        if(finalP == 0){
+            var n = $scope.bottomPlayerDeck.length;
+            var leftX = 0.5*($scope.gameWindow.x + (n - 1)*($scope.cardLeftMargin) - $scope.cardSize.x);
+            var leftY = 0;
+        }
+        if(finalP == 1){
+            var n = $scope.leftPlayerDeck.length
+            var leftX = 0.5*(fullDeckWidth +  (n - 1)*($scope.cardLeftMargin) - $scope.cardSize.x);
+            var leftY = -($scope.gameWindow.y - $scope.cardSize.y - 60 - 2*$scope.gameWindow.padding);
+        }
+        if(finalP == 1){
+            var n = $scope.rightPlayerDeck.length
+            var leftX = $scope.gameWindow.x -0.5*(fullDeckWidth - (n - 1)*($scope.cardLeftMargin) + $scope.cardSize.x);
+            var leftY = -($scope.gameWindow.y - $scope.cardSize.y - 60 - 2*$scope.gameWindow.padding);
+        }
+        cssFinal = {
+                'transform' : 'translate('+leftX+'px '+leftY+'px 0px)'
             }
+        for (var i = 0; i < playerDeck.length; i++){
+            if(playerDeck[i].suit == $scope.cardReturned.suit && playerDeck[i].rank == $scope.cardReturned.rank){
+                cardIndex = i;
+            }
+        }
+        cardIndex = cardIndex+1;
+        if(initialP == 0){
+            var x = function(){
+                $scope.bottomPlayerDeck.splice(cardIndex-1,1);   
+            }
+            angular.element('.bottomPlayerDeck:nth-child('+cardIndex+')').css(cssFinal);
+            angular.element('.bottomPlayerDeck:nth-child('+cardIndex+') .front').removeClass('frontRotated');
+                angular.element('.bottomPlayerDeck:nth-child('+cardIndex+') .back').removeClass('backRotated');   
+            delayService.asyncTask(500, x);
+        }
+        if(initialP == 1){
+            var x = function(){
+                $scope.leftPlayerDeck.splice(cardIndex-1,1);   
+            }
+            angular.element('.leftPlayerDeck:nth-child('+cardIndex+')').css(cssFinal);
+            
+            delayService.asyncTask(500, x);
+        }
+        if(initialP == 2){
+            var x = function(){
+                $scope.rightPlayerDeck.splice(cardIndex-1,1);   
+            }
+            angular.element('.rightPlayerDeck:nth-child('+cardIndex+')').css(cssFinal);
+            if(finalP == 0){
+                 
+            }
+            delayService.asyncTask(500, x);
         }
     }
     $scope.getDeckPosition = function(){
@@ -865,7 +990,8 @@ game325.controller('gameController', ['$rootScope', '$http', '$scope', '$state',
             angular.element('.playedCard:nth-child('+n+')').css({
                 'display' : 'block'
             });
-            for (var i = 0; i < $scope.bottomPlayerDeck.length - 1; i++) {
+            for (var i = 0; i < $scope.bottomPlayerDeck.length; i++) {
+
                 if($scope.bottomPlayerDeck[i].rank == $scope.cardPlayed.rank && $scope.bottomPlayerDeck[i].suit == $scope.cardPlayed.suit){
                     index = i;
                 }
@@ -880,12 +1006,11 @@ game325.controller('gameController', ['$rootScope', '$http', '$scope', '$state',
             angular.element('.playedCard:nth-child('+n+')').css({
                 'display' : 'block'
             });
-            for (var i = 0; i < $scope.leftPlayerDeck.length - 1; i++) {
+            for (var i = 0; i < $scope.leftPlayerDeck.length; i++) {
                 if($scope.leftPlayerDeck[i].rank == $scope.cardPlayed.rank && $scope.leftPlayerDeck[i].suit == $scope.cardPlayed.suit){
                     index = i;
                 }
             }
-            console.log(index);
             $scope.leftPlayerDeck.splice(index, 1);
             index = index+1;
             angular.element('.leftPlayerDeck:nth-child('+index+')').remove();
@@ -896,7 +1021,7 @@ game325.controller('gameController', ['$rootScope', '$http', '$scope', '$state',
             angular.element('.playedCard:nth-child('+n+')').css({
                 'display' : 'block'
             });
-            for (var i = 0; i < $scope.rightPlayerDeck.length - 1; i++) {
+            for (var i = 0; i < $scope.rightPlayerDeck.length; i++) {
                 if($scope.rightPlayerDeck[i].rank == $scope.cardPlayed.rank && $scope.rightPlayerDeck[i].suit == $scope.cardPlayed.suit){
                     index = i;
                 }
@@ -960,7 +1085,7 @@ game325.controller('gameController', ['$rootScope', '$http', '$scope', '$state',
         if(e == 0){
             var topY = -($scope.cardSize.y + 40);
             var leftX = $scope.gameWindow.x/2 - $scope.cardSize.x/2;
-            for (var i = 0; i < $scope.bottomPlayerDeck.length - 1; i++) {
+            for (var i = 0; i < $scope.bottomPlayerDeck.length; i++) {
                 if($scope.bottomPlayerDeck[i].rank == $scope.cardPlayed.rank && $scope.bottomPlayerDeck[i].suit == $scope.cardPlayed.suit){
                     index = i;
                 }
@@ -973,7 +1098,7 @@ game325.controller('gameController', ['$rootScope', '$http', '$scope', '$state',
         if(e == 120){
             var topY = -(2*$scope.cardSize.y + 40);
             var leftX = $scope.gameWindow.x/3 - $scope.cardSize.x/2;
-            for (var i = 0; i < $scope.leftPlayerDeck.length - 1; i++) {
+            for (var i = 0; i < $scope.leftPlayerDeck.length; i++) {
                 if($scope.leftPlayerDeck[i].rank == $scope.cardPlayed.rank && $scope.leftPlayerDeck[i].suit == $scope.cardPlayed.suit){
                     index = i;
                 }
@@ -988,7 +1113,7 @@ game325.controller('gameController', ['$rootScope', '$http', '$scope', '$state',
         if(e == 240){
             var topY = -(2*$scope.cardSize.y + 40);
             var leftX = 2*$scope.gameWindow.x/3 - $scope.cardSize.x/2;
-            for (var i = 0; i < $scope.bottomPlayerDeck.length - 1; i++) {
+            for (var i = 0; i < $scope.bottomPlayerDeck.length; i++) {
                 if($scope.rightPlayerDeck[i].rank == $scope.cardPlayed.rank && $scope.rightPlayerDeck[i].suit == $scope.cardPlayed.suit){
                     index = i;
                 }
@@ -1101,11 +1226,22 @@ game325.controller('gameController', ['$rootScope', '$http', '$scope', '$state',
             }
         }
         if($scope.gameState == 'RETURN_CARD'){
+            var playerDeck;
             for (var i = $scope.arrPlayers.length - 1; i >= 0; i--){
                 if($scope.arrPlayers[i].id == $scope.activePlayerId){
-                    var x = $scope.arrPlayers[i].cards.indexOf(card);
+                    if(i == 0){
+                        playerDeck = $scope.bottomPlayerDeck;
+                    }
+                    if(i == 1){
+                        playerDeck = $scope.leftPlayerDeck;   
+                    }
+                    if(i == 2){
+                        playerDeck = $scope.rightPlayerDeck;    
+                    }
+                    var x = playerDeck.indexOf(card);
+                    console.log(x);
                     if(x > -1){
-                        $scope.arrPlayers[i].cards.splice(x, 1);
+                        playerDeck.splice(x, 1);
                         var data = {
                             gameState : 'RETURN_CARD',
                             gameEvent : 'RETURN_CARD',
@@ -1148,7 +1284,6 @@ game325.controller('gameController', ['$rootScope', '$http', '$scope', '$state',
             $scope.moveSetTrumpCard();
         }
         $scope.trump = data.data.trump;
-        console.log(data);
         switch(gameEvent){
             case 'SET_TRUMP':
                 $scope.game325 = data.data;
@@ -1165,7 +1300,7 @@ game325.controller('gameController', ['$rootScope', '$http', '$scope', '$state',
                 delayService.asyncTask(500, $scope.updateCards);
                 break;
             case 'RETURN_CARD':
-                console.log(data);
+                console.log('return-card');
                 $scope.activePlayerId = data.data.activePlayerId;
                 $scope.otherPlayerId = data.data.otherPlayerId;
                 $scope.gameState = 'RETURN_CARD';
@@ -1174,6 +1309,7 @@ game325.controller('gameController', ['$rootScope', '$http', '$scope', '$state',
                 $scope.moveReturnedCard();
                 break;
             case 'WITHDRAW_CARD':
+                console.log('withdraw-card');
                 $scope.activePlayerId = data.data.activePlayerId;
                 $scope.otherPlayerId = data.data.otherPlayerId;
                 $scope.cardWithdrawn = data.data.cardPlayed;
@@ -1181,6 +1317,7 @@ game325.controller('gameController', ['$rootScope', '$http', '$scope', '$state',
                 $scope.moveWithdrawnCard();
                 break;
             case 'RETURN':
+                console.log('return');
                 $scope.players = data.data.players;
                 $scope.playerArray = $scope.players;
                 $scope.activePlayerId = data.data.activePlayerId;
@@ -1192,6 +1329,7 @@ game325.controller('gameController', ['$rootScope', '$http', '$scope', '$state',
                 delayService.asyncTask(100, $scope.updateCards);
                 break;
             case 'WITHDRAW':
+                console.log('withdraw');
                 $scope.players = data.data.players;
                 $scope.playerArray = $scope.players;
                 $scope.initPlayers();

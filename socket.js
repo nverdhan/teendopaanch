@@ -97,16 +97,19 @@ module.exports = function (app, server){
                                 }
                             }
                             gamex.playerIds = [];
-                            for (var i = gamex.players.length - 1; i >= 0; i--) {
+                            for (var i = 0; i < gamex.players.length; i++) {
                                     gamex.playerIds.push(gamex.players[i].id);
                                 }
-                            for (var i = gamex.players.length - 1; i >= 0; i--) {
+                            for (var i = 0; i < gamex.players.length; i++) {
                                 if(gamex.players[i].id == socket.id){
                                     if(gamex.playerIds.indexOf(gamex.activePlayerId) == -1){
                                         gamex.activePlayerId = socket.id;
                                     }
                                     if(gamex.playerIds.indexOf(gamex.otherPlayerId) == -1){
                                         gamex.otherPlayerId = socket.id;
+                                    }
+                                    if(gamex.playerIds.indexOf(gamex.lastGameWinner) == -1){
+                                        gamex.lastGameWinner = socket.id;
                                     }
                                     var x = JSON.stringify(gamex);
                                     client.set('gameRoom:'+roomId, x, function(err, gameSet){
@@ -153,7 +156,6 @@ module.exports = function (app, server){
                             Game.prototype.assignPlayerIds.call(gamex);
                             break;
                         case "NEXT_ROUND":
-                            gamex = JSON.parse(gameString);
                             Game.prototype.initDeck.call(gamex);
                             Game.prototype.distributeCards.call(gamex);
                             Game.prototype.nextRound.call(gamex);
