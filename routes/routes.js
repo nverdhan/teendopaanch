@@ -20,7 +20,7 @@ module.exports = function(app, passport) {
         console.log(req.user);
     });
     app.post('/api/start', function(req, res ){
-        var room, game;
+        var room, game, gameType;
         if(req.user){
             var userId = req.user.id;
         }else{
@@ -34,14 +34,14 @@ module.exports = function(app, passport) {
                     client.srem('room2', room, function(err, roomDeleted){
                         if(err)
                             return err;
-                        client.sadd('rooms3', room, function(err, roomAdded){
-                            if(err)
-                                return err;
+                        // client.sadd('rooms3', room, function(err, roomAdded){
+                        //     if(err)
+                        //         return err;
                             res.json({  
                                     'game' : 'start',
                                     'roomId' : room
                             });                        
-                        });
+                        // });
                     });
                 });
             }else{

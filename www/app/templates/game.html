@@ -89,21 +89,21 @@
                 </div-->
                 <div class="allDeck playingCards simpleCards" ng-style="getDeckPosition()" >
                     <ul class="leftPlayer hand">
-                        <li ng-repeat = "card in leftPlayerDeck" class="leftPlayerDeck" style="left:0;"  ng-click="play(card, playerIds[1], $event)">
-                            <a ng-if="card" class="card front" ng-style="getCardPic(card)"></a>
+                        <li ng-repeat = "card in leftPlayerDeck" class="leftPlayerDeck" style="left:0;"  ng-click="play(card, playerIds[1], $event)"  ng-style="getInitialCardCSS(1, $index, card)">
+                            <a class="card front" ng-style="getCardPic(card)"></a>
                             <a class="card back"></a>
                         </li>
                     </ul>
                     <ul class="rightPlayer hand">
-                        <li ng-repeat = "card in rightPlayerDeck" class="rightPlayerDeck" style="left:0;"  ng-click="play(card, playerIds[2], $event)">
-                            <a ng-if="card" class="card front" ng-style="getCardPic(card)"></a>
+                        <li ng-repeat = "card in rightPlayerDeck" class="rightPlayerDeck" style="left:0;"  ng-click="play(card, playerIds[2], $event)"  ng-style="getInitialCardCSS(2, $index, card)">
+                            <a class="card front" ng-style="getCardPic(card)"></a>
                             <a class="card back"></a>
                         </li>
                     </ul>
                     <ul class="bottomPlayer hand">
-                        <li ng-repeat = "card in bottomPlayerDeck" class="bottomPlayerDeck" style="left:0;" ng-click="play(card, playerIds[0], $event)">
-                            <a ng-if="card" class="card front" ng-style="getCardPic(card)"></a>
-                            <a class="card back"></a>
+                        <li ng-repeat = "card in bottomPlayerDeck" class="bottomPlayerDeck moveCard" style="left:0;" ng-click="play(card, playerIds[0], $event)" ng-style="getInitialCardCSS(0, $index, card)">
+                            <a ng-if="card" class="card front" ng-class="getCardClass('front')" ng-style="getCardPic(card)"></a>
+                            <a class="card back" ng-class="getCardClass('back')"></a>
                         </li>
                     </ul>
                     <ul class="playedCards hand">

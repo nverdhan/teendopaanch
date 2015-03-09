@@ -60,6 +60,14 @@ game325.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', fun
                     requiresAuth : false
                 }
         })
+        .state('game325', {
+            url : '/game325',
+            controller : 'game325Controller',
+            templateUrl : 'app/templates/game.html',
+                data : {
+                    requiresAuth : false
+                }
+        })
         .state('game/:id/:type', {
             url : '/game/:id/:type',
             controller : 'gameController',

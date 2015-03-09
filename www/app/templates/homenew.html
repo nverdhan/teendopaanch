@@ -20,8 +20,18 @@
 				<div class="internal-slider-1 md-whiteframe-z1">
 					<div class='homepage'  style="margin-top:20px;">
 						 <div class="flex" layout="vertical" layout-align="center center">
-						 	<h2>325-Game</h2>
-							<div ng-click="startGame()" ng-show="showLoggedInOptions">
+						 	<h2>3-2-5 Cards Game</h2>
+						 	<div ng-click="startGame('bots')">
+								<md-button class="redcol home-elem md-raised" aria-label="randomGameStart">
+									<div flex layout="horizontal" layout-align="center center">
+									<div style="margin-right:15px;"><i class="fa fa-random fa-2x"></i> </div>
+									<div><h2>Start Playing</h2> </div>
+						      		</div>
+						      	</md-button>
+							</div>
+							<md-divider><md-divider>
+							<h4>Multiplayer Options</h4>
+							<div ng-click="startGame('multiplayer')" ng-show="showLoggedInOptions">
 								<md-button class="redcol home-elem md-raised" aria-label="randomGameStart">
 									<div flex layout="horizontal" layout-align="center center">
 									<div style="margin-right:15px;"><i class="fa fa-random fa-2x"></i> </div>

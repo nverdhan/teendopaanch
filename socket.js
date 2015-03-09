@@ -19,12 +19,8 @@ module.exports = function (app, server){
     var client = app.get('redisClient');
     var user = '';
     var mongooseClient = app.get('mongooseClient');
-    // var redisPub = app.get('redisPub');
-	// var redisSub = app.get('redisSub');
-    // var config = app.get('config');
     io.use(function(socket, accept){
         var hsData = socket.request;
-        console.log(hsData.headers);
         if(hsData.headers.cookie){
             var cookies = cookieParser.signedCookies(cookie.parse(hsData.headers.cookie), 'seasonsofthewitch');
             var sid = cookies['gameApp'];
@@ -38,16 +34,16 @@ module.exports = function (app, server){
                         room: /\/(?:([^\/]+?))\/?$/g.exec(hsData.headers.referer)[1]
                     }
                     // user = hsData.gameApp.user;
-                    if(typeof(user) != 'undefined'){
-                        client.get('userInfo:'+hsData.gameApp.user, function (err, user) {
-                            var x = JSON.stringify(user);
-                            client.set('user:'+socket.id, x, function (err, userData){
-                                if(err)
-                                    throw err;
-                            });
-                        })
+                    // if(typeof(user) != 'undefined'){
+                    //     client.get('userInfo:'+hsData.gameApp.user, function (err, user) {
+                    //         var x = JSON.stringify(user);
+                    //         client.set('user:'+socket.id, x, function (err, userData){
+                    //             if(err)
+                    //                 throw err;
+                    //         });
+                    //     })
                         
-                    }
+                    // }
                 }
                 return accept(null, true);
             })
@@ -67,27 +63,26 @@ module.exports = function (app, server){
 		//io.emit('message', {'message' : 'state from server '});
         socket.on('JOIN_ROOM', function(data){
             roomId = data.roomId;
-            console.log(socket.id);
+            user = data.user;
+            console.log(user);
             client.get('gameRoom:'+roomId, function (err, gameString){
                 if(err){
                     throw err;
                 }
                 socket.join(roomId);
-                client.get('user:'+socket.id, function (err, userData){
-                    if(err)
-                        throw err;
-                    user = JSON.parse(JSON.parse(userData));
+                // client.get('user:'+socket.id, function (err, userData){
+                //     if(err)
+                //         throw err;
+                    // user = JSON.parse(JSON.parse(userData));
                     gamex = JSON.parse(gameString);
                     var player = new Player();
                     player.id = socket.id;
-                    if(user){
-                        player.name = user.name;
-                        player.image = user.img;
-                        player.type = 'fb'
-                    }else if(data.user){
-                        player.name = data.user.name;
-                        player.image = data.user.image;
-                        player.type = data.user.type;
+                    player.name = user.name;
+                    player.image = user.image;
+                    player.type = user.type;
+                    if(!gamex){
+                        io.sockets.connected[socket.id].emit('INVALID', {'data' : 'Game Romm does not exist'});
+                        return false;
                     }
                     if(gamex.gamePaused){
                             for (var i = gamex.players.length - 1; i >= 0; i--) {
@@ -136,7 +131,7 @@ module.exports = function (app, server){
                             io.sockets.in(roomId).emit('GAME_STATUS', {'data' : gamex});
                         })
                     }
-                })              
+                // })              
             })
         });
         socket.on('GAME', function (data){
@@ -180,7 +175,7 @@ module.exports = function (app, server){
                             gamex.gameEvent ='RETURN';
                             break;
                         case "RETURN_CARD":
-                            gamex.cardIndex = data.data.card;
+                            gamex.card = data.data.card;
                             Game.prototype.returnCard.call(gamex);
                             var y = Game.prototype.withdrawCards.call(gamex);
                                 if(y){
@@ -191,7 +186,6 @@ module.exports = function (app, server){
                                 else{
                                     gamex.gameState  ='PLAY_CARD';
                                     gamex.gameEvent = 'PLAY_CARD';
-                                    console.log('play')
                                 }
                             break;
                         case "PLAY_CARD":
@@ -214,6 +208,7 @@ module.exports = function (app, server){
                         default:
                             null
                         }
+                        console.log(gamex);
                         var x = JSON.stringify(gamex);
                         client.set('gameRoom:'+roomId, x, function(err, gameSet){
                             if(err)
@@ -289,10 +284,6 @@ module.exports = function (app, server){
                             });
                     }
             });
-            // client.srem('roomsFilled', roomId, function(err, data){
-            //     if(err)
-            //         throw err;
-            // });
         });
 	});
 }

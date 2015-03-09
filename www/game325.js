@@ -1,6 +1,3 @@
-var mongoose = require('mongoose');
-var scores = require('../models/scores');
-var Deck = require('./cards325');
 var Score = function(){
 	return {
 		handsToMake : 0,
@@ -369,7 +366,7 @@ function getBiggestCard (card1, card2, turnSuit, trump) {
         }
     }
 }
-function updateScoresInDB(player){
+/*function updateScoresInDB(player){
 	if(player.type != 'local'){
 		scores.findOne({'userId': player.userId}, function (err, scores){
 			if(err)
@@ -400,6 +397,5 @@ function updateScoresInDB(player){
 			});
 		});
 	}
-}
+}*/
 //helper functions
-module.exports = game325;

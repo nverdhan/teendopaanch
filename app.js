@@ -20,8 +20,6 @@ var socket = require('socket.io');
 var Sequelize = require('sequelize');
 var sequelize = new Sequelize('game325','root','');
 
-
-
 var flash = require('connect-flash');
 var port     = process.env.PORT || 3000;
 
@@ -112,6 +110,7 @@ app.use(session({
 app.use(flash());
 
 require('./models/user');
+require('./models/scores');
 require('./config/passport')(app, passport);
 
 app.use(passport.initialize());

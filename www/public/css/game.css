@@ -348,6 +348,16 @@ bottom: 0px;
     -webkit-transition: 0.5s all ease-in-out;
     transition: 0.5s all ease-in-out;
 }
+    /*.rotated .front{
+        transform : perspective(400px) rotateY(0deg);
+        -webkit-transition: 0.5s all ease-in-out;
+        transition: 0.5s all ease-in-out;   
+    }
+    .rotated .back{
+        transform : perspective(400px) rotateY(0deg);
+        -webkit-transition: 0.5s all ease-in-out;
+        transition: 0.5s all ease-in-out;      
+    }*/
 .card{
     backface-visibility : hidden;
     -webkit-backface-visibility : hidden;
@@ -482,10 +492,10 @@ div.clear {
         transition-timing-function: cubic-bezier(0.000, 0.980, 0.405, 0.990); /* custom */
 }
 .moveCard{
-    -webkit-transition: all 500ms cubic-bezier(0.000, 0.980, 0.405, 0.990);
-        -moz-transition: all 500ms cubic-bezier(0.000, 0.980, 0.405, 0.990);
-        -o-transition: all 500ms cubic-bezier(0.000, 0.980, 0.405, 0.990);
-        transition: all 500ms cubic-bezier(0.000, 0.980, 0.405, 0.990); /* custom */
+        -webkit-transition: all 1000ms cubic-bezier(0.000, 0.980, 0.405, 0.990) !important;
+        -moz-transition: all 1000ms cubic-bezier(0.000, 0.980, 0.405, 0.990) !important;
+        -o-transition: all 1000ms cubic-bezier(0.000, 0.980, 0.405, 0.990) !important;
+        transition: all 1000ms cubic-bezier(0.000, 0.980, 0.405, 0.990) !important; /* custom */
 
         -webkit-transition-timing-function: cubic-bezier(0.000, 0.980, 0.405, 0.990);
         -moz-transition-timing-function: cubic-bezier(0.000, 0.980, 0.405, 0.990);

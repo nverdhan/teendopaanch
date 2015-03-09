@@ -34,28 +34,27 @@ game325.controller('startController', ['$rootScope', '$http', '$scope', '$state'
            // socket.emit('joinRoom', {roomId : $scope.gameId});        
        }
     });
-    // $scope.twitterAuth = function(){
-    //     $window.location.href = "http://127.0.0.1:3000/auth/twitter"
-    // }
-      $scope.changeClass = function(a){
+    $scope.changeClass = function(a){
           if(a == 'game-325'){
             var req = {};
-              if(Session.name && Session.type != 'local'){
+            if(Session.name && Session.type != 'local'){
                 $scope.showLoggedInOptions = true;
-              }else{
-                startGameService.start(req).then(function(res){
-                  $state.go('game/:id', {id : res.data.roomId, type : res.data.type});      
-                });
-              }
+            }else{
+              startGameService.start(req).then(function(res){
+                $state.go('game/:id', {id : res.data.roomId, type : res.data.type});      
+              });
+            }
           }
         }
-
-    $scope.startGame = function(){
-        var req = {};
-        startGameService.start(req).then(function(res){
-          console.log(res);
-          $state.go('game/:id', {id : res.data.roomId, type : res.data.type});      
-        });
+    $scope.startGame = function(e){
+        if(e == 'bots'){
+          $state.go('game325');
+        }else{
+          startGameService.start(req).then(function(res){
+            $state.go('game/:id', {id : res.data.roomId, type : res.data.type});
+          });
+        }
+        
     }
 
     $scope.createGame = function(){
@@ -91,9 +90,6 @@ game325.controller('startController', ['$rootScope', '$http', '$scope', '$state'
             '      <i class="fa fa-times" style="float:right;"></i>' +
             '    </md-button>' +
             '  <md-content>Invalid Room!' +
-            // '  <div class="md-actions">' +
-            
-            // '  </div>' +
             '</md-content></md-dialog>',
             controller: 'errDialogController'
         });
@@ -254,12 +250,14 @@ game325.controller('coverController', ['$rootScope', '$http', '$scope', '$state'
            // socket.emit('joinRoom', {roomId : $scope.gameId});        
        }
     });
-    $scope.startGame = function(){
-        var req = {};
+    $scope.startGame = function(e){
+        var req = {
+          gameType : e
+        };
         startGameService.start(req).then(function(res){
-          console.log(res);
-          $state.go('game/:id', {id : res.data.roomId, type : res.data.type});      
+          $state.go('game/:id', {id : res.data.roomId, type : res.data.type});
         });
+        
     }
 
     $scope.createGame = function(){
