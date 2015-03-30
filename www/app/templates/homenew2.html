@@ -1,0 +1,170 @@
+<div class="bgblack"></div>
+<div class="daddy-container preload gameselected">
+<div class ='cover-toolbar md-whiteframe-z1'> 
+  <div class='cover-player item-ripple'>
+        <div class="profile-info" ng-if="loggedIn">
+          <profile-info-horz content="profile">
+          <i class="fa fa-sign-out"></i>
+          </profile-info-horz>
+
+        </div>
+        <!--div>ankit</div-->
+        <div class="profile-info" ng-if="!loggedIn" ng-controller="registerCtrl" ng-click="showLogin()">
+          <i class="fa fa-user fa-2x"></i>
+          <div style="left: 50px; position: absolute; top: 17px; width: -moz-max-content;">Log in</div>
+        </div>
+  </div>
+  <div class="cover-social">
+    
+  </div>
+</div>
+<div class='game-325-home'>
+    <md-button class="back-button-game" aria-label="goBack" ng-click="goToCover()">
+                <md-icon icon="assets/img/ic_arrow_back_24px.svg" style="width: 24px; height: 24px;">
+                </md-icon>
+    </md-button>
+    <div class="home-showlater">
+        <div class="home-panel home-left">
+        </div>
+        <div class="home-panel home-right">
+          <div class="panel-side flip">
+            <img src="assets/img/sam.png" style="width:300px; height:450px; ">
+          </div>
+          <div class="panel-side flop">
+              <md-button class="back-button-flop" aria-label="goBack">
+                <md-icon icon="assets/img/rotate.svg" style="width: 24px; height: 24px;">
+                </md-icon>
+              </md-button>
+              <div class='flop-elem'>
+                  <div class="home-text">To play against random strangers</div>
+                  <div ng-click="changeClass('game-325')" class="home-button">
+                    <md-button class="redcol home-elem md-raised" aria-label="randomGameStart">
+                        <div flex layout="horizontal" layout-align="center center">
+                          <div style="margin-right:15px;"><img src="assets/img/stranger48.png"> </div>
+                          <div><h2>Join a random game</h2> </div>
+                        </div>
+                    </md-button>
+                  </div>
+              </div>
+              <div class='flop-elem'  ng-show="showLoggedInOptions">
+                <div class="home-text">
+                  You can also <br>
+                  create a private room and invite your friends
+                </div>
+                <md-button class="bluecoldark md-raised home-button" ng-click="createGame()" aria-label="privateGameStart">
+                  Create Room
+                </md-button>
+                <md-divider style="margin:20px; width: 80%"></md-divider>
+                  <div class="home-text">Or join an existing room</div>
+                  <md-text-float label="Room ID" flex ng-model="joinGameRoomId" class="join-room-input"> </md-text-float>
+                <md-button class="bluecoldark md-raised home-button" ng-click="joinGame()" aria-label="privateGameJoin">
+                  Join
+                </md-button>
+              </div>     
+              <div class='flop-elem'  ng-hide="showLoggedInOptions">
+                <div class="home-text">
+                  For private rooms, login with Facebook
+                </div>
+                <md-card class="flogin flogin-small" ng-hide="showLoggedInOptions">
+                    <i class="card-img-upper fa fa-facebook"></i>
+                    <i class="card-img md-card-image fa fa-facebook" style="color:#fff; font-size:100pt;"></i>
+                    <i class="card-img-lower fa fa-facebook"></i>
+                </md-card>
+              </div>         
+          </div>  
+        </div>
+    </div>
+</div>
+</div>
+<script type="text/javascript">
+
+
+    $( document ).ready(function(){
+      
+      if($(".daddy-container").hasClass('preload')){  
+        setTimeout(function() {
+            $(".daddy-container").removeClass("preload");
+          $(".daddy-container").addClass("win-loaded");
+      }, 1);
+      }
+      
+      var ink, d, x, y;
+      $(".item-ripple").mouseup(function(e){
+        if($(this).find(".item-ink").length === 0){
+            $(this).prepend("<span class='item-ink'></span>");
+        }
+        
+        ink = $(this).find(".item-ink");
+        ink.removeClass("ripple-animate");
+         
+        if(!ink.height() && !ink.width()){
+            d = Math.max($(this).outerWidth(), $(this).outerHeight());
+            ink.css({height: d, width: d});
+        }
+         
+        x = e.pageX - $(this).offset().left - ink.width()/2;
+        y = e.pageY - $(this).offset().top - ink.height()/2;
+         
+        ink.css({top: y+'px', left: x+'px'}).addClass("ripple-animate");
+
+      });
+      $(".item").click(function(e){
+        if(!$(this).hasClass("expanded")){
+          $(this).addClass("expanded"); 
+          $(this.parentNode).addClass("selectiondone");
+          $(this.parentNode.parentNode).addClass("footerselected");
+        }
+    });
+      $(".flip").click(function(e){
+        if(!$(this.parentNode.parentNode).hasClass("onlineselected")){
+          $(this.parentNode.parentNode).addClass("onlineselected");
+        }
+      });
+      $(".back-button-flop").click(function(e){
+          $(this.parentNode.parentNode.parentNode).removeClass("onlineselected");
+      });
+      $(".back-button-game").click(function(e){
+          $(this.parentNode.parentNode).removeClass("gameselected");
+      });
+      $('.back-button').click(function(e){
+          $(this.parentNode).removeClass("selectiondone");
+          $(this.parentNode.parentNode).removeClass("footerselected");
+          $('.expanded').removeClass('expanded');
+      });
+  });
+
+</script>
+<!-- <div class="home-text">To play against random strangers</div>
+          <div ng-click="startGame()" class="home-button">
+            <md-button class="redcol home-elem md-raised" aria-label="randomGameStart">
+                <div flex layout="horizontal" layout-align="center center">
+                  <div style="margin-right:15px;"><i class="fa fa-random fa-2x"></i> </div>
+                  <div><h2>Join a random game</h2> </div>
+                </div>
+            </md-button>
+          </div>
+          <md-divider style="margin:20px; width: 80%"></md-divider>
+          <div class="home-text">For offline mode</div>
+          <div ng-click="startGame()" class="home-button">
+            <md-button class="redcol home-elem md-raised" aria-label="randomGameStart">
+                <div flex layout="horizontal" layout-align="center center">
+                  <div style="margin-right:15px;"><i class="fa fa-random fa-2x"></i> </div>
+                  <div><h2>Play against our bots</h2> </div>
+                </div>
+            </md-button>
+          </div>
+
+
+                <div class="home-text">
+                You can also <br>
+                create a private room and invite your friends
+                </div>
+                <md-button class="bluecoldark md-raised home-button" ng-click="createGame()" aria-label="privateGameStart">
+                  Create Room
+                </md-button>
+                <md-divider style="margin:20px; width: 80%"></md-divider>
+                <div class="home-text">Or join an existing room</div>
+                <md-text-float label="Room ID" flex ng-model="joinGameRoomId"> </md-text-float>
+                <md-button class="bluecoldark md-raised home-button" ng-click="joinGame()" aria-label="privateGameJoin">
+                  Join
+                </md-button> -->

@@ -110,8 +110,12 @@ game325.controller('gameCtrl', ['$rootScope', '$scope', '$http', '$state', 'Auth
         // }
         $scope.OverlayVisible = false;
     }
+    // $scope.showLogin = function(){
+    //  
+    // }
     $scope.showLogin = function(){      
         $rootScope.$broadcast(AUTH_EVENTS.notAuthenticated);
+        $scope.OverlayVisible = true;
     }
     $scope.uiRouterState = $state;
     $scope.$on(AUTH_EVENTS.internalServerError, $scope.showInternalServerError);
@@ -322,6 +326,37 @@ game325.directive('profileInfo', ['$compile', function ($compile){
     }
   }
 }]);
+game325.directive('profileInfoHorz', ['$compile', function ($compile){
+  var x = function(content){
+    var content = content.content;
+    // console.log(content);
+    if(content.type == 'local'){
+        content.backgroundPosition = 45*content.image+'px 0px';
+        content.image = '/assets/img/avatars.png';
+    }else if(content.type == 'fb'){
+        content.image = content.image;
+        content.backgroundPosition = '50% 50%';
+        // $rootScope.$broadcast(AUTH_EVENTS.loginSuccess);
+    }
+    var y = '<div ng-controller="registerCtrl" class="ball center" style="background-image:url('+content.image+'); background-position : '+ content.backgroundPosition+'; margin: 0 auto;">'+
+          '<h4 class="cover-player-name">'+content.name+'<i class="fa fa-sign-out signout-icon" ng-click="logOut()"></i></h4></div>';
+      return y;
+  }
+  var linker = function(scope, element, attrs){
+    scope.$watch('content', function (argument){
+      element.html(x(scope)).show();
+      $compile(element.contents())(scope);
+    })
+  }
+  return {
+    restrict : 'E',
+    replace : true,
+    link : linker,
+    scope : {
+      content : '='
+    }
+  }
+}]);
 game325.service('createPrivateRoomService', ['$http', function ($http){
     return {
         create : function (req) {
@@ -419,6 +454,10 @@ game325.controller('registerCtrl', ['$rootScope', '$scope','$cookieStore','$wind
         $scope.loginFB = false;
         $scope.loginAnon = true;
     }
+    $scope.backToLoginHome = function(){
+        $scope.loginFB = true;
+        $scope.loginAnon = false;
+    }
     $scope.avatars = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15];
     $scope.selectedimage = null;
     $scope.showUserError = false;
@@ -440,7 +479,7 @@ game325.controller('registerCtrl', ['$rootScope', '$scope','$cookieStore','$wind
     }
     $scope.showNameTooltip = false;
     $scope.register = function (){
-        console.log($scope.user);
+        // console.log($scope.user);
         if($scope.user.name.length == '' && $scope.avatars.indexOf($scope.user.image) != -1){
             $scope.showUserError = true;
             errService.showErrSimple('Please select a username!');

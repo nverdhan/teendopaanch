@@ -41,7 +41,7 @@ var getNumericValue = function(z){
 //     }
 // }])
 var temp;
-game325.controller('gameController', ['$rootScope', '$http', '$scope', '$state', '$stateParams','AuthService', 'gameService', 'socket', '$timeout', 'delayService', '$mdSidenav', '$anchorScroll', '$location', '$mdDialog','Session', function ($rootScope, $http, $scope, $state, $stateParams, AuthService, gameService, socket, $timeout ,delayService, $mdSidenav, $anchorScroll, $location, $mdDialog, Session){
+game325.controller('gameController', ['$rootScope', '$http', '$scope', '$state', '$stateParams','AuthService', 'gameService', 'socket', '$timeout', 'delayService', '$mdSidenav', '$anchorScroll', '$location', '$mdDialog','Session','errService', function ($rootScope, $http, $scope, $state, $stateParams, AuthService, gameService, socket, $timeout ,delayService, $mdSidenav, $anchorScroll, $location, $mdDialog, Session, errService){
     $scope.gameId = $stateParams.id;
     $scope.gameType = $stateParams.type;
     $scope.waiting = true;
@@ -135,11 +135,8 @@ game325.controller('gameController', ['$rootScope', '$http', '$scope', '$state',
     $scope.scaleGameBody = function(){
         var win_w = window.innerWidth;
         var effh = window.innerHeight;
-        if(win_w > 960){
-            var effw = win_w - 340 - 60;
-        }else{
-            var effw = win_w - 60;
-        }
+        var effw = win_w - 80;
+        
         if(effw/effh < $scope.gameWindow.x/$scope.gameWindow.y){
             $scope.scalefactor = effw/$scope.gameWindow.x;
             var leftshift = $scope.gameWindow.x*($scope.scalefactor-1)/2;
@@ -164,7 +161,11 @@ game325.controller('gameController', ['$rootScope', '$http', '$scope', '$state',
                 'top': topshift + 'px'
             }
         }
+
     }
+    $(window).resize(function() {
+          $scope.$digest();
+    });
     $scope.closeScores = function (){
         $scope.showScores = false;
     }
@@ -1837,8 +1838,42 @@ game325.controller('gameController', ['$rootScope', '$http', '$scope', '$state',
         }
     }
     $scope.exitGame = function(){
-        console.log('exit game request!');
+        $mdDialog.show({
+              template:
+                '<md-dialog>' +
+                '  <md-content> <h2 class="md-title"> Exit Game? </h2> <p> You are about to be disconnected from other players.'+
+                ' Other players will lose their game too.' +
+                 '  <div class="md-actions">' +
+                 '<md-button ng-click="goToHome()"> Yes exit game. </md-button>'+
+                 '<md-button ng-click="closeDialog()"> Continue playing </md-button>'+
+                 '  </div>' +
+                '</md-content></md-dialog>',
+                controller: 'errDialogController'
+            });
     }
+    // Prevent to use the back button.
+    $scope.$on('$locationChangeStart', function(event) {
+        // if (!$scope.isAuthenticated) {
+            // if($state.current.name == "game/:id"){
+                if(0){
+                event.preventDefault();
+                $scope.exitGame();        
+            }
+        
+    // }
+    });
+    // jQuery(document).ready(function($) {
+
+    //     if (window.history && window.history.pushState) {
+
+    //     // window.history.pushState('forward', null, './#forward');
+
+    //     $(window).on('popstate', function() {
+    //         $scope.exitGame();
+    //     });
+
+    // }
+    // });
 }])
 game325.directive('ngEnter', function() {
         return function(scope, element, attrs) {

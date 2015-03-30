@@ -67,7 +67,7 @@ game325.controller('startController', ['$rootScope', '$http', '$scope', '$state'
     $scope.goToCover = function(){
       setTimeout(function(){
         $state.go('cover');
-      }, 0);
+      }, 100);
     }
     $scope.joinGame = function(){
         var req = {
@@ -123,16 +123,28 @@ game325.controller('startController', ['$rootScope', '$http', '$scope', '$state'
           }
 }]);
 
-game325.controller('errDialogController',['$scope', '$mdDialog', function($scope, $mdDialog){
+game325.controller('errDialogController',['$scope', '$mdDialog', '$state', function($scope, $mdDialog, $state){
     $scope.closeDialog = function(){
             $mdDialog.hide();
         };
+    $scope.goToHome = function(){
+            $mdDialog.hide();
+            $state.go('home');
+    }
 }])
 game325.controller('coverController', ['$rootScope', '$http', '$scope', '$state', '$stateParams','AuthService', 'startGameService' ,'gameService', 'socket', '$timeout', 'delayService', '$mdSidenav', '$anchorScroll', '$location', '$mdDialog','$cookieStore','AUTH_EVENTS','Session', 'errService', function ($rootScope, $http, $scope, $state, $stateParams, AuthService, startGameService, gameService, socket, $timeout ,delayService, $mdSidenav, $anchorScroll, $location, $mdDialog, $cookieStore, AUTH_EVENTS, Session, errService){
   $scope.className='';
   $scope.showLoggedInOptions  = false;
+  $scope.showGame325 = false;
 
+  $scope.getWinContainerHeight = function(){
+    var h = window.innerHeight - 100;
+    return {
+            'height' : h
+    }
+  }
   $scope.start325Game = function(){
+    $scope.showGame325 = true; 
     if(Session.name && Session.type != 'local'){
           $rootScope.showLoggedInOptions = true;
         }else{
@@ -157,44 +169,45 @@ game325.controller('coverController', ['$rootScope', '$http', '$scope', '$state'
   //       }
   //   }
   // }
+  // $scope.logOut = function(){
+  //       Session.destroy();
+  //       $cookieStore.put('userId', 'anon');
+  //       $window.location.href = '/';
+  // }
 
   $scope.getGameLogo = function(className){
     var logoimg = '';
-    var w = 80;
-    var h = 80;
+    var w = 96;
+    var h = 96;
     var t = -40;
 
     switch(className){
       case 'aboutus':
         logoimg = 'about-us.png';
-        w = 120;
-        h = 120;
+        w = 50;
+        h = 50;
         break;
       case 'leaderboard':
         logoimg = 'leaderboard.png';
-        w= 200;
-        h= 200;
+        w= 50;
+        h= 50;
         break;
       case 'game-325':
-        logoimg = '325img.svg';
-        w = 200;
-        h = 200;
+        logoimg = '325.png';
+        w = 144;
+        h = 144;
         break;
       case 'game-hearts':
         logoimg = 'hearts.png';
         break;
       case 'game-29':
-        logoimg = 'game-29.png';
-        w = 120;
-        h = 120;
+        logoimg = '29.png';
         break;
       case 'game-7':
-        logoimg = 'satti-center.png';
+        logoimg = '7centre.png';
         break;  
       case 'game-10pakad':
-        logoimg = '10-pakad.png';
-        w = 120;
-        h = 120;
+        logoimg = '10pakad.png';
         break;
       case 'game-a':
         logoimg = 'game-stats.png';
@@ -206,8 +219,10 @@ game325.controller('coverController', ['$rootScope', '$http', '$scope', '$state'
         w = 120;
         h = 120;
         break;
-      case 'game-b':
+      case 'game-on-demand':
         logoimg = 'demand.png';
+        w = 50;
+        h = 50;
         break;
       default: 
         logoimg = 'ankit.jpg';
@@ -224,12 +239,9 @@ game325.controller('coverController', ['$rootScope', '$http', '$scope', '$state'
     }
     return{
       'background-image' : 'url('+logoimg+')',
-      'width' : w+'px',
-      'height' : h + 'px',
-      'top' : t + 'px'
     }
   }
-  $scope.joinGameRoomId = '';
+    $scope.joinGameRoomId = '';
     $scope.showStartGame = false;
     $scope.showCreateGame = false;
     $scope.showJoinGame = false;

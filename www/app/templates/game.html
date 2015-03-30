@@ -1,26 +1,27 @@
+<div class='bckimg'> </div>
 <div class="push-wrap" id="homepage" ng-show="ready">
         <div ng-show="ready" class="bcktrans" flex layout-fill>
             <div class="game-body" ng-style="scaleGameBody()">
                 <!-- <game-state content="gameState"></game-state> -->
                 <div class="play-info" ng-if="gameState == 'PLAY_CARD'">
-                    <md-whiteframe class="md-whiteframe-z1 status">
+                    <!-- <md-whiteframe class="md-whiteframe-z1 status"> -->
                         <span>{{getProfile(activePlayerId).name}} Play</span>
-                    </md-whiteframe>
+                    <!-- </md-whiteframe> -->
                 </div>
                 <div class="play-info" ng-if="gameState == 'WITHDRAW_CARD'">
-                    <md-whiteframe class="md-whiteframe-z1 status">
+                    <!-- <md-whiteframe class="md-whiteframe-z1 status"> -->
                         <span>{{getProfile(activePlayerId).name}} to withdraw card from {{getProfile(otherPlayerId).name}}</span>
-                    </md-whiteframe>
+                    <!-- </md-whiteframe> -->
                 </div>
                 <div class="play-info" ng-if="gameState == 'RETURN_CARD'">
-                    <md-whiteframe class="md-whiteframe-z1 status">
+                    <!-- <md-whiteframe class="md-whiteframe-z1 status"> -->
                         <span>{{getProfile(activePlayerId).name}} returning card to {{getProfile(otherPlayerId).name}}</span>
-                    </md-whiteframe>
+                    <!-- </md-whiteframe> -->
                 </div>
                 <div class="play-info" ng-if="gameState == 'SET_TRUMP'">
-                    <md-whiteframe class="md-whiteframe-z1 status">
+                    <!-- <md-whiteframe class="md-whiteframe-z1 status"> -->
                         <span>Player {{getProfile(activePlayerId).name}} Set Trump</span>
-                    </md-whiteframe>
+                    <!-- </md-whiteframe> -->
                 </div>
                 <div class="left-player playingCards"  ng-style="getPlayerCardsCSS(1);">
                     <div class="left-player-profile players-profile">
@@ -123,14 +124,14 @@
                     <md-icon icon="assets/img/scoreicon.svg" style="width: 24px; height: 24px;">
                     </md-icon>
                 </md-button>
-                <md-button class="md-fab sidebutton chat" aria-label="Scores" style="position:fixed;" ng-click="toggleRight()" hide-md>
+                <md-button class="md-fab sidebutton chat" aria-label="Scores" style="position:fixed;" ng-click="toggleRight()">
                     <md-icon icon="assets/img/ic_chat_24px.svg" style="width: 24px; height: 24px;">
                     </md-icon>
                 </md-button>
                 <div class="ball selfprofile sidebutton" ng-style="getProfilePic(0);" ng-class="{'player-active':arrPlayers[0].id == activePlayerId}"></div>
             </div>
         </div>
-    <md-sidenav class="md-sidenav-right md-whiteframe-z2" component-id="right" is-locked-open="$media('md')" flex ng-show="ready" layout="vertical" layout-fill style="max-height:100%!important; background-color: #f6f6f6;">
+    <md-sidenav class="md-sidenav-right md-whiteframe-z2" component-id="right"  flex ng-show="ready" layout="vertical" layout-fill style="max-height:100%!important; background-color: #f6f6f6;">
         <md-toolbar class="chat-head">
                 <div class="md-toolbar-tools" flex layout="horizontal" layout-fill>
                     <h3 flex="90">Chat</h3>
@@ -166,11 +167,14 @@
         <h2>
         {{PlayersToJoinMsg}}
         </h2>
-        <md-progress-circular mode="indeterminate"></md-progress-circular>
+        <md-progress-circular mode="indeterminate" class="game-waiting-progress"></md-progress-circular>
     </div>
     <div ng-if="gameType == 0" class="waiting" >
         <div>share room with your friends you want to join {{ gameId }}</div>
     </div>
     
 </div>
+<script type="text/javascript">
+    
+</script>
 

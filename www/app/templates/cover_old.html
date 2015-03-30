@@ -1,0 +1,280 @@
+<div class="bgblack"></div>
+<div class="daddy-container">
+<div class ='cover-toolbar'> </div>
+<div class='wide window-container preload'>
+	<!-- <div class='left-col'> -->
+	<md-button class="back-button" aria-label="goBack">
+                <md-icon icon="assets/img/ic_arrow_back_24px.svg" style="width: 24px; height: 24px;">
+                </md-icon>
+    </md-button>
+		<div flex layout="vertical" class="center profile item"  ng-click="showProfile()">
+
+			<div flex class="item-body">
+				<div class="profile-info" ng-if="loggedIn">
+					<profile-info content="profile"></profile-info>
+				</div>
+				<!--div>ankit</div-->
+				<div class="profile-info" ng-if="!loggedIn">
+					<i class="fa fa-user fa-2x"></i>
+					<div>Log In</div>
+				</div>
+			</div>
+			<div class="item-bar">
+				<div flex>Profile</div>
+				<md-icon  class = "next-icon-small" icon="assets/img/ic_send_24px.svg"></md-icon>
+			</div>
+		</div>
+		<div flex layout="vertical" class="leaderboard item">
+			<div flex class="item-body">
+				<div class='game-logo' ng-style="getGameLogo('leaderboard')"></div>
+				<div class="internal-slider-1 md-whiteframe-z2">
+					Leaderboard
+				</div>
+			</div>
+			<div class="item-bar md-whiteframe-z2">
+				<div flex>Leaderboard</div>
+				<md-icon  class = "next-icon-small" icon="assets/img/ic_send_24px.svg"></md-icon>
+			</div>
+		</div>
+		<div flex layout="vertical" class="aboutus item">
+			<div flex class="item-body">
+				<div class='game-logo' ng-style="getGameLogo('aboutus')"></div>
+				<div class="internal-slider-1">
+					Ankit hi dude hai!
+				</div>
+			</div>
+			<div class="item-bar">
+				<div flex>About Us</div>
+				<md-icon  class = "next-icon-small" icon="assets/img/ic_send_24px.svg"></md-icon>
+			</div>
+		</div>
+		<div flex layout="vertical" class="game-325 item" ng-click="start325Game()">
+		<!-- ng-click="changeClass('game-325')" -->
+				<div flex class="item-body" >
+				<div class='game-logo' ng-style="getGameLogo('game-325')"></div>
+				<div class="internal-buttons">
+					<md-button class="md-fab int-button help" aria-label="Scores" ng-click="showHelp()">
+	                    <md-icon icon="assets/img/ic_help_24px.svg" style="width: 24px; height: 24px;">
+	                    </md-icon>
+                	</md-button>
+                	<md-button class="md-fab int-button play" aria-label="Scores" ng-click="showGameOpt()">
+	                    <md-icon icon="assets/img/ic_gamepad_24px.svg" style="width: 24px; height: 24px;">
+	                    </md-icon>
+                	</md-button>
+				</div>
+				<div class="internal-slider-1 md-whiteframe-z1">
+					<div class='homepage'  style="margin-top:20px;">
+						 <div class="flex" layout="vertical" layout-align="center center">
+						 	<h2>325-Game</h2>
+							<div ng-click="startGame()">
+								<md-button class="redcol home-elem md-raised" aria-label="randomGameStart">
+									<div flex layout="horizontal" layout-align="center center">
+									<div style="margin-right:15px;"><i class="fa fa-random fa-2x"></i> </div>
+									<div><h2>Join a random game</h2> </div>
+						      		</div>
+						      	</md-button>
+							</div>
+							<div>
+								<md-card class="home-elem bluecol" flex layout='vertical' layout-align="center center" style="padding-bottom:30px" ng-show="showLoggedInOptions">
+									<h3>
+									Create private room and invite your friends
+									</h3>
+									<md-button class="bluecoldark md-raised" ng-click="createGame()" aria-label="privateGameStart">
+										Create Room
+									</md-button>
+									<h3>Or join an existing room</h3>
+									<md-text-float label="Room ID" flex ng-model="joinGameRoomId"> </md-text-float>
+									<md-button class="bluecoldark md-raised" ng-click="joinGame()" aria-label="privateGameJoin">
+										Join
+									</md-button>
+								</md-card>
+								<md-card class="home-elem bluecol" flex layout='vertical' layout-align="center center" style="padding-bottom:30px" ng-hide="showLoggedInOptions">
+									<h3>
+									For private rooms, login with facebook.
+									</h3>
+									<md-card class="flogin flogin-small" ng-hide="showLoggedInOptions">
+										<i class="card-img-upper fa fa-facebook"></i>
+										<i class="card-img md-card-image fa fa-facebook" style="color:#fff; font-size:100pt;"></i>
+										<i class="card-img-lower fa fa-facebook"></i>
+									</md-card>
+								</md-card>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="item-bar">
+				<div flex>Teen Do Paanch</div>
+				<md-icon  class = "next-icon-small" icon="assets/img/ic_send_24px.svg"></md-icon>
+			</div>
+		</div>
+		<div flex layout="vertical" class="game-29 item">
+			<div flex class="item-body">
+				<div class='game-logo' ng-style="getGameLogo('game-29')"></div>
+				<div class="internal-slider-1">
+					Internal Slider
+				</div>
+				<div class="coming-soon md-whiteframe-z1">COMING SOON!</div>
+			</div>
+			<div class="item-bar">
+				<div flex>Twenty-nine</div>
+				<md-icon  class = "next-icon-small" icon="assets/img/ic_send_24px.svg"></md-icon>
+			</div>
+		</div>
+		<div flex layout="vertical" class="game-7 item">
+			<div flex class="item-body">
+				<div class='game-logo' ng-style="getGameLogo('game-7')"></div>
+				<div class="internal-slider-1">
+					Internal Slider
+				</div>
+				<div class="coming-soon md-whiteframe-z1">COMING SOON!</div>
+			</div>
+			<div class="item-bar">
+				<div flex>Satti Center</div>
+				<md-icon  class = "next-icon-small" icon="assets/img/ic_send_24px.svg"></md-icon>
+			</div>
+		</div>
+		<div flex layout="vertical"  class="game-hearts item">
+			<div flex class="item-body">
+				<div class='game-logo' ng-style="getGameLogo('game-hearts')"></div>
+				<div class="internal-slider-1">
+					Internal Slider
+				</div>
+				<div class="coming-soon md-whiteframe-z1">COMING SOON!</div>
+			</div>
+			<div class="item-bar">
+				<div flex>Hearts</div>
+				<md-icon  class = "next-icon-small" icon="assets/img/ic_send_24px.svg"></md-icon>
+			</div>
+		</div>
+		<div flex layout="vertical" class="game-10pakad item">
+			<div flex class="item-body">
+				<div class='game-logo' ng-style="getGameLogo('game-10pakad')"></div>
+				<div class="internal-slider-1">
+					Internal Slider
+				</div>
+				<div class="coming-soon md-whiteframe-z1">COMING SOON!</div>
+			</div>
+			<div class="item-bar">
+				<div flex>Dehla Pakad</div>
+				<md-icon  class = "next-icon-small" icon="assets/img/ic_send_24px.svg"></md-icon>
+			</div>
+		</div>
+		<div flex layout="vertical" class="game-a item">
+			<div flex class="item-body">
+				<div class='game-logo' ng-style="getGameLogo('game-a')"></div>
+				<div class="internal-slider-1">
+					Game Statistics appear here.
+				</div>
+			</div>
+			<div class="item-bar">
+				<div flex>Game Statistics</div>
+				<md-icon  class = "next-icon-small" icon="assets/img/ic_send_24px.svg"></md-icon>
+			</div>
+		</div>
+		<div flex layout="vertical" class="game-b item">
+			<div flex class="item-body">
+				<div class='game-logo' ng-style="getGameLogo('game-b')"></div>
+				<div class="internal-slider-1" style="font-size:28px;">
+					Tell us your favorite card game, and we'll make for you first!
+					<div style="padding-left: 80px; padding-top: 20px;">
+					<md-radio-group class='favgame-select' ng-model="favgame">
+				      <md-radio-button value="game-29">Game 29</md-radio-button>
+				      <md-radio-button value="game-hearts"> Hearts </md-radio-button>
+				      <md-radio-button value="game-10pakad">Dehla Pakad</md-radio-button>
+				      <md-radio-button value="game-7">Satti Center</md-radio-button>
+				    </md-radio-group>
+				    </div>
+				</div>
+			</div>
+			<div class="item-bar">
+				<div flex>Game on demand!</div>
+				<md-icon  class = "next-icon-small" icon="assets/img/ic_send_24px.svg"></md-icon>
+			</div>
+		</div>
+		<div flex layout="vertical" class="game-c item">
+			<div flex class="item-body">
+				<div class='game-logo' ng-style="getGameLogo('game-c')"></div>
+			</div>
+			<div class="item-bar">
+				<div flex>Discuss here!</div>
+				<md-icon  class = "next-icon-small" icon="assets/img/ic_send_24px.svg"></md-icon>
+			</div>
+		</div>
+</div> 
+</div>
+<!-- <div class="overlay" ng-show="showLoggedInOptions">
+<div class='homepage'  style="margin-top:50px;">
+ <div class="flex" layout="vertical" layout-align="center center">
+	<div ng-click="startGame()">
+		<md-button class="redcol home-elem md-raised" aria-label="randomGameStart">
+			<div flex layout="horizontal" layout-align="center center">
+			<div style="margin-right:15px;"><i class="fa fa-random fa-2x"></i> </div>
+			<div><h2>Join a random game</h2> </div>
+      		</div>
+      	</md-button>
+	</div>
+	<div>
+		<md-card class="home-elem bluecol" flex layout='vertical' layout-align="center center" style="padding-bottom:30px">
+			<h3>
+			Create private room and invite your friends
+			</h3>
+			<md-button class="bluecoldark md-raised" ng-click="createGame()" aria-label="privateGameStart">
+				Create Room
+			</md-button>
+			<h3>Or join an existing room</h3>
+			<md-text-float label="Room ID" flex ng-model="joinGameRoomId"> </md-text-float>
+			<md-button class="bluecoldark md-raised" ng-click="joinGame()" aria-label="privateGameJoin">
+				Join
+			</md-button>
+		</md-card>
+	</div>
+</div>
+</div>
+</div> -->
+<script type="text/javascript">
+
+
+	  $( document ).ready(function(){
+	  	
+	  	if($(".window-container").hasClass('preload')){	
+	  		setTimeout(function() {
+      			$(".window-container").removeClass("preload");
+  				$(".window-container").addClass("win-loaded");
+  				// console.log('loaded-2');
+			}, 1);
+			// console.log('timeout set');
+  		}
+	  	
+		  var ink, d, x, y;
+		  $(".item").mouseup(function(e){
+		    if($(this).find(".item-ink").length === 0){
+		        $(this).prepend("<span class='item-ink'></span>");
+		    }
+		    
+		    ink = $(this).find(".item-ink");
+		    ink.removeClass("ripple-animate");
+		     
+		    if(!ink.height() && !ink.width()){
+		        d = Math.max($(this).outerWidth(), $(this).outerHeight());
+		        ink.css({height: d, width: d});
+		    }
+		     
+		    x = e.pageX - $(this).offset().left - ink.width()/2;
+		    y = e.pageY - $(this).offset().top - ink.height()/2;
+		     
+		    ink.css({top: y+'px', left: x+'px'}).addClass("ripple-animate");
+
+		  });
+		  $(".item").click(function(e){
+		  	if(!$(this).hasClass("expanded")){
+		    	$(this).addClass("expanded");	
+		    	$(this.parentNode).addClass("selectiondone");
+		    }
+		});
+		  $('.back-button').click(function(e){
+		  		$(this.parentNode).removeClass("selectiondone");
+		  		$('.expanded').removeClass('expanded');
+		  });
+  });
+</script>
