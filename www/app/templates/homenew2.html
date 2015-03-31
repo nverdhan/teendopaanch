@@ -26,16 +26,31 @@
     <div class="home-showlater">
         <div class="home-panel home-left">
         </div>
-        <div class="home-panel home-right">
+        <div class="home-panel home-right" ng-click="checkLoggedInOptions()">
           <div class="panel-side flip">
             <img src="assets/img/sam.png" style="width:300px; height:450px; ">
           </div>
           <div class="panel-side flop">
-              <md-button class="back-button-flop" aria-label="goBack">
-                <md-icon icon="assets/img/rotate.svg" style="width: 24px; height: 24px;">
-                </md-icon>
-              </md-button>
-              <div class='flop-elem'>
+              <div class='flop-elem' ng-show="showLoggedInOptions">
+                  <md-button class="back-button-flop" aria-label="goBack">
+                    <md-icon icon="assets/img/rotate.svg" style="width: 24px; height: 24px;">
+                    </md-icon>
+                  </md-button>
+                  <div class="home-text">To play against random strangers</div>
+                  <div ng-click="startGame('multiplayer')" class="home-button">
+                    <md-button class="redcol home-elem md-raised" aria-label="randomGameStart">
+                        <div flex layout="horizontal" layout-align="center center">
+                          <div style="margin-right:15px;"><img src="assets/img/stranger48.png"> </div>
+                          <div><h2>Join a random game</h2> </div>
+                        </div>
+                    </md-button>
+                  </div>
+              </div>
+              <div class='flop-elem' ng-hide="showLoggedInOptions">
+                  <md-button class="back-button-flop" aria-label="goBack">
+                    <md-icon icon="assets/img/rotate.svg" style="width: 24px; height: 24px;">
+                    </md-icon>
+                  </md-button>
                   <div class="home-text">To play against random strangers</div>
                   <div ng-click="changeClass('game-325')" class="home-button">
                     <md-button class="redcol home-elem md-raised" aria-label="randomGameStart">
@@ -121,7 +136,7 @@
         }
       });
       $(".back-button-flop").click(function(e){
-          $(this.parentNode.parentNode.parentNode).removeClass("onlineselected");
+          $(this.parentNode.parentNode.parentNode.parentNode).removeClass("onlineselected");
       });
       $(".back-button-game").click(function(e){
           $(this.parentNode.parentNode).removeClass("gameselected");

@@ -1853,14 +1853,10 @@ game325.controller('gameController', ['$rootScope', '$http', '$scope', '$state',
     }
     // Prevent to use the back button.
     $scope.$on('$locationChangeStart', function(event) {
-        // if (!$scope.isAuthenticated) {
-            // if($state.current.name == "game/:id"){
-                if(0){
+                if(!$scope.waiting){
                 event.preventDefault();
                 $scope.exitGame();        
             }
-        
-    // }
     });
     // jQuery(document).ready(function($) {
 

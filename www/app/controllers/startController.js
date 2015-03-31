@@ -15,7 +15,7 @@ game325.controller('startController', ['$rootScope', '$http', '$scope', '$state'
     $scope.showStartGame = false;
     $scope.showCreateGame = false;
     $scope.showJoinGame = false;
-    $scope.showLoggedInOptions = $rootScope.showLoggedInOptions;
+    $scope.showLoggedInOptions = $cookieStore.get('showLoggedInOptions');
     if($state.current.name == 'start'){
         $scope.showStartGame = true;
     }
@@ -50,6 +50,7 @@ game325.controller('startController', ['$rootScope', '$http', '$scope', '$state'
         if(e == 'bots'){
           $state.go('game325');
         }else{
+          var req = {};
           startGameService.start(req).then(function(res){
             $state.go('game/:id', {id : res.data.roomId, type : res.data.type});
           });
@@ -146,11 +147,11 @@ game325.controller('coverController', ['$rootScope', '$http', '$scope', '$state'
   $scope.start325Game = function(){
     $scope.showGame325 = true; 
     if(Session.name && Session.type != 'local'){
-          $rootScope.showLoggedInOptions = true;
+          $cookieStore.put('showLoggedInOptions', true);
         }else{
-          $rootScope.showLoggedInOptions = false;
+          $cookieStore.put('showLoggedInOptions', true);
         }
-    $scope.showLoggedInOptions = $rootScope.showLoggedInOptions;
+    $scope.showLoggedInOptions = $cookieStore.get('showLoggedInOptions');
     setTimeout(function(){
       $state.go('home');
     },800)

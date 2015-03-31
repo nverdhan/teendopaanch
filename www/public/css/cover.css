@@ -46,6 +46,20 @@ md-backdrop{
     font-size: 2.2em;
     margin-bottom: 10px;
     opacity: 1;
+    -moz-transition: all 0.2s ease 0s;
+    -o-transition: all 0.2s ease 0s;
+    -webkit-transition: all 0.2s ease 0s;
+    transition: all 0.2s ease 0s;
+}
+.footerselected .heading-msg, .gameselected .heading-msg{
+    height: 0px;
+    min-height: 0px;
+    margin-bottom: 0px;
+    opacity: 0;
+    -moz-transition: all 0.2s ease 0s;
+    -o-transition: all 0.2s ease 0s;
+    -webkit-transition: all 0.2s ease 0s;
+    transition: all 0.2s ease 0s;
 }
 .app-msg{
     height: 100%;
@@ -56,11 +70,19 @@ md-backdrop{
     font-weight: 500;
     font-size: 1.2em;
     margin: 10px;
+    -moz-transition: all 0.2s ease 0s;
+    -o-transition: all 0.2s ease 0s;
+    -webkit-transition: all 0.2s ease 0s;
+    transition: all 0.2s ease 0s;
 }
 .footerselected .app-msg, .gameselected .app-msg{
   height: 0;
   margin: 0;
   opacity: 0;
+    -moz-transition: all 0.2s ease 0s;
+    -o-transition: all 0.2s ease 0s;
+    -webkit-transition: all 0.2s ease 0s;
+    transition: all 0.2s ease 0s;
 }
 .game-name{
     font-family: "Roboto Slab", serif;
@@ -86,17 +108,21 @@ md-backdrop{
     font-style: bold;
     font-weight: 400;
     font-size: 1em;
-    color: #f5f5f5;
+    color: #424242;
     position: absolute;
     left: 0;
     right: 0;
     top: 32%;
-    text-shadow: 1px 1px #000;
+    text-shadow: 1px 1px #f5f5f5;
     /*top: calc(50% + 54px);*/
     margin: auto auto;
     text-align: center;
     vertical-align: center;
 }
+.leaderboard .bottombar-name, .cover-app{
+    color: #f5f5f5;
+    text-shadow: 1px 1px #424242;
+  }
 .game-msg{
     font-family: "Roboto Slab", serif;
     font-style: normal;
@@ -134,12 +160,7 @@ md-backdrop{
   color: #f5f5f5;
   text-shadow: 1px 1px #424242;
 }
-.footerselected .heading-msg, .gameselected .heading-msg{
-    height: 0px;
-    min-height: 0px;
-    margin-bottom: 0px;
-    opacity: 0;
-}
+
 .cover-toolbar{
     background-color: #f5f5f5;
     z-index: 2;
@@ -186,13 +207,6 @@ md-backdrop{
   right: 10px;
   top: 5px;
 }
-.cover-whitespace{
-    width: 100%;
-    height: 100%;
-}
-.footerselected .cover-whitespace, .gameselected .cover-whitespace{
-    height: 0;
-}
 .cover-icon{
 
 }
@@ -210,6 +224,25 @@ md-backdrop{
     align-items: stretch;
     height: 100px;
     min-height: 10%;
+    overflow: hidden;  
+    transition: all 0.2s ease 0s;
+    -webkit-transition: all 0.2s ease  0s;
+    -moz-transition: all 0.2s ease 0s;
+    -o-transition: all 0.2s ease 0s; 
+}
+.selectiondone.window-container{
+    height: 100%;
+    margin-top: -10px;
+    z-index: 1;
+    transition: all 0.2s ease 0s;
+    -webkit-transition: all 0.2s ease  0s;
+    -moz-transition: all 0.2s ease 0s;
+    -o-transition: all 0.2s ease 0s;
+}
+.gameselected .window-container{
+  height: 0;
+  margin: 0;
+  min-height: 0;
 }
 .item{
     /*display: none;*/
@@ -224,9 +257,6 @@ md-backdrop{
     border: 5px solid #424242;
     top: 0;
 }
-.window-container{
-    overflow: hidden;   
-}
 
 .win-loaded .item{
     margin: 0 0;
@@ -235,6 +265,13 @@ md-backdrop{
     -moz-transition: all 0.2s ease;
     -o-transition: all 0.2s ease;
 }
+/*.selectiondone .item{
+  
+  transition: all 0.2s ease;
+  -webkit-transition: all 0.2s ease;
+  -moz-transition: all 0.2s ease;
+  -o-transition: all 0.2s ease;
+}*/
 .preload .item{
     
 }
@@ -250,7 +287,7 @@ md-backdrop{
 
 .wide .aboutus{
     position: absolute;
-    left: 66.333333%;
+    left: 66.666666%;
     top: 0;
     width: 33.33333%;
 }
@@ -310,7 +347,8 @@ md-backdrop{
     background-color: #AB47BC   ;
 }
 .game-10pakad, .game-on-demand{
-    background-color: #81C784;
+    background-color: #ffe082;
+    color: #424242;
 /*    color: #f5f5f5;*/
 }
 .game-10pakad .item-bar, .game-on-demand .item-bar,.game-10pakad .coming-soon{
@@ -325,13 +363,13 @@ md-backdrop{
     color: #424242;
 }
 .leaderboard, .game-29{
-    background-color: #673AB7;
+    background-color: #9575cd;
 }
 .leaderboard .item-bar, .game-29 .item-bar, .game-29 .coming-soon{
     background-color: #999999;
 }
 .game-c, .aboutus{
-    background-color: #1976D2;
+    background-color: #64b5f6;
 }
 .game-c .item-bar, .aboutus .item-bar{
     background-color: #2196F3;
@@ -437,9 +475,7 @@ md-backdrop{
     -webkit-transition: height 0.4s ease 0.1s, width 0.4s ease 0.1s;
     transition: height 0.4s ease 0.1s, width 0.4s ease 0.1s;
 }
-.selectiondone.window-container{
-    height: 100%;
-}
+
 .item.expanded{
     height: 100%!important;
     width: 100%!important;
@@ -447,6 +483,10 @@ md-backdrop{
     left: 0!important;
     top: 0!important; 
     z-index: 10;
+    transition: all 0.2s ease 0s;
+    -webkit-transition: all 0.2s ease  0s;
+    -moz-transition: all 0.2s ease 0s;
+    -o-transition: all 0.2s ease 0s;
     /*transition-delay: 0.2s;*/
 }
 .back-button{
@@ -506,10 +546,10 @@ md-backdrop{
 .footerselected .game-logo, .gameselected .game-logo, .preload .game-logo, .footerselected .game-name, .gameselected .game-name, .preload .game-name{
     opacity: 0;
     /*transition-delay: 0.2s;*/
-    -webkit-transition: opacity 0.2s;
-    -moz-transition: opacity 0.2s;
-    -o-transition: opacity 0.2s;
-    transition: opacity 0.2s;       
+    -webkit-transition: opacity 0.2s ease 0s;
+    -moz-transition: opacity 0.2s ease 0s;
+    -o-transition: opacity 0.2s ease 0s;
+    transition: opacity 0.2s ease 0s;       
 }
 .internal-slider-1{
     width: 30%;
@@ -776,24 +816,24 @@ h3 {
 }
  .showcase-panels-container {
     height: 100%;
-    margin: 10px auto;
+    margin: auto auto;
     width: 90%;
     max-height: 450px;
     min-height: 60%;
-    -moz-transition: all 0.2s ease 0.1s;
-    -o-transition: all 0.2s ease 0.1s;
-    -webkit-transition: all 0.2s ease 0.1s;
-    transition: all 0.2s ease 0.1s;
+    -moz-transition: all 0.2s ease 0.2s;
+    -o-transition: all 0.2s ease 0.2s;
+    -webkit-transition: all 0.2s ease 0.2s;
+    transition: all 0.2s ease 0.2s;
   }
   .footerselected .showcase-panels-container, .gameselected .showcase-panels-container, .preload .showcase-panels-container{
     height: 0px;
     width: 0px;
     min-height: 0;
     margin: 0;
-    -moz-transition: all 0.2s ease 0s;
-    -o-transition: all 0.2s ease 0s;
-    -webkit-transition: all 0.2s ease 0s;
-    transition: all 0.2s ease 0s;
+    -moz-transition: all 0.1s ease 0s;
+    -o-transition: all 0.1s ease 0s;
+    -webkit-transition: all 0.1s ease 0s;
+    transition: all 0.1s ease 0s;
   }
   .showcase-panels-container > ul > li {
     width: 15%;
@@ -880,11 +920,6 @@ h3 {
     -o-transition: all 0.2s ease 0.1s;
     -webkit-transition: all 0.2s ease 0.1s;
     transition: all 0.2s ease 0.1s;
-}
-.gameselected .window-container{
-  height: 0;
-  margin: 0;
-  min-height: 0;
 }
 .gameselected .item{
   height: 0;
@@ -1140,4 +1175,9 @@ md-input-group.join-room-input.md-default-theme.md-input-focused input{
 .join-room-input> label{
   transform-origin: center center 0;
   text-align: center;
+}
+@media (max-width: 800px){
+  .heading-msg{
+      font-size: 1.6em;   
+  }
 }
