@@ -48,6 +48,7 @@ game325.controller('startController', ['$rootScope', '$http', '$scope', '$state'
         }
     $scope.startGame = function(e){
         if(e == 'bots'){
+          console.log(e);
           $state.go('game325');
         }else{
           var req = {};

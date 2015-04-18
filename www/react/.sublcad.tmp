@@ -1,0 +1,222 @@
+var ReactCSSTransitionGroup = React.addons.CSSTransitionGroup;
+var Player = function(id){
+    return {
+     id : id,
+     name : '',
+     img : '',
+     type : '',
+     cards : [],
+     scores : [{
+     	handsMade : 0,
+     	handsToMake : 0
+     }],
+     cardsToBeWithdrawn : 0,
+     handsToMake : 0,
+     handsMade : 0,
+     handsToMakeInLR : 0,
+     cardPlayed : {}
+    }
+}
+var GameStatus = {
+	NOT_STARTED : 0,
+	FINISHED : 1,
+	IN_PROGRESS : 2,
+	SET_TRUMP : 3,
+	PLAY_CARD : 4,
+	WITHDRAW_CARD : 5,
+	RETURN_CARD : 6,
+	WAITING : 7
+}
+var gameVars = {
+	noOfPlayers : 3,
+	botsName : ['dUmMy', 'aNk', 'eNVy']
+}
+var gameCSSConstants = {
+	gameBody : { x : 800, y : 600},
+	cardSize : {x: 80, y : 113.4},//px
+	trump : {left : 0, top : 0}
+}
+var game = new Game();
+var Game325Component = React.createClass({
+	initPlayers : function(){
+		this.players =  Array();
+		for (var i = 0; i < gameVars.noOfPlayers; i++) {
+			var player = new Player(i);
+			if(i == 0){
+				player.type = 'you'
+			}else{
+				player.type = 'bot';
+				player.name = gameVars.botsName[i];
+				player.img = i;
+			}
+			this.players.push(player);
+		};
+		
+	},
+	startGame : function(){
+		this.initPlayers();
+		for (var i = this.players.length - 1; i >= 0; i--) {
+			iIndex = i*10;
+			fIndex = (i+1)*10;
+			this.players[i].cards = this.deck.slice(iIndex, fIndex);
+		};
+	},
+	componentWillMount : function(){
+		this.setState({
+			players : this.players
+		});	
+	},
+	setTrump : function(trump){
+		this.props.game.trump = trump;
+		this.render();
+	},
+	playCard : function(){
+		//play card and place card on board
+	},
+	clickHandler : function(){
+		//events
+	},
+	getInitialState : function(){
+		var deck = new Deck();
+		this.deck = deck.shuffleDeck();
+		this.startGame();
+		// var game = this.props.game;
+		this.props.game.players = this.players;
+		return ({
+			leftPlayerDeck : null,
+			rightPlayerDeck : null,
+			bottomPlayerPlayerCard : null,
+			leftPlayerPlayerCard : null,
+			rightPlayerPlayerCard : null,
+			trumpCard : null
+
+		})
+	},
+	render : function(){
+		return (
+            <div id='war_game_component'>
+            <TrumpComponent trump={this.props.game.trump} setTrump={this.setTrump}/>
+            <PlayerComponent player={game.players[0]} />
+            </div>
+        );
+	}
+
+});
+var TrumpComponent = React.createClass({
+	getInitialState : function (){
+		console.log(88);
+		return {
+			trumps : ['S', 'H', 'C', 'D'],
+			trumpSet : this.props.trump,
+		}
+	},
+	handleClick : function (trump) {
+		this.props.setTrump(trump);
+	},
+	render : function(){
+				var self = this;
+				var trumpNodes = this.state.trumps.map(function (trump){
+				var zIndex = 0;
+				if(trump == self.state.trumpSet){
+					zIndex = 1;
+				}
+				var px = 'px';
+				if(self.state.trumpSet){
+					console.log(123);
+					var transform = 'translateX(0'+px+') translateY(0'+px+')';
+				}else{
+					console.log(456);
+					var transform = 'translateX(120'+px+') translateY(90'+px+')';
+				}
+				var style = {
+					zIndex : zIndex,
+					left : gameCSSConstants.trump.left,
+					top : gameCSSConstants.trump.top,
+					width : gameCSSConstants.cardSize.x,
+					height : gameCSSConstants.cardSize.y,
+					WebkitTransition : '',
+					msTransition : '',
+					MozTransition : '',
+					OTransition : '',
+					Transition : ''
+				}
+				return (<TrumpCardComponent key={trump} style={style} trump={trump} click={self.handleClick}/>)
+			});
+		return (
+			<div className="trumps">
+				{trumpNodes}
+			</div>
+			)
+		}
+	
+});
+var TrumpCardComponent = React.createClass({
+	getInitialState : function () {
+		return {
+			style : this.props.style,
+			trump : this.props.trump
+		}
+	},
+	handleClick : function(e){
+		this.props.click(e.props.trump);
+	},
+	render : function (){
+		return (
+			<div className = 'card' style={this.state.style}  onClick = {this.handleClick.bind(null, this)}></div>
+			)
+	}
+})
+var PlayerComponent = React.createClass({
+	getInitialState : function (){
+		return {
+			player : null,
+			mounted : false,
+			style : {
+					width : 100,
+					height : 50,
+					left : 0,
+					top : 0,
+					'transform' : 'translateX(0px) translateY(0px)'
+				}	
+		}
+	},
+	componentDidMount : function (){
+		var state = this.state;
+		state.style.transform = 'translateX(0px) translateY(0px)'
+		this.setState({
+			mounted : true,
+		})
+	},
+	animateIt : function(){
+		var newState = React.addons.update(this.state, {
+		  style: { 'transform': {$set: 'translateX(100px) translateY(100px)'} }
+		});
+		this.setState(newState);
+	},
+	render : function () {
+		var player = this.props.player;
+		return (
+			<div>
+			<div className="animateIt" style={this.state.style}>123</div>
+			<button onClick={this.animateIt.bind(null, this)}>Click Me</button>
+			</div>
+		)
+	}
+});
+var CardComponent = React.createClass({
+	handleClick : function(card, player){
+
+	},
+	render : function (){
+		var cardStyle = {
+			left : 0,
+			top : 0
+		};
+		return (
+			<li key = {card.suit+'_'+card.rank} onClick={self.handleClick.bind(card)} style={cardStyle}>
+				<a class="front"></a>
+				<a class="back"></a>
+			</li>
+		);
+	}
+})

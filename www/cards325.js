@@ -1,4 +1,4 @@
-var deck = function(){
+var Deck = function(){
 	return  {
 		deck : [{
 				suit : 'S',

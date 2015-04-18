@@ -81,7 +81,7 @@ module.exports = function (app, server){
                     player.image = user.image;
                     player.type = user.type;
                     if(!gamex){
-                        io.sockets.connected[socket.id].emit('INVALID', {'data' : 'Game Romm does not exist'});
+                        io.sockets.connected[socket.id].emit('INVALID', {'data' : 'Game Room does not exist'});
                         return false;
                     }
                     if(gamex.gamePaused){
@@ -140,8 +140,10 @@ module.exports = function (app, server){
                         throw err;
                     var gamex = JSON.parse(gameData);
                     var gameEvent = data.data.gameEvent;
+                    var fnCall;
                     switch(gameEvent){
                         case "START_GAME":
+                            fnCall = 'PLAY_CARD';
                             Game.prototype.initDeck.call(gamex);
                             Game.prototype.distributeCards.call(gamex);
                             Game.prototype.updateHandsToMake.call(gamex);
@@ -154,6 +156,7 @@ module.exports = function (app, server){
                             Game.prototype.initDeck.call(gamex);
                             Game.prototype.distributeCards.call(gamex);
                             Game.prototype.nextRound.call(gamex);
+                            // Game.prototype.updateHandsToMake.call(gamex);
                             gamex.gameState  ='SET_TRUMP';
                             gamex.gameEvent  ='SET_TRUMP';
                             break;
@@ -169,14 +172,18 @@ module.exports = function (app, server){
                             }
                             break;
                         case "WITHDRAW_CARD":
+                            fnCall = 'WITHDRAW_CARD';
                             gamex.cardIndex = data.data.card;
-                            Game.prototype.withdrawCard.call(gamex);
+                            //Game.prototype.withdrawCard.call(gamex);
+                            Game.prototype.moveWithdrawCard.call(gamex);
                             gamex.gameState  = 'RETURN_CARD';
                             gamex.gameEvent ='RETURN';
                             break;
                         case "RETURN_CARD":
+                            fnCall = 'RETURN_CARD';
                             gamex.card = data.data.card;
-                            Game.prototype.returnCard.call(gamex);
+                            //Game.prototype.returnCard.call(gamex);
+                            Game.prototype.moveReturnCard.call(gamex);
                             var y = Game.prototype.withdrawCards.call(gamex);
                                 if(y){
                                     gamex.gameState  = 'WITHDRAW_CARD';
@@ -190,7 +197,8 @@ module.exports = function (app, server){
                             break;
                         case "PLAY_CARD":
                             gamex.cardPlayed = data.data.cardPlayed;
-                            Game.prototype.playCard.call(gamex);
+                            fnCall = 'PLAY_CARD';
+                            //Game.prototype.playCard.call(gamex);
                             if((gamex.gameTurn % 3) == 1){
                                 gamex.turnSuit = gamex.cardPlayed.suit;
                             }
@@ -208,7 +216,16 @@ module.exports = function (app, server){
                         default:
                             null
                         }
-                        console.log(gamex);
+                        io.sockets.in(roomId).emit('GAME', {'data' : gamex});
+                        if(fnCall == 'PLAY_CARD'){
+                            Game.prototype.playCard.call(gamex);
+                        }
+                        if(fnCall == 'WITHDRAW_CARD'){
+                            Game.prototype.withdrawCard.call(gamex);
+                        }
+                        if(fnCall == 'RETURN_CARD'){
+                            Game.prototype.returnCard.call(gamex);
+                        }
                         var x = JSON.stringify(gamex);
                         client.set('gameRoom:'+roomId, x, function(err, gameSet){
                             if(err)
@@ -277,6 +294,8 @@ module.exports = function (app, server){
                         });
                         delete gamex;
                         client.del('gameRoom:'+roomId);
+                        client.srem('rooms1', roomId);
+                        client.srem('rooms2', roomId);
                     }else{
                         var x = JSON.stringify(gamex);
                             client.set('gameRoom:'+roomId, x, function (err, gameData){

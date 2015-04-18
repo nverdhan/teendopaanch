@@ -1,0 +1,176 @@
+ .profilepic.face {
+  border-radius: 30px;
+  border: 1px solid #ddd;
+  max-height: 32px;
+  }
+  .subjectimg.face{
+    width: 50px;
+    height: 50px;
+  }
+  .q-container {
+    display: flex;
+    display: -webkit-flex;
+    display: -moz-flex;
+    flex-flow: row wrap;
+    justify-content: space-around;
+    -webkit-justify-content: space-around;
+    -moz-justify-content: space-around;
+    /*align-items: space-between;    
+    -moz-align-items: space-between;
+    -webkit-align-items: space-between;
+     align-content: space-between;    
+    -moz-align-content: space-between;
+    -webkit-align-content: space-between;*/
+}
+  .q-item{
+    flex: 0 0 400px;
+    margin-bottom: 10px;
+    /*max-height: 50px;*/
+    min-width: min-content;
+    /*max-width: 400px;*/
+    border: 0.5px solid black;
+    /*align-self: space-between;    
+    -moz-align-self: space-between;
+    -webkit-align-self: space-between;*/
+  }
+  div.q-item md-checkbox{
+    margin: 0px;
+  }
+  div.q-item md-checkbox .md-container{
+    display: block;
+  }
+  div.q-item md-checkbox .md-label{
+    display: block;
+  }
+  md-checkbox.topiclist:focus .md-label {
+      border-color: #ffffff;
+  }
+  md-checkbox.topiclist.md-checked .md-label{
+    color: #46B946;
+  }
+  md-checkbox.topiclist.md-checked:hover .md-label{
+    color: #46B946;
+  }
+  .md-label.topiclist{
+    /*-ms-transform: scale(1.05,1); /* IE 9 */*/
+    /*-webkit-transform: scale(1.05,1); /* Chrome, Safari, Opera */*/
+    /*transform: scale(1.05,1);*/
+    color: #616161;
+    transition: color 0.5s ease;
+  }
+  md-checkbox.topiclist:hover .md-label{
+    color: #000000;
+  }
+/*.profilepic md-button-inner{
+  padding: 2px;
+  width: 36px;
+  height: 36px;
+}*/
+.dialog-img{
+  width: 394px;
+  margin-left: -21px;
+  margin-top: -21px!important;
+  margin-right: -21px;
+}
+
+.topiclistsidenav{
+  background-color: red;
+  z-index: 1;
+}
+
+.closeDialogX{
+  top:0px;
+  right: 0px;
+  bottom: auto;
+  left: auto;
+  justify-content: none;
+  position: absolute;
+  z-index: 100;
+  color: white;
+}
+.selector{
+	background-color: #009688;
+	color: #ffffff;
+}
+.sublist{
+  padding: 0px;
+  margin: 0px;
+}
+.choosesubject{
+  width: 100%;
+  height: 100%;
+  margin: 0px;
+  margin-left: 4px;
+  padding: 0px;
+  text-transform: none;
+}
+ input{
+  width: 100%;
+ }
+
+ md-input-group{
+  margin-top: 0px;
+ }
+md-item.item-link :hover{
+  background-color: #E0E0E0;
+  cursor: pointer;
+}
+ md-item-content{
+  padding-top: 8px;
+  padding-bottom: 8px;
+ }
+
+ md-dialog.selectsubjectdialog {
+    width: 400px;
+ }
+ md-content.selectsubjectdialog{
+    padding: 0px;
+ }
+md-card.selectsubjectdialog{
+  margin: 0px;
+}
+
+
+.tabsdemoStaticTabs {
+  /*
+ * Animation styles
+ */ }
+  .tabsdemoStaticTabs #tab1-content {
+    background-color: #ffffff; }
+  .tabsdemoStaticTabs #tab2-content {
+    background-color: #ffffff; }
+  .tabsdemoStaticTabs #tab3-content {
+    background-color: #00796B; }
+/*  .tabsdemoStaticTabs .tabpanel-container {
+    display: block;
+    position: relative;
+    background: white;
+    border: 0px solid black;
+    height: 100%;
+    overflow: auto; }
+  .tabsdemoStaticTabs [role="tabpanel"] {
+    color: black;
+    width: 100%;
+    height: 100%;
+    -webkit-transition: all cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.5s;
+    transition: all cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.5s;
+    position: absolute; }
+  .tabsdemoStaticTabs [role="tabpanel"].ng-leave.ng-leave-active, .tabsdemoStaticTabs [role="tabpanel"].ng-enter {
+    top: -300px; }
+  .tabsdemoStaticTabs [role="tabpanel"].ng-leave, .tabsdemoStaticTabs [role="tabpanel"].ng-enter.ng-enter-active {
+    top: 0; }
+  .tabsdemoStaticTabs [role="tabpanel"].ng-leave {
+    z-index: 100; }
+  .tabsdemoStaticTabs .tabpanel-container [role="tabpanel"] {
+    padding: 20px; }
+  .tabsdemoStaticTabs .after-tabs-area {
+    padding: 25px; }
+  .tabsdemoStaticTabs .after-tabs-area > span {
+    margin-top: 25px;
+    padding-right: 15px;
+    vertical-align: middle;
+    line-height: 30px;
+    height: 35px; }
+  .tabsdemoStaticTabs .after-tabs-area > md-checkbox {
+    margin-top: 26px;
+    margin-left: 0px; }*/

@@ -1109,7 +1109,7 @@ h3 {
     transform: rotateX(0deg) rotateY(0deg)  translateX(0);
     transform-style: preserve-3d;
     backface-visibility: hidden;
-    transition: transform 0.4s ease-out, overflow 0s ease 1s;
+    transition: transform 0.4s ease-out;
     cursor: auto;
 }
 .home-left{
@@ -1140,7 +1140,7 @@ h3 {
     flex-flow: row wrap;
     height: 100%;
     justify-content: space-around;
-    overflow: auto;
+    overflow-x: hidden;
 }
 .flop-elem{
     margin: 10px;

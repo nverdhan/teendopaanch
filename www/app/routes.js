@@ -54,16 +54,16 @@ game325.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', fun
         })
         .state('game/:id', {
             url : '/game/:id',
-            controller : 'gameController',
-            templateUrl : 'app/templates/game.html',
+            controller : 'gameReactController',
+            templateUrl : 'app/templates/gameReact.html',
                 data : {
                     requiresAuth : false
                 }
         })
         .state('game325', {
             url : '/game325',
-            controller : 'game325Controller',
-            templateUrl : 'app/templates/game.html',
+            controller : 'gameReactController',
+            templateUrl : 'app/templates/gameReact.html',
                 data : {
                     requiresAuth : false
                 }

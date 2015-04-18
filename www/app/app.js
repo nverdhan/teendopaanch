@@ -249,7 +249,7 @@ game325.directive('showScores', ['$compile', function($compile){
     var a = function(content){
         var content = content.content;
         console.log(content);
-        if(content.type == 'local'){
+        if(content.type == 'local' || content.type == 'bot' || content.type == 'you'){
                 content.userPic = '/assets/img/avatars.png';
                 content.backgroundPosition = 45*content.image+'px 0px';
             }else{

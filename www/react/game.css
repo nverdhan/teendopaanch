@@ -1,0 +1,582 @@
+body {
+    /*background-color: #222;*/
+    /*font-family: 'Merriweather'*/
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 400;
+    -webkit-user-select: none; /* Chrome/Safari */        
+    -moz-user-select: none; /* Firefox */
+    -ms-user-select: none; /* IE10+ */
+    user-select: none;
+    -o-user-select: none;
+}
+.inner {
+    position: absolute;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+    top: 6%;
+}
+.game-body{
+    width: 800px;
+    height: 600px;
+    position: relative;
+    left: 0;
+    right: 0;
+    margin: 0 0;
+    padding: 10px;
+}
+.game-status {
+    position: absolute;
+    left: 0px;
+    top: 444px;
+    width: 100%;
+    text-align: center;
+}
+.center{
+    position: relative;
+    margin: 0 auto;
+    text-align: center;
+
+}
+.table{
+    margin: 0 !important;
+}
+.card {
+    
+    position: absolute !important;
+    cursor: pointer;
+}
+.card a{
+    border-radius: 4px !important;
+    border: 1px solid #ccc;
+    width: 100%;
+    height: 100%;
+}
+.card.back, .card.backRotated{
+    background-image: url("assets/img/card-back.png");
+  /* background-position: -1120px -226.88px; */
+  background-size: 80px auto;
+}
+.trump-cards{
+    -webkit-transition: all 100ms cubic-bezier(0.000, 0.980, 0.405, 0.990);
+    -moz-transition: all 100ms cubic-bezier(0.000, 0.980, 0.405, 0.990);
+    -o-transition: all 100ms cubic-bezier(0.000, 0.980, 0.405, 0.990);
+    transition: all 100ms cubic-bezier(0.000, 0.980, 0.405, 0.990); /* custom */
+
+    -webkit-transition-timing-function: cubic-bezier(0.000, 0.980, 0.405, 0.990);
+    -moz-transition-timing-function: cubic-bezier(0.000, 0.980, 0.405, 0.990);
+    -o-transition-timing-function: cubic-bezier(0.000, 0.980, 0.405, 0.990);
+    transition-timing-function: cubic-bezier(0.000, 0.980, 0.405, 0.990); /* custom */
+}
+.hand{
+    position: absolute !important;
+    -webkit-transition: all 100ms cubic-bezier(0.000, 0.980, 0.405, 0.990);
+    -moz-transition: all 100ms cubic-bezier(0.000, 0.980, 0.405, 0.990);
+    -o-transition: all 100ms cubic-bezier(0.000, 0.980, 0.405, 0.990);
+    transition: all 100ms cubic-bezier(0.000, 0.980, 0.405, 0.990); /* custom */
+
+    -webkit-transition-timing-function: cubic-bezier(0.000, 0.980, 0.405, 0.990);
+    -moz-transition-timing-function: cubic-bezier(0.000, 0.980, 0.405, 0.990);
+    -o-transition-timing-function: cubic-bezier(0.000, 0.980, 0.405, 0.990);
+    transition-timing-function: cubic-bezier(0.000, 0.980, 0.405, 0.990); /* custom */
+}
+.left-player{
+    position: absolute;
+    left: 10px;
+    z-index: 1;
+}
+.right-player{
+    position: absolute;
+    right: 10px;
+    z-index: 1;
+}
+.bottom-player{
+    position: absolute;
+    vertical-align: middle;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+    z-index: 1;
+    text-align: center;
+    bottom: 0;
+}
+.set-trump{
+    position: absolute;
+    vertical-align: middle;
+    left: 0;
+    right: 0;
+    margin: 0 auto;   
+    z-index: 99;
+}
+.zeroInitial{
+    position: absolute;
+    left: 22em;
+    top : 26em;
+    margin: 0 auto;
+    -webkit-transition: all 500ms cubic-bezier(0.000, 0.980, 0.405, 0.990);
+    -moz-transition: all 500ms cubic-bezier(0.000, 0.980, 0.405, 0.990);
+    -o-transition: all 500ms cubic-bezier(0.000, 0.980, 0.405, 0.990);
+    transition: all 500ms cubic-bezier(0.000, 0.980, 0.405, 0.990); /* custom */
+
+    -webkit-transition-timing-function: cubic-bezier(0.000, 0.980, 0.405, 0.990);
+    -moz-transition-timing-function: cubic-bezier(0.000, 0.980, 0.405, 0.990);
+    -o-transition-timing-function: cubic-bezier(0.000, 0.980, 0.405, 0.990);
+    transition-timing-function: cubic-bezier(0.000, 0.980, 0.405, 0.990); /* custom */
+}
+.zeroFinal{
+    /*position: absolute;
+    left : 22em;
+    top: 15em;
+    -webkit-transition: all 500ms cubic-bezier(0.000, 0.980, 0.405, 0.990);
+    -moz-transition: all 500ms cubic-bezier(0.000, 0.980, 0.405, 0.990);
+    -o-transition: all 500ms cubic-bezier(0.000, 0.980, 0.405, 0.990);
+    transition: all 500ms cubic-bezier(0.000, 0.980, 0.405, 0.990); 
+
+    -webkit-transition-timing-function: cubic-bezier(0.000, 0.980, 0.405, 0.990);
+    -moz-transition-timing-function: cubic-bezier(0.000, 0.980, 0.405, 0.990);
+    -o-transition-timing-function: cubic-bezier(0.000, 0.980, 0.405, 0.990);
+    transition-timing-function: cubic-bezier(0.000, 0.980, 0.405, 0.990); 
+    */
+}
+.leftInitial{
+    position: absolute;
+    left: 3em;
+    top: 0em;
+    margin: 0 auto;
+    -webkit-transition: all 500ms cubic-bezier(0.000, 0.980, 0.405, 0.990);
+    -moz-transition: all 500ms cubic-bezier(0.000, 0.980, 0.405, 0.990);
+    -o-transition: all 500ms cubic-bezier(0.000, 0.980, 0.405, 0.990);
+    transition: all 500ms cubic-bezier(0.000, 0.980, 0.405, 0.990); /* custom */
+
+    -webkit-transition-timing-function: cubic-bezier(0.000, 0.980, 0.405, 0.990);
+    -moz-transition-timing-function: cubic-bezier(0.000, 0.980, 0.405, 0.990);
+    -o-transition-timing-function: cubic-bezier(0.000, 0.980, 0.405, 0.990);
+    transition-timing-function: cubic-bezier(0.000, 0.980, 0.405, 0.990); /* custom */
+
+}
+.leftFinal{
+    position: absolute;
+    left: 16em;
+    top : 123.4px;
+    -webkit-transition: all 500ms cubic-bezier(0.000, 0.980, 0.405, 0.990);
+    -moz-transition: all 500ms cubic-bezier(0.000, 0.980, 0.405, 0.990);
+    -o-transition: all 500ms cubic-bezier(0.000, 0.980, 0.405, 0.990);
+    transition: all 500ms cubic-bezier(0.000, 0.980, 0.405, 0.990); /* custom */
+
+    -webkit-transition-timing-function: cubic-bezier(0.000, 0.980, 0.405, 0.990);
+    -moz-transition-timing-function: cubic-bezier(0.000, 0.980, 0.405, 0.990);
+    -o-transition-timing-function: cubic-bezier(0.000, 0.980, 0.405, 0.990);
+    transition-timing-function: cubic-bezier(0.000, 0.980, 0.405, 0.990); /* custom */
+
+}
+.rightInitial{
+    position: absolute;
+    left: 42em;
+    top: 0em;
+    margin: 0 auto;
+    -webkit-transition: all 500ms cubic-bezier(0.000, 0.980, 0.405, 0.990);
+    -moz-transition: all 500ms cubic-bezier(0.000, 0.980, 0.405, 0.990);
+    -o-transition: all 500ms cubic-bezier(0.000, 0.980, 0.405, 0.990);
+    transition: all 500ms cubic-bezier(0.000, 0.980, 0.405, 0.990); /* custom */
+
+    -webkit-transition-timing-function: cubic-bezier(0.000, 0.980, 0.405, 0.990);
+    -moz-transition-timing-function: cubic-bezier(0.000, 0.980, 0.405, 0.990);
+    -o-transition-timing-function: cubic-bezier(0.000, 0.980, 0.405, 0.990);
+    transition-timing-function: cubic-bezier(0.000, 0.980, 0.405, 0.990); /* custom */
+
+}
+.rightFinal{
+    position: absolute;
+    left: 28em;
+    top : 123.4px;
+    -webkit-transition: all 500ms cubic-bezier(0.000, 0.980, 0.405, 0.990);
+    -moz-transition: all 500ms cubic-bezier(0.000, 0.980, 0.405, 0.990);
+    -o-transition: all 500ms cubic-bezier(0.000, 0.980, 0.405, 0.990);
+    transition: all 500ms cubic-bezier(0.000, 0.980, 0.405, 0.990); /* custom */
+
+    -webkit-transition-timing-function: cubic-bezier(0.000, 0.980, 0.405, 0.990);
+    -moz-transition-timing-function: cubic-bezier(0.000, 0.980, 0.405, 0.990);
+    -o-transition-timing-function: cubic-bezier(0.000, 0.980, 0.405, 0.990);
+    transition-timing-function: cubic-bezier(0.000, 0.980, 0.405, 0.990); /* custom */
+
+}
+ul{
+    padding: 0;
+    -webkit-transition: all 500ms cubic-bezier(0.000, 0.980, 0.405, 0.990);
+    -moz-transition: all 500ms cubic-bezier(0.000, 0.980, 0.405, 0.990);
+    -o-transition: all 500ms cubic-bezier(0.000, 0.980, 0.405, 0.990);
+    transition: all 500ms cubic-bezier(0.000, 0.980, 0.405, 0.990); /* custom */
+
+    -webkit-transition-timing-function: cubic-bezier(0.000, 0.980, 0.405, 0.990);
+    -moz-transition-timing-function: cubic-bezier(0.000, 0.980, 0.405, 0.990);
+    -o-transition-timing-function: cubic-bezier(0.000, 0.980, 0.405, 0.990);
+    transition-timing-function: cubic-bezier(0.000, 0.980, 0.405, 0.990); /* custom */
+}
+.played-cards{
+    position: absolute;
+    width: 100%;
+    height : 100%;
+    margin: 0 auto;
+    z-index: 0;
+    padding-top: 60px;
+    padding-bottom: 110px;
+}
+.played-cards{
+    position: relative;
+    width: 100%;
+    height : 100%;
+    margin: 0 auto;
+    z-index: 0;
+}
+.card{
+    -webkit-transition: all 500ms cubic-bezier(0.000, 0.980, 0.405, 0.990);
+    -moz-transition: all 500ms cubic-bezier(0.000, 0.980, 0.405, 0.990);
+    -o-transition: all 500ms cubic-bezier(0.000, 0.980, 0.405, 0.990);
+    transition: all 500ms cubic-bezier(0.000, 0.980, 0.405, 0.990); /* custom */
+
+    -webkit-transition-timing-function: cubic-bezier(0.000, 0.980, 0.405, 0.990);
+    -moz-transition-timing-function: cubic-bezier(0.000, 0.980, 0.405, 0.990);
+    -o-transition-timing-function: cubic-bezier(0.000, 0.980, 0.405, 0.990);
+    transition-timing-function: cubic-bezier(0.000, 0.980, 0.405, 0.990); /* custom */
+}
+.leftOut{
+    position: absolute;
+    left: -290px;
+    top: 0px;
+    -webkit-transition: all 500ms cubic-bezier(0.000, 0.980, 0.405, 0.990);
+    -moz-transition: all 500ms cubic-bezier(0.000, 0.980, 0.405, 0.990);
+    -o-transition: all 500ms cubic-bezier(0.000, 0.980, 0.405, 0.990);
+    transition: all 500ms cubic-bezier(0.000, 0.980, 0.405, 0.990); /* custom */
+
+    -webkit-transition-timing-function: cubic-bezier(0.000, 0.980, 0.405, 0.990);
+    -moz-transition-timing-function: cubic-bezier(0.000, 0.980, 0.405, 0.990);
+    -o-transition-timing-function: cubic-bezier(0.000, 0.980, 0.405, 0.990);
+    transition-timing-function: cubic-bezier(0.000, 0.980, 0.405, 0.990); /* custom */
+}
+.rightOut{
+    position: absolute;
+    right: -290px;
+    top: 0px;
+    -webkit-transition: all 500ms cubic-bezier(0.000, 0.980, 0.405, 0.990);
+    -moz-transition: all 500ms cubic-bezier(0.000, 0.980, 0.405, 0.990);
+    -o-transition: all 500ms cubic-bezier(0.000, 0.980, 0.405, 0.990);
+    transition: all 500ms cubic-bezier(0.000, 0.980, 0.405, 0.990); /* custom */
+
+    -webkit-transition-timing-function: cubic-bezier(0.000, 0.980, 0.405, 0.990);
+    -moz-transition-timing-function: cubic-bezier(0.000, 0.980, 0.405, 0.990);
+    -o-transition-timing-function: cubic-bezier(0.000, 0.980, 0.405, 0.990);
+    transition-timing-function: cubic-bezier(0.000, 0.980, 0.405, 0.990); /* custom */
+}
+.bottomOut{
+    position: absolute;
+    bottom: -190px;
+    left: 0px;
+    right: 0px;
+    margin: 0 auto;
+    -webkit-transition: all 500ms cubic-bezier(0.000, 0.980, 0.405, 0.990);
+    -moz-transition: all 500ms cubic-bezier(0.000, 0.980, 0.405, 0.990);
+    -o-transition: all 500ms cubic-bezier(0.000, 0.980, 0.405, 0.990);
+    transition: all 500ms cubic-bezier(0.000, 0.980, 0.405, 0.990); /* custom */
+
+    -webkit-transition-timing-function: cubic-bezier(0.000, 0.980, 0.405, 0.990);
+    -moz-transition-timing-function: cubic-bezier(0.000, 0.980, 0.405, 0.990);
+    -o-transition-timing-function: cubic-bezier(0.000, 0.980, 0.405, 0.990);
+    transition-timing-function: cubic-bezier(0.000, 0.980, 0.405, 0.990); /* custom */
+}
+.leftMovingCard,  .leftMovedCard{
+    position: absolute;
+    left: -290px;
+    top: 0px;
+    -webkit-transition: all 500ms cubic-bezier(0.000, 0.980, 0.405, 0.990);
+    -moz-transition: all 500ms cubic-bezier(0.000, 0.980, 0.405, 0.990);
+    -o-transition: all 500ms cubic-bezier(0.000, 0.980, 0.405, 0.990);
+    transition: all 500ms cubic-bezier(0.000, 0.980, 0.405, 0.990); /* custom */
+
+    -webkit-transition-timing-function: cubic-bezier(0.000, 0.980, 0.405, 0.990);
+    -moz-transition-timing-function: cubic-bezier(0.000, 0.980, 0.405, 0.990);
+    -o-transition-timing-function: cubic-bezier(0.000, 0.980, 0.405, 0.990);
+    transition-timing-function: cubic-bezier(0.000, 0.980, 0.405, 0.990); /* custom */
+}
+.rightMovingCard, .rightMovedCard{
+    position: absolute;
+    right: -290px;
+    top: 0px;
+    -webkit-transition: all 500ms cubic-bezier(0.000, 0.980, 0.405, 0.990);
+    -moz-transition: all 500ms cubic-bezier(0.000, 0.980, 0.405, 0.990);
+    -o-transition: all 500ms cubic-bezier(0.000, 0.980, 0.405, 0.990);
+    transition: all 500ms cubic-bezier(0.000, 0.980, 0.405, 0.990); /* custom */
+
+    -webkit-transition-timing-function: cubic-bezier(0.000, 0.980, 0.405, 0.990);
+    -moz-transition-timing-function: cubic-bezier(0.000, 0.980, 0.405, 0.990);
+    -o-transition-timing-function: cubic-bezier(0.000, 0.980, 0.405, 0.990);
+    transition-timing-function: cubic-bezier(0.000, 0.980, 0.405, 0.990); /* custom */
+}
+.bottomMovingCard, .bottomMovedCard{
+    position: absolute;
+    vertical-align: middle;
+    bottom: 100px;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+    -webkit-transition: all 500ms cubic-bezier(0.000, 0.980, 0.405, 0.990);
+    -moz-transition: all 500ms cubic-bezier(0.000, 0.980, 0.405, 0.990);
+    -o-transition: all 500ms cubic-bezier(0.000, 0.980, 0.405, 0.990);
+    transition: all 500ms cubic-bezier(0.000, 0.980, 0.405, 0.990); /* custom */
+
+    -webkit-transition-timing-function: cubic-bezier(0.000, 0.980, 0.405, 0.990);
+    -moz-transition-timing-function: cubic-bezier(0.000, 0.980, 0.405, 0.990);
+    -o-transition-timing-function: cubic-bezier(0.000, 0.980, 0.405, 0.990);
+    transition-timing-function: cubic-bezier(0.000, 0.980, 0.405, 0.990); /* custom */
+}
+.bottomMovedCard{
+
+}
+/*    .chat-container{
+position: absolute;
+padding: 10px;
+bottom: 0px;
+}*/
+.moveIt{
+    -webkit-transition: all 500ms cubic-bezier(0.000, 0.980, 0.405, 0.990);
+        -moz-transition: all 500ms cubic-bezier(0.000, 0.980, 0.405, 0.990);
+        -o-transition: all 500ms cubic-bezier(0.000, 0.980, 0.405, 0.990);
+        transition: all 500ms cubic-bezier(0.000, 0.980, 0.405, 0.990); /* custom */
+
+        -webkit-transition-timing-function: cubic-bezier(0.000, 0.980, 0.405, 0.990);
+        -moz-transition-timing-function: cubic-bezier(0.000, 0.980, 0.405, 0.990);
+        -o-transition-timing-function: cubic-bezier(0.000, 0.980, 0.405, 0.990);
+        transition-timing-function: cubic-bezier(0.000, 0.980, 0.405, 0.990); /* custom */
+}
+.card.back{
+    backface-visibility : hidden;
+    -webkit-backface-visibility : hidden;
+    -moz-backface-visibility : hidden;
+    -ms-backface-visibility : hidden;
+    transform : perspective(400px) rotateY(0deg);
+    -webkit-transition: 0.5s all ease-in-out 0.2s;
+    transition: 0.5s all ease-in-out 0.2s;
+}
+.card.front{
+    backface-visibility : hidden;
+    -webkit-backface-visibility : hidden;
+    -moz-backface-visibility : hidden;
+    -ms-backface-visibility : hidden;
+    transform : perspective(400px) rotateY(179.9deg);
+    -webkit-transition: 0.5s all ease-in-out 0.2s;
+    transition: 0.5s all ease-in-out 0.2s;
+}
+.card.backRotated{
+    backface-visibility : hidden;
+    -webkit-backface-visibility : hidden;
+    -moz-backface-visibility : hidden;
+    -ms-backface-visibility : hidden;
+    transform : perspective(400px) rotateY(179.9deg);
+    -webkit-transition: 0.5s all ease-in-out;
+    transition: 0.5s all ease-in-out 0.2s;
+}
+.card.frontRotated{
+    backface-visibility : hidden;
+    -webkit-backface-visibility : hidden;
+    -moz-backface-visibility : hidden;
+    -ms-backface-visibility : hidden;
+    transform : perspective(400px) rotateY(0deg);
+    -webkit-transition: 0.5s all ease-in-out;
+    transition: 0.5s all ease-in-out 0.2s;
+}
+    /*.rotated .front{
+        transform : perspective(400px) rotateY(0deg);
+        -webkit-transition: 0.5s all ease-in-out;
+        transition: 0.5s all ease-in-out;   
+    }
+    .rotated .back{
+        transform : perspective(400px) rotateY(0deg);
+        -webkit-transition: 0.5s all ease-in-out;
+        transition: 0.5s all ease-in-out;      
+    }*/
+.card{
+    -webkit-transition: 0.5s all ease-in-out;
+    transition: 0.5s all ease-in-out;
+}
+.card{ 
+    /*Made transition faster-nv*/
+    /*-webkit-transition: 0.1s all ease-in-out;
+    transition: 0.1s all ease-in-out;*/
+}
+.playingCards ul.table, .playingCards ul.hand, .playingCards ul.deck{
+    position: relative;
+}
+.hand{
+    position: relative;
+}
+.overlay{
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    background: rgba(3,3,3,0.95);
+    opacity: 1;
+    z-index: 999;
+}
+.close-overlay {
+    position: relative;
+    right: .5em;
+    top: 0.5em;
+    cursor: pointer;
+    float: right;
+    font-size: 20px;
+}
+/*.chat-container{
+    position: fixed;
+    right: 0;
+    max-width: 60%;
+    min-width: 320px !important;
+    height: 100%;
+    border: 1px solid #666;
+}*/
+/*.chat-box{
+    position: absolute;
+    height: 80%;
+    padding: 12px;
+    border: 1px solid #eee;
+    width: 100%;
+}*/
+/*.chat-container form {
+    position: absolute;
+    padding: 10px;
+    bottom: 0px;
+}*/
+/*.waiting{
+position: relative;
+    width: 100%;
+    height: 100%;
+}
+.waiting div{
+    width: 400px;
+    height: 100px;
+    right: 0;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    margin: 0 auto;
+}*/
+.options.active {
+    position: fixed;
+    top: 1em;
+    right: 1em;
+    background: #ddd;
+    padding: .5em;
+}
+.options.active h3 {
+    font-size: 1.2em;
+}
+.options.active ul {
+    padding: 0;
+}
+.options.active li {
+    color: #00c;
+    text-decoration: underline;
+    margin-left: 1.5em;
+    cursor: pointer;
+}
+.options.active li:hover {
+    text-decoration: none;
+}
+div.clear {
+    clear: both;
+    height: 0;
+    line-height: 0;
+    font-size: 1px;
+    visibility: hidden;
+}
+.allDeck{
+    position: absolute;
+    left: 0;
+    /*bottom: 10;*/
+}
+.allDeck ul{
+    /*position: absolute;*/
+    margin: 0;
+}
+.leftPlayerDeck, .bottomPlayerDeck, .rightPlayerDeck {
+    position: absolute;
+    bottom: 0;
+    list-style: none;
+    -webkit-transition: all 200ms cubic-bezier(0.000, 0.980, 0.405, 0.990);
+        -moz-transition: all 200ms cubic-bezier(0.000, 0.980, 0.405, 0.990);
+        -o-transition: all 200ms cubic-bezier(0.000, 0.980, 0.405, 0.990);
+        transition: all 200ms cubic-bezier(0.000, 0.980, 0.405, 0.990); /* custom */
+
+        -webkit-transition-timing-function: cubic-bezier(0.000, 0.980, 0.405, 0.990);
+        -moz-transition-timing-function: cubic-bezier(0.000, 0.980, 0.405, 0.990);
+        -o-transition-timing-function: cubic-bezier(0.000, 0.980, 0.405, 0.990);
+        transition-timing-function: cubic-bezier(0.000, 0.980, 0.405, 0.990); /* custom */
+}
+.playedCard{
+    -webkit-transition: all 500ms cubic-bezier(0.000, 0.980, 0.405, 0.990);
+        -moz-transition: all 500ms cubic-bezier(0.000, 0.980, 0.405, 0.990);
+        -o-transition: all 500ms cubic-bezier(0.000, 0.980, 0.405, 0.990);
+        transition: all 500ms cubic-bezier(0.000, 0.980, 0.405, 0.990); /* custom */
+
+        -webkit-transition-timing-function: cubic-bezier(0.000, 0.980, 0.405, 0.990);
+        -moz-transition-timing-function: cubic-bezier(0.000, 0.980, 0.405, 0.990);
+        -o-transition-timing-function: cubic-bezier(0.000, 0.980, 0.405, 0.990);
+        transition-timing-function: cubic-bezier(0.000, 0.980, 0.405, 0.990); /* custom */
+}
+.moveCard{
+        -webkit-transition: all 1000ms cubic-bezier(0.000, 0.980, 0.405, 0.990) !important;
+        -moz-transition: all 1000ms cubic-bezier(0.000, 0.980, 0.405, 0.990) !important;
+        -o-transition: all 1000ms cubic-bezier(0.000, 0.980, 0.405, 0.990) !important;
+        transition: all 1000ms cubic-bezier(0.000, 0.980, 0.405, 0.990) !important; /* custom */
+
+        -webkit-transition-timing-function: cubic-bezier(0.000, 0.980, 0.405, 0.990);
+        -moz-transition-timing-function: cubic-bezier(0.000, 0.980, 0.405, 0.990);
+        -o-transition-timing-function: cubic-bezier(0.000, 0.980, 0.405, 0.990);
+        transition-timing-function: cubic-bezier(0.000, 0.980, 0.405, 0.990); /* custom */
+}
+/*overwrite*/
+.hand{
+    position: absolute !important;
+}
+.player-active{
+    -webkit-animation: bounceOut .8s linear infinite;
+    -moz-animation: bounceOut .8s linear infinite;
+    -o-animation: bounceOut .8s linear infinite;
+    -ms-animation: bounceOut .8s linear infinite;
+    animation: bounceOut .8s linear infinite;
+}
+@-moz-keyframes bounceOut {
+  0% { box-shadow: 0 0 0 5px #f5f5f5; opacity: 1; }
+  25% { box-shadow: 0 0 0 4px #f5f5f5; opacity: 1; }
+  50% { box-shadow: 0 0 0 7px #f5f5f5; opacity: 1; }
+  75% { box-shadow: 0 0 0 4px #f5f5f5; opacity: 1; }
+  100% { box-shadow: 0 0 0 5px #f5f5f5; opacity: 1; }
+}
+@-webkit-keyframes bounceOut {
+  0% { box-shadow: 0 0 0 5px #f5f5f5; opacity: 1; }
+  25% { box-shadow: 0 0 0 4px #f5f5f5; opacity: 1; }
+  50% { box-shadow: 0 0 0 7px #f5f5f5; opacity: 1; }
+  75% { box-shadow: 0 0 0 4px #f5f5f5; opacity: 1; }
+  100% { box-shadow: 0 0 0 5px #f5f5f5; opacity: 1; }
+}
+@-o-keyframes bounceOut {
+  0% { box-shadow: 0 0 0 5px #f5f5f5; opacity: 1; }
+  25% { box-shadow: 0 0 0 4px #f5f5f5; opacity: 1; }
+  50% { box-shadow: 0 0 0 7px #f5f5f5; opacity: 1; }
+  75% { box-shadow: 0 0 0 4px #f5f5f5; opacity: 1; }
+  100% { box-shadow: 0 0 0 5px #f5f5f5; opacity: 1; }
+}
+@-ms-keyframes bounceOut {
+  0% { box-shadow: 0 0 0 5px #f5f5f5; opacity: 1; }
+  25% { box-shadow: 0 0 0 4px #f5f5f5; opacity: 1; }
+  50% { box-shadow: 0 0 0 7px #f5f5f5; opacity: 1; }
+  75% { box-shadow: 0 0 0 4px #f5f5f5; opacity: 1; }
+  100% { box-shadow: 0 0 0 5px #f5f5f5; opacity: 1; }
+}
+@keyframes bounceOut {
+  0% { box-shadow: 0 0 0 5px #f5f5f5; opacity: 1; }
+  25% { box-shadow: 0 0 0 4px #f5f5f5; opacity: 1; }
+  50% { box-shadow: 0 0 0 7px #f5f5f5; opacity: 1; }
+  75% { box-shadow: 0 0 0 4px #f5f5f5; opacity: 1; }
+  100% { box-shadow: 0 0 0 5px #f5f5f5; opacity: 1; }
+}

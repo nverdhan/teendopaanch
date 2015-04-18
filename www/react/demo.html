@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+  <meta content="utf-8" http-equiv="encoding">
+  <link rel="stylesheet" type="text/css" href="game.css">
+    <style type="text/css">
+    .animateIt{
+      -webkit-transition: all 500ms cubic-bezier(0.000, 0.980, 0.405, 0.990);
+      -moz-transition: all 500ms cubic-bezier(0.000, 0.980, 0.405, 0.990);
+      -o-transition: all 500ms cubic-bezier(0.000, 0.980, 0.405, 0.990);
+      transition: all 500ms cubic-bezier(0.000, 0.980, 0.405, 0.990); /* custom */
+
+      -webkit-transition-timing-function: cubic-bezier(0.000, 0.980, 0.405, 0.990);
+      -moz-transition-timing-function: cubic-bezier(0.000, 0.980, 0.405, 0.990);
+      -o-transition-timing-function: cubic-bezier(0.000, 0.980, 0.405, 0.990);
+      transition-timing-function: cubic-bezier(0.000, 0.980, 0.405, 0.990); /* custom */
+    }
+  </style>
+    <script src="react.js"></script>
+    <script src="JSXTransformer.js"></script>
+    <script src="react-with-addons.js"></script>
+    <script src="q.js"></script>
+    <script src="cards325.js"></script>
+    <script src="game325.js"></script>
+    <script  type="text/jsx" src="js/dialog-window.jsx"></script>
+    <script  type="text/jsx" src="js/dialog.jsx"></script>
+    <script  type="text/jsx" src="gamePlay.js"></script>
+    
+  </head>
+  <body>
+    <div id="game"></div>
+    <script type="text/jsx">
+      React.render(
+        <Game325Component game={game}/>,
+        document.getElementById('game')
+      );
+    </script>
+  </body>
+</html>

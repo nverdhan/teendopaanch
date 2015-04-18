@@ -101,7 +101,7 @@ game325.prototype.updateHandsToMake = function() {
         }
     }
 }
-game325.prototype.withdrawCard = function(){
+/*game325.prototype.withdrawCard = function(){
 	var activePlayerId = this.activePlayerId;
 	var otherPlayerId = this.otherPlayerId;
 	var cardIndex = this.cardIndex;
@@ -119,8 +119,92 @@ game325.prototype.withdrawCard = function(){
 			this.cardMoveFrom = activePlayerId;
 		}
 	};
+}*/
+game325.prototype.moveWithdrawCard = function(){
+	var activePlayerId = this.activePlayerId;
+	var otherPlayerId = this.otherPlayerId;
+	var cardIndex = this.cardIndex;
+	for (var i = 0; i < this.players.length; i++) {
+		if(this.players[i].id == otherPlayerId){
+			this.cardPlayed = this.players[i].cards[cardIndex];
+			this.cardMoveFrom = otherPlayerId;
+			this.players[i].cards[cardIndex].state = 'withdrawn';
+			this.players[i].cards[cardIndex].animation = true;
+			this.players[i].cards[cardIndex].moveFrom = otherPlayerId;
+			this.players[i].cards[cardIndex].moveTo = activePlayerId;
+		}
+	}
+}
+game325.prototype.withdrawCard = function(){
+	var activePlayerId = this.activePlayerId;
+	var otherPlayerId = this.otherPlayerId;
+	var cardIndex = this.cardIndex;
+	for (var i = 0; i < this.players.length; i++) {
+		if(this.players[i].id == otherPlayerId){
+			this.players[i].cards[cardIndex].state = 'deck';
+			this.players[i].cards[cardIndex].animation = false;
+			var card = this.players[i].cards.splice(cardIndex, 1);
+			this.cardPlayed = card[0];
+			this.cardMoveFrom = otherPlayerId;
+			card.moveFrom = '';
+			card.moveTo = '';
+		}
+	}
+	for (var i = this.players.length - 1; i >= 0; i--) {
+		if(this.players[i].id == activePlayerId){
+			this.players[i].cards.push(this.cardPlayed);
+			this.cardMoveFrom = activePlayerId;
+		}
+	}
 }
 game325.prototype.returnCard = function(){
+	var activePlayerId = this.moveFrom;
+	var otherPlayerId = this.moveTo;
+	var cardIndex = this.cardIndex;
+	for (var i = 0; i < this.players.length; i++) {
+		if(this.players[i].id == activePlayerId){
+			this.players[i].cards[cardIndex].state = 'deck';
+			this.players[i].cards[cardIndex].animation = false;
+			var card = this.players[i].cards.splice(cardIndex, 1);
+			this.cardPlayed = card[0];
+			this.cardMoveFrom = activePlayerId;
+			card.moveFrom = '';
+			card.moveTo = '';
+		}
+	}
+	for (var i = 0; i < this.players.length; i ++){
+		if(this.players[i].id == otherPlayerId){
+			this.players[i].cards.push(this.cardPlayed);
+			this.cardMoveTo = otherPlayerId;
+			//this.players[i].handsMade++;
+		}
+	}
+}
+game325.prototype.moveReturnCard = function(){
+	var activePlayerId = this.activePlayerId;
+	var otherPlayerId = this.otherPlayerId;
+	var cardIndex = this.cardIndex;
+	for (var i = 0; i < this.players.length; i ++) {
+		if(this.players[i].id == activePlayerId){
+			var card = this.players[i].cards[cardIndex];
+			this.players[i].cards[cardIndex].state = 'returned';
+			this.players[i].cards[cardIndex].animation = true;
+			this.players[i].cards[cardIndex].moveFrom = activePlayerId;
+			this.players[i].cards[cardIndex].moveTo = otherPlayerId;
+			this.players[i].handsMade--;
+			this.cardPlayed = card;
+			this.cardWithdrawn = card;
+			this.moveFrom = activePlayerId;
+			this.moveTo = otherPlayerId;
+		}
+	}
+	for (var i = 0; i < this.players.length; i ++){
+		if(this.players[i].id == otherPlayerId){
+			this.players[i].handsMade++;
+		}
+	}
+}
+/*game325.prototype.returnCard = function(){
 	var activePlayerId = this.activePlayerId;
 	var otherPlayerId = this.otherPlayerId;
 	var card = this.card;
@@ -148,13 +232,14 @@ game325.prototype.returnCard = function(){
 		}
 	}
 }
+*/
 // game325.prototype.setTrump = function(trump){
 // 	this.trump = trump;
 // }
 game325.prototype.playCard = function(){
 	var card = this.cardPlayed;
 	for (var i = 0; i < this.players.length ; i++) {
-		if(this.players[i].id == this.activePlayerId){
+		if(this.players[i].id == this.otherPlayerId){
 			this.players[i].cardPlayed = card;
 			for (var j = this.players[i].cards.length - 1; j >= 0; j--) {
 				if(this.players[i].cards[j].suit == card.suit && this.players[i].cards[j].rank == card.rank){
@@ -162,8 +247,10 @@ game325.prototype.playCard = function(){
 				}
 			};
 			this.players[i].cards.splice(index, 1);
+			this.players[i].cardPlayed = card;
 		}
 	}
+	console.log(card);
 	this.cardPlayed = card;
 }
 game325.prototype.nextRound = function(){
@@ -198,7 +285,7 @@ game325.prototype.nextRound = function(){
 		}
 	}
 	for (var i = this.players.length - 1; i >= 0; i--) {
-		updateScoresInDB(this.players[i]);
+		// updateScoresInDB(this.players[i]);
 	};
 	
 }

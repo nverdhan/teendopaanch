@@ -24,7 +24,7 @@
                 </md-icon>
     </md-button>
     <div class="home-showlater">
-        <div class="home-panel home-left">
+        <div class="home-panel home-left"  ng-click="startGame('bots')">
         </div>
         <div class="home-panel home-right" ng-click="checkLoggedInOptions()">
           <div class="panel-side flip">
@@ -92,8 +92,6 @@
 </div>
 </div>
 <script type="text/javascript">
-
-
     $( document ).ready(function(){
       
       if($(".daddy-container").hasClass('preload')){  
@@ -149,37 +147,3 @@
   });
 
 </script>
-<!-- <div class="home-text">To play against random strangers</div>
-          <div ng-click="startGame()" class="home-button">
-            <md-button class="redcol home-elem md-raised" aria-label="randomGameStart">
-                <div flex layout="horizontal" layout-align="center center">
-                  <div style="margin-right:15px;"><i class="fa fa-random fa-2x"></i> </div>
-                  <div><h2>Join a random game</h2> </div>
-                </div>
-            </md-button>
-          </div>
-          <md-divider style="margin:20px; width: 80%"></md-divider>
-          <div class="home-text">For offline mode</div>
-          <div ng-click="startGame()" class="home-button">
-            <md-button class="redcol home-elem md-raised" aria-label="randomGameStart">
-                <div flex layout="horizontal" layout-align="center center">
-                  <div style="margin-right:15px;"><i class="fa fa-random fa-2x"></i> </div>
-                  <div><h2>Play against our bots</h2> </div>
-                </div>
-            </md-button>
-          </div>
-
-
-                <div class="home-text">
-                You can also <br>
-                create a private room and invite your friends
-                </div>
-                <md-button class="bluecoldark md-raised home-button" ng-click="createGame()" aria-label="privateGameStart">
-                  Create Room
-                </md-button>
-                <md-divider style="margin:20px; width: 80%"></md-divider>
-                <div class="home-text">Or join an existing room</div>
-                <md-text-float label="Room ID" flex ng-model="joinGameRoomId"> </md-text-float>
-                <md-button class="bluecoldark md-raised home-button" ng-click="joinGame()" aria-label="privateGameJoin">
-                  Join
-                </md-button> -->
