@@ -291,7 +291,13 @@ game325.controller('gameReactController', ['$rootScope', '$http', '$scope', '$st
         }
         $scope.reactRender();
     }
-    
+    $scope.sendEvent = function(data){
+        if($scope.gameType == 'LIVE'){
+            socket.emit('GAME', {data : data});    
+        }else{
+            $scope.gameEvent(data);
+        }
+    }
     $scope.sendChat = function(){
         var msg = $scope.chatMsg;
         if(msg.length > 0){
@@ -335,13 +341,7 @@ game325.controller('gameReactController', ['$rootScope', '$http', '$scope', '$st
             $scope.exitGame();        
         }
     });
-    $scope.sendEvent = function(data){
-        if($scope.gameType == 'LIVE'){
-            socket.emit('GAME', {data : data});    
-        }else{
-            $scope.gameEvent(data);
-        }
-    }
+    
 
 }])
 game325.directive('ngEnter', function() {

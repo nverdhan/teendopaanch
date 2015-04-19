@@ -69,7 +69,7 @@ var Game325Component = React.createClass({displayName: "Game325Component",
         //play card and place card on board
     },
     clickHandler : function(data){
-        this.props.scope.gameEvent(data);
+        this.props.scope.sendEvent(data);
     },
     getInitialState : function(){
         return ({
