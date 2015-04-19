@@ -75,7 +75,8 @@ var scaleGameBody = function(){
         return {
                 WebkitTransform : 'scale('+scalefactor+','+scalefactor+')',
                 msTransform : 'scale('+scalefactor+','+scalefactor+')',
-                Transform : 'scale('+scalefactor+','+scalefactor+')',
+                transform : 'scale('+scalefactor+','+scalefactor+')',
+                MozTransform : 'scale('+scalefactor+','+scalefactor+')',
                 left : leftshift,
                 top: topshift
             }

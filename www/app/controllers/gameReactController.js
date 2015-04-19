@@ -16,6 +16,7 @@ game325.controller('gameReactController', ['$rootScope', '$http', '$scope', '$st
     }
     $(window).resize(function() {
           $scope.$digest();
+          $scope.reactRender();
     });
     $scope.closeScores = function (){
         $scope.showScores = false;
@@ -100,6 +101,7 @@ game325.controller('gameReactController', ['$rootScope', '$http', '$scope', '$st
         gameData.activePlayerId = gameData.players[0].id;
         $rootScope.arrPlayers = gameData.players;
         gameData.gameEvent = 'START_GAME';
+        $scope.game325 = gameData;
         var data = {
             gameEvent : 'START_GAME'
         }
@@ -223,6 +225,7 @@ game325.controller('gameReactController', ['$rootScope', '$http', '$scope', '$st
         });
         socket.on('GAME', function (data){
             $scope.game325 = data.data;
+            $scope.reactRender();
             
         });
         socket.on('INVALID', function (data){
@@ -327,10 +330,10 @@ game325.controller('gameReactController', ['$rootScope', '$http', '$scope', '$st
     }
     // Prevent to use the back button.
     $scope.$on('$locationChangeStart', function(event) {
-                if(!$scope.waiting){
-                event.preventDefault();
-                $scope.exitGame();        
-            }
+        if(!$scope.waiting && !$scope.gameType == 'LIVE'){
+            event.preventDefault();
+            $scope.exitGame();        
+        }
     });
     $scope.sendEvent = function(data){
         if($scope.gameType == 'LIVE'){

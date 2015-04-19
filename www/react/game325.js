@@ -22,6 +22,7 @@ var Game = function(){
 	this.gameWinSeq,
 	this.withdraw,
 	this.playedCards = Array({},{},{});
+	this.allPlayedCards = Array();
 	this.playerWinningIndex = Array(0,0,0),
 	this.players = Array(),
 	this.activePlayer,
@@ -33,6 +34,7 @@ var Game = function(){
 	this.cardWithdrawn,
 	this.cardReturned,
 	this.cardMoveFrom,
+	this.remainingCards,
 	this.cardMoveTo,
 	this.returnCard
 }	
@@ -40,6 +42,24 @@ Game.prototype.initDeck = function() {
 	var deck = new Deck();
 	this.deck = deck.deck;
 	this.deck = deck.shuffleDeck(this.deck);
+	cardcount = new Deck();
+	this.remainingCards = cardcount.deck;
+	for (var i = this.remainingCards.length - 1; i >= 0; i--) {
+		switch(this.remainingCards[i].suit){
+			case 'S':
+				this.remainingCards[i].currentSuitOrder = this.remainingCards[i].order;
+				break;
+			case 'H':
+				this.remainingCards[i].currentSuitOrder = this.remainingCards[i].order - 8;
+				break;
+			case 'C':
+				this.remainingCards[i].currentSuitOrder = this.remainingCards[i].order - 16;
+				break;
+			case 'D':
+				this.remainingCards[i].currentSuitOrder = this.remainingCards[i].order - 23;
+				break;
+		}
+	};
 	// return this.deck;
 }
 Game.prototype.distributeCards = function(){
@@ -256,7 +276,7 @@ Game.prototype.getTurnWinner = function() {
 	for (var i = 0; i < this.players.length; i++){
 		biggestCard = getBiggestCard(biggestCard, this.players[i].cardPlayed, this.turnSuit, this.trump);
 	}
-	console.log(biggestCard);
+	// console.log(biggestCard);
 	for (var i = 0; i < this.players.length; i++) {
 		if(this.players[i].cardPlayed == biggestCard){
 			this.lastGameWinner = this.players[i].id;

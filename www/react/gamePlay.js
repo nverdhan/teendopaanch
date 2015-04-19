@@ -261,6 +261,7 @@ var Game325Component = React.createClass({displayName: "Game325Component",
             self.playedCards[playerIndex].display = 'block';
             self.playedCards[playerIndex].suit = self.props.game.cardPlayed.suit;
             self.playedCards[playerIndex].rank = self.props.game.cardPlayed.rank;
+            self.props.game.playedCards[playerIndex] = self.props.game.cardPlayed;
             for (var i = self.props.game.players.length - 1; i >= 0; i--) {
                     for (var j = self.props.game.players[i].cards.length - 1; j >= 0; j--) {
                         if(self.props.game.players[i].cards[j].suit == self.props.game.cardPlayed.suit && self.props.game.players[i].cards[j].rank == self.props.game.cardPlayed.rank){
@@ -295,12 +296,18 @@ var Game325Component = React.createClass({displayName: "Game325Component",
     },
     refreshPlayedCards : function () {
         var self = this;
+        for (var i = this.props.game.players.length - 1; i >= 0; i--){
+                this.props.game.allPlayedCards.push(this.props.game.playedCards[i]);
+        };
+        this.refreshRemainingCards();
         var fn = function () {
             for (var i = self.props.game.players.length - 1; i >= 0; i--){
                 self.playedCards[i].suit = '';
                 self.playedCards[i].rank = '';
                 self.playedCards[i].display = 'none';
                 delete self.playedCards[i].moveTo;
+                // self.playedCards[i] = '';
+                self.props.game.playedCards[i] = '';
             }
             self.setState({
                 gameState : 'REFRESH_PLAYED_CARDS'
@@ -309,8 +316,57 @@ var Game325Component = React.createClass({displayName: "Game325Component",
         }
         delayService.asyncTask(1200, fn);
     },
+    refreshRemainingCards : function(){
+        var playedindex = Array();
+        var removedCards = Array([],[],[],[]); //S H C D
+        var suitIndex = 0;
+        var remaining = this.props.game.remainingCards;
+        var allplayed = this.props.game.allPlayedCards;
+        for (var i = 0 ; i <= remaining.length - 1; i++) {
+            for (var j = 0; j <= allplayed.length - 1; j++) {
+                if(remaining[i].suit == allplayed[j].suit && remaining[i].rank == allplayed[j].rank) {
+                    playedindex.push(i);
+                    if(remaining[i].suit == 'S') suitIndex = 0;
+                    if(remaining[i].suit == 'H') suitIndex = 1;
+                    if(remaining[i].suit == 'C') suitIndex = 2;
+                    if(remaining[i].suit == 'D') suitIndex = 3;
+                    removedCards[suitIndex].push(remaining[i].currentSuitOrder);
+                }
+            }
+        }
+        for (var i = playedindex.length - 1; i >= 0; i--) {
+            this.props.game.remainingCards.splice(playedindex[i],1);
+        };
+        remaining = this.props.game.remainingCards;
+        for (var i = 0 ; i <= remaining.length - 1; i++) {
+            if(remaining[i].suit == 'S' && removedCards[0].length!=0){
+                for (var j = removedCards[0].length - 1; j >= 0; j--) {
+                    if(remaining[i].currentSuitOrder > removedCards[0][j]) remaining[i].currentSuitOrder--;
+                };
+            }
+            if(remaining[i].suit == 'H' && removedCards[1].length!=0){
+                for (var j = removedCards[1].length - 1; j >= 0; j--) {
+                    if(remaining[i].currentSuitOrder > removedCards[1][j]) remaining[i].currentSuitOrder = remaining[i].currentSuitOrder - 1;
+                };
+            }
+            if(remaining[i].suit == 'C' && removedCards[2].length!=0){
+                for (var j = removedCards[2].length - 1; j >= 0; j--) {
+                    if(remaining[i].currentSuitOrder > removedCards[2][j]) remaining[i].currentSuitOrder--;
+                };
+            }
+            if(remaining[i].suit == 'D' && removedCards[3].length!=0){
+                for (var j = removedCards[3].length - 1; j >= 0; j--) {
+                    if(remaining[i].currentSuitOrder > removedCards[3][j]) remaining[i].currentSuitOrder--;
+                };
+            }
+        }
+        this.props.game.remainingCards = remaining;
+        playedindex.splice(0,playedindex.length);
+        // console.log(remaining);
+    },
     updateScores : function (){
         if(this.props.game.gameTurn%30 == 1 && (this.playerId == this.props.game.activePlayerId)){
+            this.props.game.allPlayedCards.splice(0,this.props.game.allPlayedCards.length);
                     var data = {
                         gameEvent : 'NEXT_ROUND'
                     }
@@ -336,11 +392,40 @@ var Game325Component = React.createClass({displayName: "Game325Component",
         switch(this.props.game.gameState){
             case 'PLAY_CARD':
                 var e = this.props.game.activePlayerId;
+                // console.log(e);
                 var trump = this.props.game.trump;
                 var turnSuit = this.props.game.turnSuit;
                 var deck = this.props.game.players[e].cards;
+                // console.log(deck);
                 var playableCards = Array();
                 var trumpCards = Array();
+                var cardToPlay = '';
+                var minSuit = '';
+                var suitCount = [{
+                                    suit: 'S',
+                                    count: 0
+                                },
+                                {
+                                    suit: 'H',
+                                    count: 0
+                                },
+                                {
+                                    suit: 'D',
+                                    count: 0
+                                },
+                                {
+                                    suit: 'C',
+                                    count: 0
+                                }];
+                for (var i = 0; i < deck.length; i++){
+                    for (var j = suitCount.length - 1; j >= 0; j--) {
+                        if(deck[i].suit == suitCount[j].suit){
+                            suitCount[j].count++;
+                        }
+                    };
+                    deck[i].winningProbability = 0;
+                }
+                deck = this.getWinningProbability(deck, suitCount);
                 for (var i = 0; i < deck.length; i++){
                     if(deck[i].suit == turnSuit){
                         var a = deck[i];
@@ -351,18 +436,251 @@ var Game325Component = React.createClass({displayName: "Game325Component",
                         trumpCards.push(a);
                     }
                 }
-                if(playableCards.length > 0){
-                    var card = playableCards[0];
-                }else if(trumpCards.length > 0){
-                    var card =  trumpCards[0];
-                }else{
-                    var card = this.getSmallestCard(deck);
+                if(this.getCurrentPosition() == 0){
+                    cardToPlay = '';
+                    minSuit = '';
+                    for (var i = trumpCards.length - 1; i >= 0; i--) {
+                        if(trumpCards[i].winningProbability == 1){
+                            cardToPlay = trumpCards[i];
+                            console.log('Trump waali chaal :)');
+                            break;
+                        }
+                    };
+                    if(cardToPlay != ''){
+                        this.cardPlayed(cardToPlay);
+                        break;    
+                    }
+                    for (var i = deck.length - 1; i >= 0; i--) {
+                        if(deck[i].winningProbability == 1){
+                            cardToPlay = deck[i];
+                            console.log('I played my largest card xD');
+                            break;
+                        }
+                    };
+                    if(cardToPlay != ''){
+                        this.cardPlayed(cardToPlay);
+                        break;    
+                    }
+                    var validMinSuit = Array();
+                    for (var i = suitCount.length - 1; i >= 0; i--) {
+                        if(suitCount[i].count!=0 && suitCount[i].suit!=trump) {
+                            validMinSuit.push(suitCount[i]);
+                        }
+                    };
+                    minSuit = validMinSuit[validMinSuit.length - 1];
+                    for (var i = validMinSuit.length - 1; i >= 0; i--) {
+                        if(validMinSuit[i].count < minSuit.count){
+                            minSuit = validMinSuit[i];
+                        }
+                    };
+                    // console.log(validMinSuit);
+                    var minSuitCards = Array();
+                    for (var i = deck.length - 1; i >= 0; i--) {
+                        if(deck[i].suit == minSuit.suit){
+                            minSuitCards.push(deck[i]);
+                        }
+                    };
+                    var card = minSuitCards[0];
+                    for (var i = 0; i <= minSuitCards.length - 1; i++) {
+                        if (minSuitCards[i].currentSuitOrder > card.currentSuitOrder){
+                            card = minSuitCards[i];
+                        }
+                    };
+                    if(card.currentSuitOrder > 2){
+                        cardToPlay = card;
+                        console.log('Just removing this suit from my deck 8)');
+                    }else{
+                        cardToPlay = this.getSmallestCard(deck);
+                        console.log('This was my smallest card, no options with me ;(');
+                    }  
+                    if(cardToPlay != ''){
+                        this.cardPlayed(cardToPlay);
+                        break;    
+                    }else{
+                        console.log('What the Fuck! Nothing to play.')
+                    }
+                }else if(this.getCurrentPosition() == 1 || this.getCurrentPosition() == 2){
+                    var playedCards = this.props.game.playedCards;
+                    var oppCard = Array();
+                    var greaterCards = Array();
+                    var cardToPlay = '';
+                    for (var i = playedCards.length - 1; i >= 0; i--) {
+                            for (var key in this.props.game.playedCards[i]) {
+                                if (this.props.game.playedCards[i].hasOwnProperty(key)) {
+                                    oppCard.push(playedCards[i])
+                                    break;
+                                }
+                            }
+                    };
+                    // console.log(playableCards);
+                    // console.log(trumpCards);
+                    if(playableCards.length > 0){
+                        var trumpHit = false;
+                        var smallestPlayable = playableCards[playableCards.length - 1];
+                        for (var i = playableCards.length - 1; i >= 0; i--) {
+                            if(this.getCurrentPosition() == 1){
+                                if(playableCards[i].winningProbability == 1){
+                                    cardToPlay = playableCards[i];
+                                    console.log('I played the largest card :D');
+                                    break;
+                                }
+                                if(playableCards[i].rank > oppCard[0].rank){
+                                    greaterCards.push(playableCards[i]);
+                                }
+                            }else{
+                                if(playableCards[i].rank > oppCard[0].rank && playableCards[i].rank > oppCard[1].rank){
+                                    greaterCards.push(playableCards[i]);
+                                }    
+                                if((oppCard[0].suit == trump && oppCard[1].suit != trump) || (oppCard[0].suit != trump && oppCard[1].suit == trump)){
+                                    trumpHit = true;
+                                }
+                            }
+                            if(playableCards[i].currentSuitOrder > smallestPlayable.currentSuitOrder){
+                                smallestPlayable = playableCards[i];
+                            }
+                        };
+                        if(trumpHit){
+                            cardToPlay = smallestPlayable;
+                            console.log('Only smaller cards to be sacrificed to a trump');
+                        }
+                        if(cardToPlay != ''){
+                            this.cardPlayed(cardToPlay);
+                            break;
+                        }
+                        var cardToPlay = greaterCards[greaterCards.length - 1];
+                        for (var i = greaterCards.length - 1; i >= 1; i--) {
+                            if(greaterCards[i].currentSuitOrder > cardToPlay.currentSuitOrder){
+                                cardToPlay = greaterCards[i];
+                            }
+                        };
+                        if(greaterCards.length > 0){
+                            this.cardPlayed(cardToPlay);
+                            console.log('I played a larger card :)');
+                            break;    
+                        }else{
+                            this.cardPlayed(smallestPlayable);
+                            console.log('I played the smallest playable card :(');
+                            break;
+                        }
+                    }else if(trumpCards.length > 0){
+                        var trumpHit = false;
+                        if(this.getCurrentPosition() == 2){
+                            if(oppCard[0].suit == trump && oppCard[1].suit != trump){
+                                    trumpHit = true;
+                                    var oppTrump = oppCard[0];
+                            }
+                            if(oppCard[0].suit != trump && oppCard[1].suit == trump){
+                                trumpHit = true;
+                                var oppTrump = oppCard[1];
+                            }
+                        }
+                        if(trumpHit){
+                            var greaterTrumps = Array();
+                            for (var i = trumpCards.length - 1; i >= 0; i--) {
+                                if(trumpCards[i].rank > oppTrump.rank){
+                                    greaterTrumps.push(trumpCards[i]);
+                                }
+                            };
+                            console.log(greaterTrumps);
+                            var cardToPlay = greaterTrumps[greaterTrumps.length - 1]
+                            for (var i = greaterTrumps.length - 1; i >= 0; i--) {
+                                if(greaterTrumps[i].currentSuitOrder > cardToPlay.currentSuitOrder){
+                                    cardToPlay = greaterTrumps[i];
+                                }
+                            };
+                            if(greaterTrumps.length > 0 && cardToPlay !=''){
+                                this.cardPlayed(cardToPlay);
+                                console.log('Guess what, I have a bigger trump, bitch! xD');
+                                break;     
+                            }
+                        }
+                        var cardToPlay = trumpCards[trumpCards.length - 1];
+                        for (var i = trumpCards.length - 1; i >= 1; i--) {
+                            if(trumpCards[i].currentSuitOrder > cardToPlay.currentSuitOrder){
+                                cardToPlay = trumpCards[i];
+                            }
+                        };
+                        this.cardPlayed(cardToPlay);
+                        console.log('Taste my little trump, bitch! xD');
+                        break;    
+                        
+                    }else{
+                        var validMinSuit = Array();
+                        for (var i = suitCount.length - 1; i >= 0; i--) {
+                            if(suitCount[i].count!=0 && suitCount[i].suit!=trump) {
+                                validMinSuit.push(suitCount[i]);
+                            }
+                        };
+                        minSuit = validMinSuit[validMinSuit.length - 1];
+                        for (var i = validMinSuit.length - 1; i >= 0; i--) {
+                            if(validMinSuit[i].count < minSuit.count){
+                                minSuit = validMinSuit[i];
+                            }
+                        };
+                        console.log(validMinSuit);
+                        var minSuitCards = Array();
+                        for (var i = deck.length - 1; i >= 0; i--) {
+                            if(deck[i].suit == minSuit.suit){
+                                minSuitCards.push(deck[i]);
+                            }
+                        };
+                        var card = minSuitCards[0];
+                        for (var i = 0; i <= minSuitCards.length - 1; i++) {
+                            if (minSuitCards[i].currentSuitOrder > card.currentSuitOrder){
+                                card = minSuitCards[i];
+                            }
+                        };
+                        if(card.currentSuitOrder > 2){
+                            this.cardPlayed(card);
+                            console.log('Just removing this suit from my deck 8)');
+                            break;    
+                        }else{
+                            var card = this.getSmallestCard(deck);
+                            this.cardPlayed(card);
+                            console.log('This was my smallest card, no options with me ;(');
+                            break;
+                        }
+                    }
                 }
-                this.cardPlayed(card, this.props.game.activePlayerId);
+                console.log('No cards to Play! Fuck!');
                 break;
             case 'SET_TRUMP':
-                var trumps = ['S', 'H', 'C', 'D'];
-                var trump = trumps[Math.floor(Math.random()*trumps.length)];
+                // console.log('bot setting Trump now');
+                var e = this.props.game.activePlayerId;
+                var deck = this.props.game.players[e].cards;
+                // var trumps = ['S', 'H', 'C', 'D'];
+                var suitWeight = [{
+                                    suit: 'S',
+                                    weight: 0
+                                },
+                                {
+                                    suit: 'H',
+                                    weight: 0
+                                },
+                                {
+                                    suit: 'C',
+                                    weight: 0
+                                },
+                                {
+                                    suit: 'D',
+                                    weight: 0
+                                }];
+                // var trump = trumps[Math.floor(Math.random()*trumps.length)];
+                for (var i = deck.length - 1; i >= 0; i--) {
+                    for (var j = suitWeight.length - 1; j >= 0; j--) {
+                        if(deck[i].suit == suitWeight[j].suit){
+                            suitWeight[j].weight += deck[i].rank;
+                        }
+                    };
+                };
+                // console.log(suitWeight);
+                maxSuitWeight = suitWeight[suitWeight.length - 1];
+                for (var i = suitWeight.length - 1; i >= 0; i--) {
+                    if(suitWeight[i].weight > maxSuitWeight.weight){
+                        maxSuitWeight = suitWeight[i];
+                    }
+                };
+                var trump = maxSuitWeight.suit;
                 var self = this;
                 var fn = function () {
                     self.setTrump(trump);
@@ -401,7 +719,71 @@ var Game325Component = React.createClass({displayName: "Game325Component",
         }   
     },
     getSmallestCard : function (deck){
-        return deck[0];
+        var smallest = deck[deck.length - 1];
+        for (var i = deck.length - 1; i >= 1; i--) {
+            if(deck[i].currentSuitOrder > smallest.currentSuitOrder && deck[i].suit != this.props.game.trump){
+                smallest = deck[i];
+            }
+        };
+        return smallest;
+    },
+    getWinningProbability: function(deck, suitCount){
+        var remaining = this.props.game.remainingCards;
+        var abc=0;
+        for (var j = remaining.length - 1; j >= 0; j--) {
+            remaining[j].mycard = false;
+            for (var i = deck.length - 1; i >= 0; i--) {
+                if(deck[i].suit == remaining[j].suit && deck[i].rank == remaining[j].rank){
+                    deck[i].currentSuitOrder = remaining[j].currentSuitOrder;
+                    remaining[j].mycard = true;
+                }
+            } 
+        }
+        for (var i = deck.length - 1; i >= 0; i--) {
+            var smaller = 0;
+            var total = 0;
+            var thissuitCount = 0;
+            for (var k = suitCount.length - 1; k >= 0; k--) {
+                if(suitCount[k].suit == deck[i].suit){
+                    thissuitCount = suitCount[k].count;
+                    break;
+                }
+            };
+            for (var j = remaining.length - 1; j >= 0; j--) {
+                if(deck[i].suit == remaining[j].suit){
+                    total ++;
+                    if(deck[i].currentSuitOrder < remaining[j].currentSuitOrder && !remaining[j].mycard){
+                        smaller++;
+                    }
+                } 
+            }
+            if(smaller<2 || (total - thissuitCount) <2) continue;
+            deck[i].winningProbability = this.C(smaller,2)/this.C((total - thissuitCount),2);
+        };
+        return deck;
+    },
+    factorial: function(x) {
+        // console.log(x);
+        if(x==0) {
+            return 1;
+        }
+        return x * this.factorial(x-1);
+    },
+    C: function(n,r){
+        return this.factorial(n)/(this.factorial(r)*this.factorial(n-r));
+    },
+    getCurrentPosition : function(){
+        var pos = 0;
+        for (var i = this.props.game.players.length - 1; i >= 0; i--) {
+            var temp = 0;
+            for (var key in this.props.game.playedCards[i]) {
+               if (this.props.game.playedCards[i].hasOwnProperty(key)) {
+                    pos = pos + 1;
+                    break;
+               }
+            }
+        }
+        return pos;
     },
     cardPlayed : function (card, player){
         var sendEvent = false;
@@ -885,8 +1267,8 @@ var CardComponent = React.createClass({displayName: "CardComponent",
             }
             style.transform = 'translateX('+posX+'px) translateY('+posY+'px)';
         }
-        var frontClassName = 'card front';
-        var backClassName = 'card back';
+        var frontClassName = 'card frontrotated';
+        var backClassName = 'card frontrotated';
         if((position == 0 && this.state.mounted) || card.state == 'played' || (card.moveTo == 0 && card.state == 'withdrawn') || (card.moveTo == 0 && card.state == 'returned')){
             frontClassName = 'card frontRotated';
             backClassName = 'card backRotated';
