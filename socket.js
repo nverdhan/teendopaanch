@@ -230,7 +230,7 @@ module.exports = function (app, server){
                         client.set('gameRoom:'+roomId, x, function(err, gameSet){
                             if(err)
                                 throw err;
-                            io.sockets.in(roomId).emit('GAME', {'data' : gamex});
+                            // io.sockets.in(roomId).emit('GAME', {'data' : gamex});
                         });
                 });
         });
@@ -262,46 +262,68 @@ module.exports = function (app, server){
         });
         socket.on('disconnect', function(){
             client.get('gameRoom:'+roomId, function (err, gameData){
-                    if(!roomId){
-                        return false;
-                    }
-                    if(!gameData){
-                        return false;
-                    }
-                    socket.leave(roomId);
-                    var gamex = JSON.parse(gameData);
-                    gamex.gamePaused = true;
-                    for (var i = gamex.players.length - 1; i >= 0; i--) {
-                        if(gamex.players[i].id == socket.id){
-                            gamex.players[i].id = undefined;
-                            var playerLeftId = socket.id;
+                if(!roomId){
+                    return false;
+                }
+                if(!gameData){
+                    return false;
+                }
+                socket.leave(roomId);
+                var gamex = JSON.parse(gameData);
+                switch(gamex.players.length){
+                    case 3:
+                        console.log('here3');
+                        var n = 0;
+                        for (var i = gamex.players.length - 1; i >= 0; i--) {
+                            if(gamex.players[i].id == socket.id){
+                                gamex.players[i].id = undefined;
+                                var playerLeftId = socket.id;
+                            }
+                            gamex.gamePaused = true;
                         }
-                    }
-                    var n = 0;
-                    for (var i = gamex.players.length - 1; i >= 0; i--) {
-                        if(gamex.players[i].id == undefined){
-                            n++;
+                        for (var i = gamex.players.length - 1; i >= 0; i--) {
+                            if(gamex.players[i].id == undefined){
+                                n++;
+                            }
+                            gamex.gamePaused = true;
                         }
-                    }
-                    if(n == 2){
-                        client.srem('roomsFilled', roomId, function(err, data){
-                            if(err)
-                                throw err;
-                        });
-                        client.srem('rooms', roomId, function(err, data){
-                            if(err)
-                                throw err;
-                        });
-                        delete gamex;
-                        client.del('gameRoom:'+roomId);
-                        client.srem('rooms1', roomId);
-                        client.srem('rooms2', roomId);
-                    }else{
-                        var x = JSON.stringify(gamex);
+                        if(n == 2){
+                            io.sockets.in(roomId).emit('NO_PLAYER_LEFT' , {'id' : playerLeftId});
+                            delete gamex;
+                            client.del('gameRoom:'+roomId);
+                        }else{
+                            var x = JSON.stringify(gamex);
                             client.set('gameRoom:'+roomId, x, function (err, gameData){
-                                io.sockets.in(roomId).emit('DISCONNECTED' , {'id' : playerLeftId});
                             });
-                    }
+                        }
+                        break;
+                    case 2:
+                        for (var i = 0; i < gamex.players.length; i++) {
+                            if(gamex.players[i].id == socket.id){
+                                console.log('socket');
+                                gamex.players.splice(i,1);
+                            }
+                        }
+                        client.srem('rooms2', roomId, function (err, gameData){
+                            client.sadd('rooms1', roomId, function (err, gameData) {
+                                var x = JSON.stringify(gamex);
+                                client.set('gameRoom:'+roomId, x, function (err, gameData){
+                                    io.sockets.in(roomId).emit('GAME_STATUS', {'data' : gamex});
+                                });
+                            });
+                        });
+                        break;
+                    case 1:
+                        client.srem('rooms1', roomId, function (err, gameData){
+                            //Err Handling
+                            if(err)
+                                throw err;
+                            client.del('gameRoom:'+roomId);
+                            delete gamex;
+                        });
+                        
+                        break;
+                }
             });
         });
 	});

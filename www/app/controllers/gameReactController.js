@@ -49,7 +49,8 @@ game325.controller('gameReactController', ['$rootScope', '$http', '$scope', '$st
     }
     $scope.sendEvent = function(data){
         if($scope.gameType == 'LIVE'){
-            socket.emit('GAME', {data : data});    
+            console.log(data);
+            socket.emit('GAME', {data : data});  
         }else{
             $scope.gameEvent(data);
         }
@@ -224,6 +225,7 @@ game325.controller('gameReactController', ['$rootScope', '$http', '$scope', '$st
             };
         });
         socket.on('GAME', function (data){
+            console.log('here');
             $scope.game325 = data.data;
             $scope.reactRender();
             
@@ -239,6 +241,10 @@ game325.controller('gameReactController', ['$rootScope', '$http', '$scope', '$st
             $scope.playerId = data.id;
             $scope.game325 = data.data;
         });
+        socket.on('NO_PLAYER_LEFT', function (data) {
+            // body...
+            $state.go('home');
+        })
         socket.on('msgRecieved', function (data){
             if(data.player.user){
                 if(data.player.user.type == 'local'){
@@ -277,26 +283,34 @@ game325.controller('gameReactController', ['$rootScope', '$http', '$scope', '$st
         var gameData = JSON.parse(gameData);
         var txt = "Do you want to continue with previously saved Game ?";
         if(gameData){
-            if(window.confirm(txt)){
-                $scope.playerId = 0;
-                $scope.waiting = false;
-                $scope.ready = true;
-                $rootScope.arrPlayers = gameData.players;
-                $scope.game325 = gameData;
-            }else{
-                $scope.startNewGame()          
-            }
+            $mdDialog.show({
+              template:
+                '<md-dialog>' +
+                '  <md-content> <h2 class="md-title"> Continue Previously Saved Game? </h2> <p> You are about to be disconnected from other players.'+
+                 '  <div class="md-actions">' +
+                 '<md-button ng-click="loadGame()"> Yes. </md-button>'+
+                 '<md-button ng-click="newGame()"> No Start New Game </md-button>'+
+                 '  </div>' +
+                '</md-content></md-dialog>',
+                controller: 'errDialogController'
+            });
         }else{
             $scope.startNewGame()
         }
-        $scope.reactRender();
     }
-    $scope.sendEvent = function(data){
-        if($scope.gameType == 'LIVE'){
-            socket.emit('GAME', {data : data});    
-        }else{
-            $scope.gameEvent(data);
-        }
+    $scope.$on('LOAD_GAME', function(){
+        $scope.loadGame();
+        $scope.reactRender();
+      });
+    $scope.$on('NEW_GAME', function(){
+        $scope.startNewGame();
+      });
+    $scope.loadGame = function(){
+        $scope.playerId = 0;
+        $scope.waiting = false;
+        $scope.ready = true;
+        $rootScope.arrPlayers = gameData.players;
+        $scope.game325 = gameData;
     }
     $scope.sendChat = function(){
         var msg = $scope.chatMsg;

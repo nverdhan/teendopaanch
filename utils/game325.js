@@ -245,12 +245,11 @@ game325.prototype.playCard = function(){
 				if(this.players[i].cards[j].suit == card.suit && this.players[i].cards[j].rank == card.rank){
 					var index = j;
 				}
-			};
+			}
 			this.players[i].cards.splice(index, 1);
 			this.players[i].cardPlayed = card;
 		}
 	}
-	console.log(card);
 	this.cardPlayed = card;
 }
 game325.prototype.nextRound = function(){

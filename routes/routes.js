@@ -112,7 +112,6 @@ module.exports = function(app, passport) {
     });
     app.post('/api/join', function (req, res){
         var id = req.roomId;
-        console.log(id);
         client.get('gameRoom:'+id, function (err, gameData){
             if(err)
                 throw err;

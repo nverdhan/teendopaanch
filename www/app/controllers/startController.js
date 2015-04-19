@@ -125,13 +125,21 @@ game325.controller('startController', ['$rootScope', '$http', '$scope', '$state'
           }
 }]);
 
-game325.controller('errDialogController',['$scope', '$mdDialog', '$state', function($scope, $mdDialog, $state){
+game325.controller('errDialogController',['$rootScope', '$scope', '$mdDialog', '$state', function($rootScope, $scope, $mdDialog, $state){
     $scope.closeDialog = function(){
-            $mdDialog.hide();
-        };
+        $mdDialog.hide();
+    };
     $scope.goToHome = function(){
-            $mdDialog.hide();
-            $state.go('home');
+      $mdDialog.hide();
+      $state.go('home');
+    }
+    $scope.loadGame = function(){
+      $rootScope.$broadcast('LOAD_GAME');
+      $mdDialog.hide();
+    }
+    $scope.newGame = function(){
+      $rootScope.$broadcast('NEW_GAME');
+      $mdDialog.hide();
     }
 }])
 game325.controller('coverController', ['$rootScope', '$http', '$scope', '$state', '$stateParams','AuthService', 'startGameService' ,'gameService', 'socket', '$timeout', 'delayService', '$mdSidenav', '$anchorScroll', '$location', '$mdDialog','$cookieStore','AUTH_EVENTS','Session', 'errService', function ($rootScope, $http, $scope, $state, $stateParams, AuthService, startGameService, gameService, socket, $timeout ,delayService, $mdSidenav, $anchorScroll, $location, $mdDialog, $cookieStore, AUTH_EVENTS, Session, errService){

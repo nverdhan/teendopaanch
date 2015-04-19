@@ -6,7 +6,6 @@ var Game325Component = React.createClass({displayName: "Game325Component",
         if(this.type == 'LIVE'){
             this.arrangePlayers(this.props.game);    
         }
-        console.log(this.props.game);
         // this.arrangePlayers(this.props.game);
         this.players = this.props.game.players;
         this.playerIds = [];
@@ -61,7 +60,6 @@ var Game325Component = React.createClass({displayName: "Game325Component",
                 trump : trump,
                 activePlayerId : this.props.game.activePlayerId
             }
-            // this.gameEvent(data);
             this.clickHandler(data);
         }
     },
@@ -81,93 +79,6 @@ var Game325Component = React.createClass({displayName: "Game325Component",
             trumpCard : null
         })
     },
-    /*gameEvent : function(data){
-        var gameEvent = data.gameEvent;
-        this.props.game.returnCard = false;
-        var game = {
-            props : this.props.game,
-            data : data
-        }
-        if(this.type == 'BOTS'){
-            localStorage.setItem('gameData', JSON.stringify(game));    
-        }
-        switch(gameEvent){
-            case "START_GAME":
-                Game.prototype.initDeck.call(this.props.game);
-                Game.prototype.distributeCards.call(this.props.game);
-                Game.prototype.updateHandsToMake.call(this.props.game);
-                this.props.game.gameTurn = 1;
-                this.props.game.gameState  ='SET_TRUMP';
-                this.props.game.gameEvent  ='SET_TRUMP';
-                Game.prototype.assignPlayerIds.call(this.props.game);
-                break;
-            case "NEXT_ROUND":
-                Game.prototype.initDeck.call(this.props.game);
-                Game.prototype.distributeCards.call(this.props.game);
-                Game.prototype.nextRound.call(this.props.game);
-                this.props.game.gameState  ='SET_TRUMP';
-                this.props.game.gameEvent  ='SET_TRUMP';
-                break;
-            case "SET_TRUMP":
-                this.props.game.trump = data.trump;
-                Game.prototype.distributeCards.call(this.props.game);
-                this.props.game.gameState  ='PLAY_CARD';
-                this.props.game.gameEvent  ='PLAY_CARD';
-                var y = Game.prototype.withdrawCards.call(this.props.game);
-                if(y){
-                    this.props.game.gameState  ='WITHDRAW_CARD';
-                    this.props.game.gameEvent  ='WITHDRAW';
-                }
-                break;
-            case "WITHDRAW_CARD":
-                this.props.game.cardIndex = data.card;
-                Game.prototype.moveWithdrawCard.call(this.props.game);
-                //Game.prototype.withdrawCard.call(this.props.game);
-                this.props.game.gameState  = 'RETURN_CARD';
-                this.props.game.gameEvent ='RETURN';
-                break;
-            case "RETURN_CARD":
-                this.props.game.cardIndex = data.card;
-                Game.prototype.moveReturnCard.call(this.props.game);
-                this.props.game.returnCard = true;
-                var self = this;
-                var y = Game.prototype.withdrawCards.call(this.props.game);
-                if(y){
-                    this.props.game.gameState  = 'WITHDRAW_CARD';
-                    this.props.game.gameEvent = 'WITHDRAW';
-                    var x = JSON.stringify(this.props.game);
-                }
-                else{
-                    this.props.game.gameState  ='PLAY_CARD';
-                    this.props.game.gameEvent = 'PLAY_CARD';
-                }
-                break;
-            case "PLAY_CARD":
-                this.props.game.cardPlayed = data.cardPlayed;
-                Game.prototype.playCard.call(this.props.game);
-                if((this.props.game.gameTurn % 3) == 1){
-                    this.props.game.turnSuit = this.props.game.cardPlayed.suit;
-                }
-                if((this.props.game.gameTurn % 3) == 0){
-                    Game.prototype.nextTurn.call(this.props.game);
-                    Game.prototype.getTurnWinner.call(this.props.game);
-                    this.props.game.gameState  ='PLAY_CARD';
-                    this.props.game.gameEvent  = 'DECLARE_WINNER';
-                }else{
-                    Game.prototype.nextTurn.call(this.props.game);
-                    this.props.game.gameState  ='PLAY_CARD';
-                    this.props.game.gameEvent  = 'CARD_PLAYED';
-                }
-                break;
-            default:
-                break;
-            }
-            var self = this;
-            var fn = function () {
-                self.next(self.props.game);
-            }
-            delayService.asyncTask(200, fn);
-    },*/
     playCard : function(){
         var activePlayerId = this.props.game.activePlayerId;
         var lastPlayerId = this.props.game.lastPlayerId;
@@ -181,10 +92,20 @@ var Game325Component = React.createClass({displayName: "Game325Component",
             }
         }
     },
+    arrangeCards : function(){
+        for (var i = this.props.game.players.length - 1; i >= 0; i--) {
+            if(this.props.game.players[i].id == this.playerId){
+                this.props.game.players[i].cards = sortDeck(this.props.game.players[i].cards);
+            }
+        };
+    },
     next : function (data){
         var gameEvent = data.gameEvent;
         switch(gameEvent){
             case 'PLAY_CARD':
+                if(this.props.game.gameTurn%30 == 1){
+                    this.arrangeCards();
+                }
                 if(this.props.game.returnCard){
                     this.returnCard();
                 }
@@ -268,6 +189,7 @@ var Game325Component = React.createClass({displayName: "Game325Component",
                             var index = j;
                             var id = i;
                         }
+                        
                     };
                 };
                 var card = self.props.game.players[id].cards.splice(index, 1);
@@ -296,18 +218,34 @@ var Game325Component = React.createClass({displayName: "Game325Component",
     },
     refreshPlayedCards : function () {
         var self = this;
+        if(this.props.type == 'BOTS'){
+            for (var i = this.props.game.players.length - 1; i >= 0; i--){
+                this.props.game.allPlayedCards.push(this.props.game.playedCards[i]);
+            }
+            this.refreshRemainingCards();
+        }
+        /***********If Bots*********************/
+        /*
         for (var i = this.props.game.players.length - 1; i >= 0; i--){
                 this.props.game.allPlayedCards.push(this.props.game.playedCards[i]);
         };
         this.refreshRemainingCards();
+        */
+        /***********If Bots*********************/
         var fn = function () {
             for (var i = self.props.game.players.length - 1; i >= 0; i--){
                 self.playedCards[i].suit = '';
                 self.playedCards[i].rank = '';
                 self.playedCards[i].display = 'none';
                 delete self.playedCards[i].moveTo;
+                /***********If Bots*********************/
+                if(self.props.type == 'BOTS'){
+                    self.playedCards[i] = '';
+                    self.props.game.playedCards[i] = '';
+                }
                 // self.playedCards[i] = '';
-                self.props.game.playedCards[i] = '';
+                // self.props.game.playedCards[i] = '';
+                /***********If Bots*********************/
             }
             self.setState({
                 gameState : 'REFRESH_PLAYED_CARDS'
@@ -842,9 +780,9 @@ var Game325Component = React.createClass({displayName: "Game325Component",
             React.createElement(TrumpComponent, {trump: this.props.game.trump, setTrump: this.setTrump, gameState: this.props.game.gameState}), 
             React.createElement(PlayedCardsComponent, {playedCards: this.playedCards}), 
             React.createElement(GameStateInfo, {gameState: this.props.game.gameState, players: this.props.game.players, activePlayerId: this.props.game.activePlayerId, otherPlayerId: this.props.game.otherPlayerId, lastPlayerId: this.props.game.lastPlayerId}), 
-            React.createElement(PlayerComponent, {player: this.props.game.players[0], playerIds: this.playerIds, scope: this.props.scope, cardPlayed: this.cardPlayed, position: 0, activePlayerId: this.props.game.activePlayerId}), 
-            React.createElement(PlayerComponent, {player: this.props.game.players[1], playerIds: this.playerIds, scope: this.props.scope, cardPlayed: this.cardPlayed, position: 1, activePlayerId: this.props.game.activePlayerId}), 
-            React.createElement(PlayerComponent, {player: this.props.game.players[2], playerIds: this.playerIds, scope: this.props.scope, cardPlayed: this.cardPlayed, position: 2, activePlayerId: this.props.game.activePlayerId})
+            React.createElement(PlayerComponent, {player: this.props.game.players[0], playerIds: this.playerIds, scope: this.props.scope, cardPlayed: this.cardPlayed, position: 0, activePlayerId: this.props.game.activePlayerId, suit : this.props.game.turnSuit, trump : this.props.game.trump}), 
+            React.createElement(PlayerComponent, {player: this.props.game.players[1], playerIds: this.playerIds, scope: this.props.scope, cardPlayed: this.cardPlayed, position: 1, activePlayerId: this.props.game.activePlayerId, suit : this.props.game.turnSuit, trump : this.props.game.trump}), 
+            React.createElement(PlayerComponent, {player: this.props.game.players[2], playerIds: this.playerIds, scope: this.props.scope, cardPlayed: this.cardPlayed, position: 2, activePlayerId: this.props.game.activePlayerId, suit : this.props.game.turnSuit, trump : this.props.game.trump})
             )
         );
     }
@@ -958,16 +896,36 @@ var PlayerComponent = React.createClass({displayName: "PlayerComponent",
     handleCardClick : function (card, player) {
             this.props.cardPlayed(card, player);
     },
+    getActiveStatus : function (){
+        var trump = this.props.trump;
+        var suit = this.props.suit;
+        var n = 0;
+        for (var i = this.props.player.cards.length - 1; i >= 0; i--) {
+            this.props.player.cards[i].isPlayable = true;
+            if(this.props.suit && this.props.player.cards[i].suit == this.props.suit){
+                n++;
+            }
+        }
+        if(n > 0){
+            for (var i = this.props.player.cards.length - 1; i >= 0; i--) {
+                if(this.props.suit && this.props.player.cards[i].suit != this.props.suit){
+                    this.props.player.cards[i].isPlayable = false;;
+                }
+            }
+        }
+    },
     render : function () {
         var player = this.props.player;
         var self = this;
         var noOfCards = this.props.player.cards.length;
         var activePlayerId = this.props.activePlayerId;
         var position = this.props.position;
+        // var isActiveCard = this.getActiveStatus()
+        this.getActiveStatus();
         var cards = this.props.player.cards.map(function (card, index){
             var cardStyle = getCardPic(card);
             var cardKey = card.rank+'.'+card.suit;
-            return React.createElement(CardComponent, {playerIds: self.props.playerIds, scope: self.props.scope, key: cardKey, card: card, index: index, position: self.props.position, playerId: self.props.player.id, noOfCards: noOfCards, cardClicked: self.handleCardClick, cardStyle: cardStyle})
+            return React.createElement(CardComponent, {playerIds: self.props.playerIds, scope: self.props.scope, key: cardKey, card: card, index: index, position: self.props.position, playerId: self.props.player.id, noOfCards: noOfCards, cardClicked: self.handleCardClick, cardStyle: cardStyle, suit : self.props.suit, trump : self.props.trump})
         });
         return (
             React.createElement("div", null, 
@@ -1170,6 +1128,11 @@ var CardComponent = React.createClass({displayName: "CardComponent",
         this.state.style.transform = 'translateX(0px) translateY(0px)';
     },
     handleClick : function(card, player){
+        if(!card.isPlayable){
+            console.log('Bhand hai Kya');
+            preventDefault();
+            return false;
+        }
         this.props.cardClicked(card, player);
     },
     render : function (){
@@ -1267,6 +1230,7 @@ var CardComponent = React.createClass({displayName: "CardComponent",
             }
             style.transform = 'translateX('+posX+'px) translateY('+posY+'px)';
         }
+        
         var frontClassName = 'card frontrotated';
         var backClassName = 'card frontrotated';
         if((position == 0 && this.state.mounted) || card.state == 'played' || (card.moveTo == 0 && card.state == 'withdrawn') || (card.moveTo == 0 && card.state == 'returned')){
@@ -1277,8 +1241,12 @@ var CardComponent = React.createClass({displayName: "CardComponent",
             var frontClassName = 'card front';
             var backClassName = 'card back';
         }
+        isActiveClassName = 'card';
+        if(position == 0 && !this.props.card.isPlayable){
+            var isActiveClassName = 'card disabled';
+        }
         return (
-            React.createElement("div", {className: "card", style: style, onClick: this.handleClick.bind(null, this.props.card, this.props.playerId)}, 
+            React.createElement("div", {className: isActiveClassName, style: style, onClick: this.handleClick.bind(this, this.props.card, this.props.playerId)}, 
                 React.createElement("a", {className: frontClassName, style: cardStyle}), 
                 React.createElement("a", {className: backClassName})
             )
