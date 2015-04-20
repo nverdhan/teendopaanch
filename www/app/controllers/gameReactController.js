@@ -235,6 +235,11 @@ game325.controller('gameReactController', ['$rootScope', '$http', '$scope', '$st
             $scope.game325 = data.data;
             // $rootScope.arrPlayers = $scope
             $scope.reactRender();
+            if($scope.playerId == $scope.game325.activePlayerId){
+                $timeout(function (argument) {
+                    angular.element('.bottom-player-diabled').css('display', 'none');
+                }, 1000);
+            }
             
         });
         socket.on('INVALID', function (data){

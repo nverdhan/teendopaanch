@@ -162,7 +162,6 @@ var Game325Component = React.createClass({displayName: "Game325Component",
     withdrawCard : function (){
         var self = this;
         var fn = function (){
-            console.log('withdrawn')
             Game.prototype.withdrawCard.call(self.props.game);
             self.setState({
                 gameState : 'withdrawMoved'
@@ -1178,7 +1177,6 @@ var CardComponent = React.createClass({displayName: "CardComponent",
             this.props.cardClicked(card, player);
             angular.element('.bottom-player-diabled').css('display', 'block');
         }
-        
     },
     shouldComponentUpdate : function(){
         return this.props.updateCards

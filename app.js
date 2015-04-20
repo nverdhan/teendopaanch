@@ -17,8 +17,8 @@ var redisClient = redis.createClient();
 
 var socket = require('socket.io');
 
-var Sequelize = require('sequelize');
-var sequelize = new Sequelize('game325','root','');
+// var Sequelize = require('sequelize');
+// var sequelize = new Sequelize('game325','root','');
 
 var flash = require('connect-flash');
 var port     = process.env.PORT || 3000;

@@ -157,6 +157,8 @@ Game.prototype.moveWithdrawCard = function(){
 			this.players[i].cards[cardIndex].moveTo = activePlayerId;
 		}
 	}
+	this.moveFrom = otherPlayerId;
+	this.moveTo = activePlayerId;
 }
 Game.prototype.returnCard = function(){
 	var activePlayerId = this.moveFrom;
@@ -433,9 +435,11 @@ function getBiggestCard (card1, card2, turnSuit, trump) {
         }
     }
 }
-/*function updateScoresInDB(player){
-	if(player.type != 'local'){
-		scores.findOne({'userId': player.userId}, function (err, scores){
+function updateScoresInDB(player){
+	console.log(player);
+	// if(player.type != 'local'){
+		if(player){
+		Scores.findOne({'userId': player.userId}, function (err, scores){
 			if(err)
 				throw err;
 			if(scores){
@@ -449,6 +453,7 @@ function getBiggestCard (card1, card2, turnSuit, trump) {
 				var score = new scores();
 				score.id = player.id;
 				score.type = player.type;
+				score.image = player.image;
 				var n = player.handsToMake - player.handsMade;
 				scores.Game.noOfGamesWon = 0;
 				if (n >= 0) {
@@ -464,5 +469,5 @@ function getBiggestCard (card1, card2, turnSuit, trump) {
 			});
 		});
 	}
-}*/
+}
 //helper functions
