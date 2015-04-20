@@ -4,6 +4,7 @@ var players = [];
 var randomstring = require("randomstring");
 module.exports = function(app, passport) {
     var client = app.get('redisClient');
+    var customSession = app.get('sessionStore');
     app.get('/profile', isLoggedIn, function(req, res) {
 		res.render('profile', {
 			user : req.user // get the user out of session and pass to template
@@ -154,11 +155,15 @@ module.exports = function(app, passport) {
 	});
     
     app.post('/api/auth', function(req, res){
+        // console.log(customSession.get('user'));
+        console.log(req.user);
         if (req.user) {
             if(req.user.twitter){
                 res.json({'user' : req.user.twitter});
             }    
-        }else{
+        }else if(req.user.facebook){
+                res.json({'user' : req.user.facebook});
+        }else {
             res.json({'error' : 401})
         }
     });
@@ -170,6 +175,12 @@ module.exports = function(app, passport) {
 			successRedirect : '/',
 			failureRedirect : '/'
 	}));
+    app.get('/auth/facebook', passport.authenticate('facebook'));
+
+
+    app.get('/auth/facebook/callback', 
+        passport.authenticate('facebook', { successRedirect: '/',
+                                            failureRedirect: '/' }));
 
     app.get('/', function(req, res){
         res.sendFile('www/index.html', { root: app.get('rootDir')});

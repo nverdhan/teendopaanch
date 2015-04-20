@@ -28,8 +28,9 @@ game325.factory('AuthService', ['$http','$rootScope', 'Session','$window','$cook
     				})
     }
     authService.getCredentials = function (credentials){
-    	return $http.post(apiPrefix + '/getCredentials', credentials)
+    	return $http.post(apiPrefix + '/auth', credentials)
     				.then(function (res){
+                        console.log(res);
     					var res = res.data;
     					return res;
     				})

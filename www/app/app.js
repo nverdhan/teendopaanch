@@ -390,6 +390,9 @@ game325.controller('loginController',['$rootScope', '$location', '$scope', '$htt
     $scope.twitterAuth = function(){
         $window.location.href = "http://127.0.0.1:3000/auth/twitter"
     }
+    $scope.facebookAuth = function(){
+        $window.location.href = "http://127.0.0.1:3000/auth/facebook"
+    }
 
     $scope.homepage = function(){
         $location.path('home');
@@ -464,7 +467,9 @@ game325.controller('registerCtrl', ['$rootScope', '$scope','$cookieStore','$wind
     $scope.twitterAuth = function(){
         $window.location.href = "http://127.0.0.1:3000/auth/twitter"
     }
-
+    $scope.facebookAuth = function(){
+        $window.location.href = "http://127.0.0.1:3000/auth/facebook"
+    }
     $scope.homepage = function(){
         $location.path('home');
     };

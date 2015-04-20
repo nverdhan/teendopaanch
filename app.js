@@ -25,6 +25,7 @@ var port     = process.env.PORT || 3000;
 
 var passport = require('passport');
 var TwitterStrategy = require('passport-twitter').Strategy;
+var FacebookStrategy = require('passport-facebook').Strategy;
 
 var config = {
     'session' : {
