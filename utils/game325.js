@@ -301,6 +301,7 @@ game325.prototype.getTurnWinner = function() {
 	for (var i = 0; i < this.players.length; i++){
 		biggestCard = getBiggestCard(biggestCard, this.players[i].cardPlayed, this.turnSuit, this.trump);
 	}
+	this.turnSuit = '';
 	for (var i = 0; i < this.players.length; i++) {
 		if(this.players[i].cardPlayed == biggestCard){
 			this.lastGameWinner = this.players[i].id;

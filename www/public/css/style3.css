@@ -286,7 +286,8 @@ div.profile h1{
 	width: 400px;
 }
 .md-sidenav-right{
-	max-width: 60%;
+	/*max-width: 60%;*/
+  max-width: 340px;
   position: fixed;
   right: 0;
   z-index: 10001;
@@ -363,6 +364,8 @@ md-content.md-padding{
 	position:absolute;
 	top:0;
 	background-size: cover;	
+  /*background-image: url("../../assets/img/chat-bg.png");*/
+  background: linear-gradient(rgba(0, 150, 136, 0.5), rgba(0, 0, 0, 0.5)), url('../../assets/img/chat-bg.png');
 }
 /*Score dialog*/
 .scoredialog{
@@ -471,9 +474,14 @@ md-content.md-padding{
   background-size: cover!important;
   border-radius: 50%;
   opacity: 1;
-  color: #4CAF50;
+  color: #009688;
   margin-right: 5px;
   transition-timing-function: cubic-bezier(0.005, 0.95, 0.135, 1.205);
+}
+.bottom-player .ball{
+  position: absolute;
+  bottom: 40px;
+  right: 170px;
 }
 .ball .msg-count {
   position: absolute;
@@ -506,7 +514,7 @@ md-content.md-padding{
 	position: absolute;
 	top: 0;
   	left: 55px;
-  	color: black;
+  	color: #009688;
   	font-size: 12pt;
     margin-left: 5px;
     width: 200px;
@@ -520,12 +528,12 @@ md-content.md-padding{
 .ball .notif {
   position: absolute;
   top: 23px;
-  left: 60px;
+  left: 110px;
   width: 183px;
   opacity: 0;
 }
 .right-player .ball .notif{
-  left: -200px!important;
+  left: -250px!important;
 }
 .ball .notif .bar {
   position: relative;
@@ -711,10 +719,10 @@ md-button.md-fab.sidebutton{
   top: 20px;
 }
 .sidebutton.showscore{
-  bottom: 20px;
+  top: 85px;
 }
 .sidebutton.chat{
-  top: 85px;
+  top: 150px;
 }
 .sidebutton.selfprofile{
   bottom: 85px;
@@ -731,13 +739,23 @@ md-button.md-fab.sidebutton{
     font-size: 16pt;
     font-weight: 400;
     position: absolute;
-    top: 180px;
-    width: 100px;
+    /*top: 180px;*/
+    width: 40px;
     left: 0;
 }
+.right-player .ball .statistics{
+  text-align: end !important;
+  left: -58px;
+  top: 20px;
+}
+.left-player .ball .statistics{
+  text-align: start !important;
+  left: 60px;
+  top: 20px;
+}
 .bottom-player .statistics{
-  top: 0px;
-  left: 200px;
+  top: 20px;
+  left: 55px;
 }
 md-progress-circular.game-waiting-progress.md-default-theme .md-circle .md-mask .md-fill{
   background-color: #009688;

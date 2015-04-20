@@ -15,7 +15,7 @@ game325.controller('gameReactController', ['$rootScope', '$http', '$scope', '$st
         $state.go('home');
     }
     $(window).resize(function() {
-          $scope.$digest();
+          // $scope.$digest();
           $scope.reactRender();
     });
     $scope.closeScores = function (){
@@ -73,11 +73,12 @@ game325.controller('gameReactController', ['$rootScope', '$http', '$scope', '$st
         }
     }
     $scope.updateScores = function (players){
+        console.log('update scrs cakkde');
         $rootScope.arrPlayers = players;
     }
     $scope.showScores = false;
     $scope.toggleScores = function(ev){
-        console.log(ev);
+        // console.log(ev);
          $mdDialog.show({
             templateUrl: 'app/templates/scoredialog.html',
             controller: 'scoreDialogController'
@@ -195,7 +196,7 @@ game325.controller('gameReactController', ['$rootScope', '$http', '$scope', '$st
             }
             $scope.game325 = gameData;
             if($scope.gameType == 'BOTS'){
-                 // localStorage.setItem('gameData', JSON.stringify($scope.game325));
+                 localStorage.setItem('gameData', JSON.stringify($scope.game325));
             }
             $scope.reactRender();
     }
@@ -227,6 +228,7 @@ game325.controller('gameReactController', ['$rootScope', '$http', '$scope', '$st
         socket.on('GAME', function (data){
             console.log('here');
             $scope.game325 = data.data;
+            // $rootScope.arrPlayers = $scope
             $scope.reactRender();
             
         });
@@ -246,6 +248,7 @@ game325.controller('gameReactController', ['$rootScope', '$http', '$scope', '$st
             $state.go('home');
         })
         socket.on('msgRecieved', function (data){
+            console.log('msege');
             if(data.player.user){
                 if(data.player.user.type == 'local'){
                     userPic = '/assets/img/avatars.png';
@@ -264,7 +267,8 @@ game325.controller('gameReactController', ['$rootScope', '$http', '$scope', '$st
             }
             for (var i = $scope.game325.players.length - 1; i >= 0; i--){
                 if($scope.game325.players[i].id == data.player.id){
-                    $scope.game325.players[i].msg = data.msg;
+                    $scope.game325.players[i].msg = data.msg.msg;
+                    $scope.game325.msgRender = true;
                 }
             }
             $scope.reactRender();
@@ -273,6 +277,16 @@ game325.controller('gameReactController', ['$rootScope', '$http', '$scope', '$st
             $location.hash('bottomscroll');
             $anchorScroll();
             $location.hash('');
+            for (var i = $scope.game325.players.length - 1; i >= 0; i--){
+                if($scope.game325.players[i].id == data.player.id){
+                    temp = i;
+                    var fn = function(){
+                        console.log(temp);
+                       $scope.game325.players[temp].msg = ''; 
+                    }
+                    delayService.asyncTask(3000, fn);
+                }
+            }
         });
         socket.on('PlayerLeft', function (data){
             $state.go('home');
@@ -330,9 +344,24 @@ game325.controller('gameReactController', ['$rootScope', '$http', '$scope', '$st
     }
     $scope.closeRight = function() {
         $mdSidenav('right').close()
+        var fn = function(){
+            if(!$(".md-sidenav-right").hasClass("md-closed")){
+                $(".md-sidenav-right").addClass("md-closed");
+                $(".md-sidenav-backdrop").remove();
+            }    
+        }
+        promiseClose = $timeout(fn, 200);
     };
     $scope.toggleRight = function() {
+        console.log('toggleRightcalled');
         $mdSidenav('right').toggle();
+        var fn = function(){
+            if($(".md-sidenav-right").hasClass("md-closed")){
+                $(".md-sidenav-right").removeClass("md-closed");
+                $(".md-sidenav-right").before('<md-backdrop class="md-sidenav-backdrop md-opaque ng-scope md-default-theme" style=""></md-backdrop>');
+            }
+        }
+        promiseOpen = $timeout(fn, 200);
     };
     $scope.exitGame = function(){
         $mdDialog.show({
@@ -371,10 +400,12 @@ game325.directive('ngEnter', function() {
         };
     });
 game325.controller('scoreDialogController',['$scope', '$mdDialog', '$rootScope', function ($scope, $mdDialog, $rootScope){
+    console.log('score request');
     $scope.closeDialog = function(){
             $mdDialog.hide();
         };
     $scope.arrPlayers = $rootScope.arrPlayers;
+    console.log($rootScope.arrPlayers);
 }]);
 /*game325.directive('gameBody', function (){
     return {

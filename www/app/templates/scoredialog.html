@@ -1,9 +1,5 @@
 <md-dialog aria-label="scoredialog" class="scoredialog">
-<!--     <md-button style="background-color: rgba(241,103,103,1)!important" ng-click="closeDialog()" aria-label="closedialog">
-        <i class="fa fa-times" style="float:right;"></i>
-    </md-button> -->
    <md-toolbar class="md-tall score-head">
-            
               <span flex></span>
       <h2 class="md-toolbar-tools md-toolbar-tools-bottom">
         <span class="md-flex"> Game Scores </span>
@@ -14,87 +10,8 @@
             </md-button>
                 </span>
    </md-toolbar>
-<!--    <md-content class='player-container-score'>
-    <md-list>
-      <md-item>
-        <md-item-content>
-          <div class="md-tile-left imgholder">
-            <img src='assets/img/ankit.jpg' class="score-face" alt="{{item.who}}">
-          </div>
-          <div class="md-tile-content">
-          	<div layout="horizontal">
-            <h3>Ankit</h3>
-            <h4 class="total-score">Total 3 out of 7 hands made</h4>
-            </div>
-            <div flex layout="horizontal" class="progress-container">
-            <md-progress-linear mode="determinate" value="20" style="width:80%;"></md-progress-linear>
-            <div class='fracscore'>
-            1/2
-        	</div>
-            </div>
-            <div flex layout="horizontal" class="progress-container">
-            <md-progress-linear mode="determinate" value="20" style="width:80%;"></md-progress-linear>
-            <div class='fracscore'>
-            1/2
-        	</div>
-            </div>
-            <div flex layout="horizontal" class="progress-container">
-            <md-progress-linear mode="determinate" value="20" style="width:80%;"></md-progress-linear>
-            <div class='fracscore'>
-            1/2
-        	</div>
-            </div>
-            <div flex layout="horizontal" class="progress-container">
-            <md-progress-linear mode="determinate" value="20" style="width:80%;"></md-progress-linear>
-            <div class='fracscore'>
-            1/2
-        	</div>
-            </div>
-          </div>
-        </md-item-content>
-        <md-divider inset></md-divider>
-       </md-item>
-       <md-item>
-        <md-item-content class='player-container'>
-          <div class="md-tile-left imgholder" >
-            <img src='assets/img/nvpic.jpg' class="score-face" alt="{{item.who}}">
-          </div>
-          <div class="md-tile-content">
-            <h3>Naisheel</h3>
-            <div flex layout="horizontal">
-            <md-progress-linear mode="determinate" value='120' style="width:80%;"></md-progress-linear>.
-            <div class='fracscore'>
-            3/4
-        	</div>
-        	</div>
-          </div>
-        </md-item-content>
-        <md-divider inset></md-divider>
-        </md-item>
-       <md-item>
-        <md-item-content>
-          <div class="md-tile-left imgholder">
-            <img src='assets/img/devd.jpg' class="score-face" alt="{{item.who}}">
-          </div>
-          <div class="md-tile-content">
-            <h3>Devansh</h3>
-            <div flex layout="horizontal">
-            <md-progress-linear mode="determinate" value="60" style="width:80%;"></md-progress-linear>
-            <div class='fracscore'>
-            10/5
-        	</div>
-        	</div>
-          </div>
-        </md-item-content>
-        <md-divider inset></md-divider>
-      </md-item>
-    </md-list>
-  </md-content> -->
     <md-content class='player-container-score'>
     <md-list>
-<!--             <div class="col-md-3">
-                <div class="text-center h5" ng-repeat="score in arrPlayers[0].scores">#{{ $index + 1 }}</div>
-            </div> -->
             <show-scores ng-if="arrPlayers[0]" content="arrPlayers[0]"></show-scores>
             <show-scores ng-if="arrPlayers[1]" content="arrPlayers[1]"></show-scores>
             <show-scores ng-if="arrPlayers[2]" content="arrPlayers[2]"></show-scores>

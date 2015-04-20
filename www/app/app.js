@@ -496,6 +496,7 @@ game325.controller('registerCtrl', ['$rootScope', '$scope','$cookieStore','$wind
         if($scope.showUserError || $scope.showUserImageError){
            return false; 
         }else{
+            console.log('abc');
             var user = JSON.stringify($scope.user);
             $cookieStore.put('userId',user);
             Session.create($scope.user.name, $scope.user.image, 'local');
@@ -510,6 +511,7 @@ game325.controller('registerCtrl', ['$rootScope', '$scope','$cookieStore','$wind
     $scope.logOut = function(){
         Session.destroy();
         $cookieStore.put('userId', 'anon');
+        $cookieStore.put('showLoggedInOptions', false);
         $window.location.href = '/';
     }
 }])

@@ -24,13 +24,17 @@ var Game325Component = React.createClass({displayName: "Game325Component",
         this.players = this.props.game.players;
         this.props.game.returnCard = false;
         this.playerIds = [];
-        for (var i =  0; i < this.players.length; i++){
-            this.playerIds.push(this.players[i].id); 
-        };
-        if(this.game.gameEvent == 'WITHDRAW'){
-            this.props.game.returnCard = true;
+        this.props.scope.updateScores(this.players);
+        // console.log(this.props.game.turnSuit);
+        if(!nextProps.game.msgRender){
+            for (var i =  0; i < this.players.length; i++){
+                this.playerIds.push(this.players[i].id); 
+            };
+            if(this.game.gameEvent == 'WITHDRAW'){
+                this.props.game.returnCard = true;
+            }
+            this.next(nextProps.game);    
         }
-        this.next(this.props.game);
     },
     arrangePlayers : function(){
         var myPlayerObj;
@@ -101,11 +105,12 @@ var Game325Component = React.createClass({displayName: "Game325Component",
     },
     next : function (data){
         var gameEvent = data.gameEvent;
+        // if(this.props.game.gameTurn%30 == 1){
+                    this.arrangeCards();
+        // }
         switch(gameEvent){
             case 'PLAY_CARD':
-                if(this.props.game.gameTurn%30 == 1){
-                    this.arrangeCards();
-                }
+                
                 if(this.props.game.returnCard){
                     this.returnCard();
                 }
@@ -177,26 +182,30 @@ var Game325Component = React.createClass({displayName: "Game325Component",
     },
     placeCardOnBoard : function(){
         var self = this;
+        console.log(this.props.game);
         var fn = function () {
             var playerIndex = self.getPlayerIndexFromId(self.props.game.otherPlayerId);
             self.playedCards[playerIndex].display = 'block';
             self.playedCards[playerIndex].suit = self.props.game.cardPlayed.suit;
             self.playedCards[playerIndex].rank = self.props.game.cardPlayed.rank;
-            self.props.game.playedCards[playerIndex] = self.props.game.cardPlayed;
+            if(this.type == 'BOTS'){
+                self.props.game.playedCards[playerIndex] = self.props.game.cardPlayed;                
+            }
             for (var i = self.props.game.players.length - 1; i >= 0; i--) {
                     for (var j = self.props.game.players[i].cards.length - 1; j >= 0; j--) {
                         if(self.props.game.players[i].cards[j].suit == self.props.game.cardPlayed.suit && self.props.game.players[i].cards[j].rank == self.props.game.cardPlayed.rank){
                             var index = j;
                             var id = i;
+                            var card = self.props.game.players[id].cards.splice(index, 1);
+                        }else if(self.props.game.players[i].cardPlayed.suit == self.props.game.cardPlayed.suit && self.props.game.players[i].cardPlayed.rank == self.props.game.cardPlayed.rank) {
+                            var card = self.props.game.cardPlayed;
                         }
-                        
                     };
                 };
-                var card = self.props.game.players[id].cards.splice(index, 1);
                 self.setState({
                     gameState : 'CARD_PLACED_ON_BOARD'
                 });
-            }
+                }
             delayService.asyncTask(1200, fn);
     },
     moveHand : function (){
@@ -920,12 +929,16 @@ var PlayerComponent = React.createClass({displayName: "PlayerComponent",
         var noOfCards = this.props.player.cards.length;
         var activePlayerId = this.props.activePlayerId;
         var position = this.props.position;
+        var updateCards = true;
+        if(player.msg){
+            updateCards = false;
+        }
         // var isActiveCard = this.getActiveStatus()
         this.getActiveStatus();
         var cards = this.props.player.cards.map(function (card, index){
             var cardStyle = getCardPic(card);
             var cardKey = card.rank+'.'+card.suit;
-            return React.createElement(CardComponent, {playerIds: self.props.playerIds, scope: self.props.scope, key: cardKey, card: card, index: index, position: self.props.position, playerId: self.props.player.id, noOfCards: noOfCards, cardClicked: self.handleCardClick, cardStyle: cardStyle, suit : self.props.suit, trump : self.props.trump})
+            return React.createElement(CardComponent, {playerIds: self.props.playerIds, updateCards : updateCards, scope: self.props.scope, key: cardKey, card: card, index: index, position: self.props.position, playerId: self.props.player.id, noOfCards: noOfCards, cardClicked: self.handleCardClick, cardStyle: cardStyle, suit : self.props.suit, trump : self.props.trump})
         });
         return (
             React.createElement("div", null, 
@@ -937,24 +950,51 @@ var PlayerComponent = React.createClass({displayName: "PlayerComponent",
 });
 var PlayerInfoComponent = React.createClass({displayName: "PlayerInfoComponent",
     componentDidMount : function (){
-        // this.msg = this.props.player.msg;
     },
-    componentWillReceiveProps: function(){
-        var msg = this.props.player.msg;
+    getInitialState : function(){
+        return {
+            msg : '',   
+        }
+    },
+    componentWillUpdate : function(nextProps, nextState){
+        if(nextProps.player.msg == this.msg){
+            this.msg = '';
+        }else{
+            this.msg = nextProps.player.msg;
+        }
+    },
+    componentShouldUpdate : function(nextProps, nextState){
+        return (this.props.activePlayerId!=nextProps.activePlayerId || nextProps.msg.length > 0);
+    },
+    timeout : function (ms, fn) {
+        var timeout, promise;
+          promise = new Promise(function(resolve, reject) {
+            timeout = setTimeout(function() {
+              fn();
+            }, ms);
+          });
+          return {
+                   promise:promise, 
+                   cancel:function(){clearTimeout(timeout );} //return a canceller as well
+                 };
     },
     render : function () {
         var id = this.props.player.id;
         var name = this.props.player.name;
         var type = this.props.player.type;
-        var image = this.props.player.img;
+        var image = this.props.player.image;
         var position = this.props.position;
         var handsMade = this.props.player.handsMade;
         var handsToMake = this.props.player.handsToMake;
         var activePlayerId = this.props.activePlayerId;
-        var msg = this.props.player.msg;
+        // var msg = this.props.player.msg;
+        var msg = this.msg;
         var cx = React.addons.classSet;
         var profileClasses;
-        if(msg && msg != this.msg){
+        if(this.msg && this.msg.length > 0){
+            if(this.timeoutObj){
+                this.timeoutObj.cancel();    
+            }
             profileClasses = cx({
                 'players-profile' : true,
                 'anim-start' : true,
@@ -962,25 +1002,21 @@ var PlayerInfoComponent = React.createClass({displayName: "PlayerInfoComponent",
             });
             var self = this;
             var fn = function(){
-                self.msg = self.props.player.msg;
-                self.setState({'State' : 'Message'})
+                self.msg = '';
+                self.setState({msg : self.props.player.msg});
             }
-            delayService.asyncTask(3000, fn);
-        }else if(msg == this.msg || !msg || msg == ''){
-            var self = this;
-            var fn = function(){
+            this.timeoutObj = this.timeout(3000, fn);
+            // delayService.asyncTask(3000, fn);
+        }else{
                 profileClasses = cx({
                     'players-profile' : true,
                     'anim-start' : false,
                     'anim-end' : true
                 });
-                self.msg = '';
-                //self.setState({'State' : 'Message'})
-            }
-            delayService.asyncTask(3000, fn);
         }
         switch(position){
             case 0:
+                name = 'You';
                 var className = 'bottom-player';
                 break;
             case 1:
@@ -1006,13 +1042,14 @@ var PlayerInfoComponent = React.createClass({displayName: "PlayerInfoComponent",
                 background: '#fff url('+picurl+')',
                 backgroundPosition : backgroundPosition
             };
+            //var msg = this.state.msg;
             // var msg = this.msg;
             // console.log(this.msg);
         return (
             React.createElement("div", {className: className}, 
                 React.createElement("div", {className: profileClasses}, 
                     React.createElement("div", {className: playerClass, style: playerStyle}, 
-                        React.createElement("div", {className: "player-info-name"}, name), 
+                        React.createElement("div", {className: "name"}, name), 
                         React.createElement("div", {className: "statistics"}, handsMade, "/", handsToMake),
                         React.createElement("div", {className : "notif"},
                             React.createElement("div", {className : "bar"},
@@ -1130,10 +1167,13 @@ var CardComponent = React.createClass({displayName: "CardComponent",
     handleClick : function(card, player){
         if(!card.isPlayable){
             console.log('Bhand hai Kya');
-            preventDefault();
+            // preventDefault();
             return false;
         }
         this.props.cardClicked(card, player);
+    },
+    shouldComponentUpdate : function(){
+        return this.props.updateCards
     },
     render : function (){
         var style = this.state.style;

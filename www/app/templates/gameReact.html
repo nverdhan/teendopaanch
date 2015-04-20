@@ -6,7 +6,7 @@
             </div>
             <div class='sidebutton-bar'>
                 <md-button class="md-fab sidebutton exitgame" aria-label="Scores" style="position:fixed;" ng-click="exitGame()">
-                    <md-icon icon="assets/img/ic_close_24px.svg" style="width: 24px; height: 24px;">
+                    <md-icon icon="assets/img/ic_close_24px_teal.svg" style="width: 24px; height: 24px;">
                     </md-icon>
                 </md-button>
                 <md-button class="md-fab sidebutton showscore" aria-label="Scores" style="position:fixed;" ng-click="toggleScores()">
@@ -17,7 +17,7 @@
                     <md-icon icon="assets/img/ic_chat_24px.svg" style="width: 24px; height: 24px;">
                     </md-icon>
                 </md-button>
-                <div class="ball selfprofile sidebutton" ng-style="getProfilePic(0);" ng-class="{'player-active':arrPlayers[0].id == activePlayerId}"></div>
+                <!-- <div class="ball selfprofile sidebutton" ng-style="getProfilePic(0);" ng-class="{'player-active':arrPlayers[0].id == activePlayerId}"></div> -->
             </div>
     </div>
     <div ng-show="gameType == 'LIVE'">
@@ -25,7 +25,7 @@
         <md-toolbar class="chat-head">
                 <div class="md-toolbar-tools" flex layout="horizontal" layout-fill>
                     <h3 flex="90">Chat</h3>
-                    <md-button class="md-fab md-fab-top-right md-primary" aria-label="Scores" ng-click="closeRight()" hide-md>
+                    <md-button class="md-fab md-fab-top-right md-primary" aria-label="Scores" ng-click="closeRight()">
                         <md-icon icon="assets/img/ic_arrow_back_24px.svg" style="width: 24px; height: 24px;"></md-icon>
                     </md-button>
                 </div>
@@ -62,3 +62,15 @@
         <div>share room with your friends you want to join {{ gameId }}</div>
     </div>
 </div>
+<!--script type="text/javascript">
+    $(".md-sidenav-backdrop").on("click", function(e){
+        console.log('backdrop clicked');
+        setTimeout(function() {
+            if(!$(".md-sidenav-right").hasClass("md-closed")){
+                $(".md-sidenav-right").addClass("md-closed");
+                $(".md-sidenav-backdrop").remove();
+                console.log('backdrop removed manually');
+            }
+        }, 200);
+    });
+</script-->

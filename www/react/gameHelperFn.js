@@ -58,28 +58,80 @@ var DelayService = function (time, fn) {
     return _fact;
 }
 var delayService = new DelayService(null, null);
+var findMyBrowser = function(){
+    var browser = [{
+                    name: 'Opera',
+                    found: false
+                   },{
+                    name : 'Firefox',
+                    found: false
+                   },{
+                    name : 'Safari',
+                    found: false
+                   },{
+                    name : 'Chrome',
+                    found: false
+                   },{
+                    name : 'IE',
+                    found: false
+                   }];
+    browser[0].found = !!window.opera || navigator.userAgent.indexOf(' OPR/') >= 0;
+    // Opera 8.0+ (UA detection to detect Blink/v8-powered Opera)
+    browser[1].found = typeof InstallTrigger !== 'undefined';   // Firefox 1.0+
+    browser[2].found = Object.prototype.toString.call(window.HTMLElement).indexOf('Constructor') > 0;
+    // At least Safari 3+: "[object HTMLElementConstructor]"
+    browser[3].found = !!window.chrome && !browser[0].found;              // Chrome 1+
+    browser[4].found = /*@cc_on!@*/false || !!document.documentMode;   // At least IE6
+    for (var i = browser.length - 1; i >= 0; i--) {
+        if(browser[i].found){
+            return browser[i].name;
+        }
+    };
+    return false;
+}
 var scaleGameBody = function(){
+        if(findMyBrowser() != false){
+            console.log(findMyBrowser());
+        }else{
+            console.log('Browser not found');
+        }
         var win_w = window.innerWidth;
         var effh = window.innerHeight;
         var effw = win_w - 80;
-        if(effw/effh < gameCSSConstants.gameBody.x/gameCSSConstants.gameBody.y){
-            var scalefactor = effw/gameCSSConstants.gameBody.x;
-            var leftshift = gameCSSConstants.gameBody.x*(scalefactor-1)/2;
-            var topshift = gameCSSConstants.gameBody.y*(scalefactor-1)/2 + + (effh-gameCSSConstants.gameBody.y*scalefactor)/2;
-        }
-        if(effw/effh > gameCSSConstants.gameBody.x/gameCSSConstants.gameBody.y){
-            scalefactor = effh/gameCSSConstants.gameBody.y;
-            var leftshift = gameCSSConstants.gameBody.x*(scalefactor-1)/2 + (effw-gameCSSConstants.gameBody.x*scalefactor)/2;
-            var topshift = gameCSSConstants.gameBody.y*(scalefactor-1)/2;
-        }
-        return {
+            if(effw/effh < gameCSSConstants.gameBody.x/gameCSSConstants.gameBody.y){
+                var scalefactor = effw/gameCSSConstants.gameBody.x;
+                var leftshiftFirefox = gameCSSConstants.gameBody.x*(scalefactor-1)/2;
+                var topshiftFirefox = gameCSSConstants.gameBody.y*(scalefactor-1)/2 + + (effh-gameCSSConstants.gameBody.y*scalefactor)/2;
+            }
+            if(effw/effh > gameCSSConstants.gameBody.x/gameCSSConstants.gameBody.y){
+                scalefactor = effh/gameCSSConstants.gameBody.y;
+                var leftshiftFirefox = gameCSSConstants.gameBody.x*(scalefactor-1)/2 + (effw-gameCSSConstants.gameBody.x*scalefactor)/2;
+                var topshiftFirefox = gameCSSConstants.gameBody.y*(scalefactor-1)/2;
+                var leftshiftChrome = (effw - gameCSSConstants.gameBody.x*scalefactor)/2 + gameCSSConstants.gameBody.x*scalefactor/2;
+            }
+        console.log(scalefactor);
+        console.log(topshiftFirefox);
+        console.log(leftshiftFirefox);
+        if(findMyBrowser() == 'Firefox'){
+            return {
                 WebkitTransform : 'scale('+scalefactor+','+scalefactor+')',
                 msTransform : 'scale('+scalefactor+','+scalefactor+')',
                 transform : 'scale('+scalefactor+','+scalefactor+')',
                 MozTransform : 'scale('+scalefactor+','+scalefactor+')',
-                left : leftshift,
-                top: topshift
+                left : leftshiftFirefox,
+                top: topshiftFirefox
             }
+        }else{
+            var zoompercent = scalefactor*100;
+            console.log(zoompercent);
+            return {
+                zoom: zoompercent+'%',
+                margin: '0 auto',
+                left : 0,
+                top: 0
+            }
+        }
+        
     }
 var getTrumpStyle = function (trump, trumpSet,  index, state){
 	switch(trump){

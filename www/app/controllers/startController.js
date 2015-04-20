@@ -158,7 +158,7 @@ game325.controller('coverController', ['$rootScope', '$http', '$scope', '$state'
     if(Session.name && Session.type != 'local'){
           $cookieStore.put('showLoggedInOptions', true);
         }else{
-          $cookieStore.put('showLoggedInOptions', true);
+          $cookieStore.put('showLoggedInOptions', false);
         }
     $scope.showLoggedInOptions = $cookieStore.get('showLoggedInOptions');
     setTimeout(function(){

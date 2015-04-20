@@ -113,7 +113,8 @@ module.exports = function (app, server){
                                         io.sockets.connected[socket.id].emit('GAME', {'data' : gamex});
                                     });
                                 }else{
-                                    io.sockets.connected[gamex.players[i].id].emit('RECONNECTED', {'id' : player.id});
+                                    // io.sockets.connected[gamex.players[i].id].emit('RECONNECTED', {'id' : player.id});
+                                    io.sockets.connected[gamex.players[i].id].emit('GAME', {'data' : gamex});
                                 }
                             };
                         return false;
