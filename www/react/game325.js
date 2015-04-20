@@ -36,6 +36,8 @@ var Game = function(){
 	this.cardMoveFrom,
 	this.remainingCards,
 	this.cardMoveTo,
+	this.moveFrom,
+	this.moveTo,
 	this.returnCard
 }	
 Game.prototype.initDeck = function() {
@@ -120,30 +122,38 @@ Game.prototype.updateHandsToMake = function() {
     }
 }
 Game.prototype.withdrawCard = function(){
-	var activePlayerId = this.activePlayerId;
-	var otherPlayerId = this.otherPlayerId;
+	// var activePlayerId = this.activePlayerId;
+	// var otherPlayerId = this.otherPlayerId;
 	var cardIndex = this.cardIndex;
+	// console.log('withdrawCard called 1')
+	// console.log(this.cardMoveFrom + '-------->' + this.cardMoveTo);
+	// console.log(this);
 	for (var i = 0; i < this.players.length; i++) {
-		if(this.players[i].id == otherPlayerId){
+		if(this.players[i].id == this.cardMoveFrom){
 			this.players[i].cards[cardIndex].state = 'deck';
 			this.players[i].cards[cardIndex].animation = false;
 			var card = this.players[i].cards.splice(cardIndex, 1);
+			// console.log('Splice done');
 			this.cardPlayed = card[0];
-			this.cardMoveFrom = otherPlayerId;
-			card.moveFrom = '';
-			card.moveTo = '';
+			// this.cardMoveFrom = otherPlayerId;
+			delete this.cardPlayed.moveFrom;
+			delete this.cardPlayed.moveTo;
+			// this.otherPlayerId = this.cardMoveTo;
 		}
 	}
-	this.moveFrom = this.activePlayerId;
-	this.moveTo = this.otherPlayerId;
+	// this.moveFrom = this.activePlayerId;
+	// this.moveTo = this.otherPlayerId;
 	for (var i = this.players.length - 1; i >= 0; i--) {
-		if(this.players[i].id == activePlayerId){
+		if(this.players[i].id == this.cardMoveTo){
+			// console.log('Push done');
 			this.players[i].cards.push(this.cardPlayed);
-			this.cardMoveFrom = activePlayerId;
+			// this.activePlayerId = this.cardMoveFrom;
+			// this.cardMoveFrom = activePlayerId;
 		}
 	}
 }
 Game.prototype.moveWithdrawCard = function(){
+	// console.log('moveWithdrawCard Called 1');
 	var activePlayerId = this.activePlayerId;
 	var otherPlayerId = this.otherPlayerId;
 	var cardIndex = this.cardIndex;
@@ -151,37 +161,44 @@ Game.prototype.moveWithdrawCard = function(){
 		if(this.players[i].id == otherPlayerId){
 			this.cardPlayed = this.players[i].cards[cardIndex];
 			this.cardMoveFrom = otherPlayerId;
+			this.cardMoveTo = activePlayerId;
 			this.players[i].cards[cardIndex].state = 'withdrawn';
 			this.players[i].cards[cardIndex].animation = true;
 			this.players[i].cards[cardIndex].moveFrom = otherPlayerId;
 			this.players[i].cards[cardIndex].moveTo = activePlayerId;
 		}
 	}
+	// this.returnCard = false;
 }
 Game.prototype.returnCard = function(){
-	var activePlayerId = this.moveFrom;
-	var otherPlayerId = this.moveTo;
+	console.log('returnCard Called 1');
+	// var activePlayerId = this.moveFrom;
+	// var otherPlayerId = this.moveTo;
 	var cardIndex = this.cardIndex;
+	// console.log(this.cardMoveFrom + '-------->' + this.cardMoveTo);
 	for (var i = 0; i < this.players.length; i++) {
-		if(this.players[i].id == activePlayerId){
+		if(this.players[i].id == this.cardMoveTo){
 			this.players[i].cards[cardIndex].state = 'deck';
 			this.players[i].cards[cardIndex].animation = false;
 			var card = this.players[i].cards.splice(cardIndex, 1);
+			// console.log('Splice done');
 			this.cardPlayed = card[0];
-			this.cardMoveFrom = activePlayerId;
-			card.moveFrom = '';
-			card.moveTo = '';
+			// this.cardMoveFrom = activePlayerId;
+			delete this.cardPlayed.moveFrom;
+			delete this.cardPlayed.moveTo;
 		}
 	}
 	for (var i = 0; i < this.players.length; i ++){
-		if(this.players[i].id == otherPlayerId){
+		if(this.players[i].id == this.cardMoveFrom){
+			// console.log('Push done');
 			this.players[i].cards.push(this.cardPlayed);
-			this.cardMoveTo = otherPlayerId;
-			this.players[i].handsMade++;
+			// this.cardMoveTo = otherPlayerId;
+			// this.players[i].handsMadeInLR++;
 		}
 	}
 }
 Game.prototype.moveReturnCard = function(){
+	// console.log('moveReturnCard Called 1');
 	// var activePlayerId = this.moveFrom;
 	// var otherPlayerId = this.moveTo;
 	
@@ -196,7 +213,7 @@ Game.prototype.moveReturnCard = function(){
 			this.players[i].cards[cardIndex].animation = true;
 			this.players[i].cards[cardIndex].moveFrom = activePlayerId;
 			this.players[i].cards[cardIndex].moveTo = otherPlayerId;
-			this.players[i].handsMade--;
+			this.players[i].handsMadeInLR--;
 			this.cardPlayed = card;
 			this.cardWithdrawn = card;
 			this.moveFrom = activePlayerId;
@@ -205,7 +222,7 @@ Game.prototype.moveReturnCard = function(){
 	}
 	for (var i = 0; i < this.players.length; i ++){
 		if(this.players[i].id == otherPlayerId){
-			this.players[i].handsMade++;
+			this.players[i].handsMadeInLR++;
 		}
 	}
 }
@@ -232,36 +249,47 @@ Game.prototype.nextRound = function(){
 		// var z = this.gameTurn%3;
 		if(this.players[i].handsToMake == 2){
 			var score = new Score();
+			var lastScore = this.players[i].scores[this.players[i].scores.length - 1];
 			//score.handsToMake = this.players[i].handsToMake;
 			//score.handsMade = this.players[i].handsMade;
 			//this.players[i].scores.push(score);
 			this.players[i].handsToMakeInLR = 2;
 			this.players[i].handsToMake = 3;
+			this.players[i].handsMadeInLR = lastScore.handsMade;
 			score.handsToMake = this.players[i].handsToMake;
 			this.players[i].scores.push(score);
 		}else if(this.players[i].handsToMake == 3){
 			var score = new Score();
+			var lastScore = this.players[i].scores[this.players[i].scores.length - 1];
 			//score.handsToMake = this.players[i].handsToMake;
 			//score.handsMade = this.players[i].handsMade;
 			//this.players[i].scores.push(score);
 			this.players[i].handsToMakeInLR = 3;
 			this.activePlayerId = this.players[i].id;
 			this.players[i].handsToMake = 5;
+			this.players[i].handsMadeInLR = lastScore.handsMade;
 			score.handsToMake = this.players[i].handsToMake;
 			this.players[i].scores.push(score);	
 		}else if(this.players[i].handsToMake == 5){
 			var score = new Score();
+			var lastScore = this.players[i].scores[this.players[i].scores.length - 1];
 			//score.handsMade = this.players[i].handsMade;
 			this.players[i].handsToMakeInLR = 5;
 			this.players[i].handsToMake = 2;
+			this.players[i].handsMadeInLR = lastScore.handsMade;
 			score.handsToMake = this.players[i].handsToMake;
 			this.players[i].scores.push(score);
 		}
+		var totalHandsToMake = 0;
+		for (var k = this.players[i].scores.length - 1; k >= 0; k--) {
+			totalHandsToMake += this.players[i].scores[k].handsToMake;
+		};
+		this.players[i].totalHandsToMake = totalHandsToMake;
 	}
 	for (var i = this.players.length - 1; i >= 0; i--) {
 		// updateScoresInDB(this.players[i]);
 	};
-	
+	console.log(this.players);
 }
 Game.prototype.getTurnWinner = function() {
 	var self = this;
@@ -342,6 +370,13 @@ Game.prototype.nextTurn = function() {
     }
 };*/
 //check if withdraw cards is applicable for next round
+Game.prototype.assignActivePlayer = function(){
+	for (var i = this.players.length - 1; i >= 0; i--) {
+		if(this.players[i].handsToMake == 5){
+			this.activePlayerId = this.players[i].id;
+		}
+	};
+}
 Game.prototype.withdrawCards = function(){
 	var array = new Array();
 	var arrayId = new Array();
@@ -355,7 +390,7 @@ Game.prototype.withdrawCards = function(){
 	for (var i = 0; i < this.players.length; i++){
 		var j = new x();
 		j.id = this.players[i].id;
-		j.value = this.players[i].handsToMakeInLR - this.players[i].handsMade;
+		j.value = this.players[i].handsToMakeInLR - this.players[i].handsMadeInLR;
 		array.push(j);
 	}
 	array.sort(function (a, b){

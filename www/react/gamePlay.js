@@ -14,6 +14,11 @@ var Game325Component = React.createClass({displayName: "Game325Component",
         };
         this.playedCards = this.props.game.playedCards;
         this.props.scope.updateScores(this.players);
+        if(this.playerId == this.game.activePlayerId){
+            setTimeout(function() {
+                angular.element('.bottom-player-diabled').css('display', 'none');
+            }, 4000);
+        }
         this.next(this.props.game);
     },
     componentWillReceiveProps : function(nextProps){
@@ -23,7 +28,7 @@ var Game325Component = React.createClass({displayName: "Game325Component",
         this.game.lastPlayerId = nextProps.game.otherPlayerId;
         this.arrangePlayers(this.props.game);
         this.players = this.props.game.players;
-        this.props.game.returnCard = false;
+        // this.props.game.returnCard = false;
         this.playerIds = [];
         this.props.scope.updateScores(this.players);
         // console.log(this.props.game.turnSuit);
@@ -31,9 +36,9 @@ var Game325Component = React.createClass({displayName: "Game325Component",
             for (var i =  0; i < this.players.length; i++){
                 this.playerIds.push(this.players[i].id); 
             };
-            if(this.game.gameEvent == 'WITHDRAW'){
-                this.props.game.returnCard = true;
-            }
+            // if(this.game.gameEvent == 'WITHDRAW'){
+            //     this.props.game.returnCard = true;
+            // }
             this.next(nextProps.game);    
         }
     },
@@ -98,6 +103,7 @@ var Game325Component = React.createClass({displayName: "Game325Component",
         }
     },
     arrangeCards : function(){
+        console.log('cards arranged!');
         for (var i = this.props.game.players.length - 1; i >= 0; i--) {
             if(this.props.game.players[i].id == this.playerId){
                 this.props.game.players[i].cards = sortDeck(this.props.game.players[i].cards);
@@ -106,21 +112,28 @@ var Game325Component = React.createClass({displayName: "Game325Component",
     },
     next : function (data){
         var gameEvent = data.gameEvent;
-        // if(this.props.game.gameTurn%30 == 1){
-                    this.arrangeCards();
-        // }
+        // this.arrangeCards();
+        console.log(gameEvent);
+        console.log(this.props.game.activePlayerId + '===' + this.props.game.otherPlayerId);
         switch(gameEvent){
             case 'PLAY_CARD':
-                
                 if(this.props.game.returnCard){
                     this.returnCard();
+                    var self = this;
+                    setTimeout(function() {
+                        self.arrangeCards();
+                    }, 5000);
+                }else{
+                    this.arrangeCards();
                 }
                 break;
             case 'CARD_PLAYED':
+                this.arrangeCards();
                 this.playCard();
                 this.placeCardOnBoard();
                 break;
             case 'DECLARE_WINNER':
+                this.arrangeCards();
                 this.playCard();
                 this.placeCardOnBoard();
                 this.updateCards();
@@ -162,7 +175,7 @@ var Game325Component = React.createClass({displayName: "Game325Component",
     withdrawCard : function (){
         var self = this;
         var fn = function (){
-            console.log('withdrawn')
+            // console.log('withdrawn')
             Game.prototype.withdrawCard.call(self.props.game);
             self.setState({
                 gameState : 'withdrawMoved'
@@ -172,7 +185,7 @@ var Game325Component = React.createClass({displayName: "Game325Component",
     },
     returnCard : function() {
         var self = this;
-        console.log('returned')
+        // console.log('returned')
         var fn = function (){
             Game.prototype.returnCard.call(self.props.game);
             self.setState({
@@ -183,7 +196,6 @@ var Game325Component = React.createClass({displayName: "Game325Component",
     },
     placeCardOnBoard : function(){
         var self = this;
-        // console.log(this.props.game);
         var fn = function () {
             var playerIndex = self.getPlayerIndexFromId(self.props.game.otherPlayerId);
             self.playedCards[playerIndex].display = 'block';
@@ -211,6 +223,9 @@ var Game325Component = React.createClass({displayName: "Game325Component",
     },
     moveHand : function (){
         var self = this;
+        if(this.props.type == "BOTS"){
+            this.props.game.turnSuit = '';
+        }
         var fn = function (){
             var winnerId = self.props.game.winnerId;
             var winnerPos = self.getPlayerIndexFromId(winnerId);
@@ -314,14 +329,22 @@ var Game325Component = React.createClass({displayName: "Game325Component",
     },
     updateScores : function (){
         if(this.props.game.gameTurn%30 == 1 && (this.playerId == this.props.game.activePlayerId)){
-            this.props.game.allPlayedCards.splice(0,this.props.game.allPlayedCards.length);
+            // this.props.game.allPlayedCards.splice(0,this.props.game.allPlayedCards.length);
                     var data = {
                         gameEvent : 'NEXT_ROUND'
                     }
                     this.clickHandler(data);
         }else{
             if(this.type == 'BOTS'){
-               delayService.asyncTask(2000, this.checkBotPlay); 
+                if(this.props.game.gameTurn%30 == 1){
+                    this.props.game.allPlayedCards.splice(0,this.props.game.allPlayedCards.length);
+                    var data = {
+                        gameEvent : 'NEXT_ROUND'
+                    }
+                    this.clickHandler(data);
+                }else{
+                    delayService.asyncTask(2000, this.checkBotPlay);      
+                }
             }    
         }
         this.props.scope.updateScores(this.players);
@@ -337,6 +360,7 @@ var Game325Component = React.createClass({displayName: "Game325Component",
         }
     },
     playBot : function(){
+        // console.log(this.props.game.gameState);
         switch(this.props.game.gameState){
             case 'PLAY_CARD':
                 var e = this.props.game.activePlayerId;
@@ -415,32 +439,37 @@ var Game325Component = React.createClass({displayName: "Game325Component",
                             validMinSuit.push(suitCount[i]);
                         }
                     };
-                    minSuit = validMinSuit[validMinSuit.length - 1];
-                    for (var i = validMinSuit.length - 1; i >= 0; i--) {
-                        if(validMinSuit[i].count < minSuit.count){
-                            minSuit = validMinSuit[i];
+                    if(validMinSuit.length != 0){
+                        minSuit = validMinSuit[validMinSuit.length - 1];
+                        for (var i = validMinSuit.length - 1; i >= 0; i--) {
+                            if(validMinSuit[i].count < minSuit.count){
+                                minSuit = validMinSuit[i];
+                            }
+                        };
+                        // console.log(minSuit);
+                        var minSuitCards = Array();
+                        for (var i = deck.length - 1; i >= 0; i--) {
+                            if(deck[i].suit == minSuit.suit){
+                                minSuitCards.push(deck[i]);
+                            }
+                        };
+                        var card = minSuitCards[0];
+                        for (var i = 0; i <= minSuitCards.length - 1; i++) {
+                            if (minSuitCards[i].currentSuitOrder > card.currentSuitOrder){
+                                card = minSuitCards[i];
+                            }
+                        };
+                        if(card.currentSuitOrder > 2){
+                            cardToPlay = card;
+                            console.log('Just removing this suit from my deck 8)');
+                        }else{
+                            cardToPlay = this.getSmallestCard(deck);
+                            console.log('This was my smallest card, no options with me ;(');
                         }
-                    };
-                    // console.log(validMinSuit);
-                    var minSuitCards = Array();
-                    for (var i = deck.length - 1; i >= 0; i--) {
-                        if(deck[i].suit == minSuit.suit){
-                            minSuitCards.push(deck[i]);
-                        }
-                    };
-                    var card = minSuitCards[0];
-                    for (var i = 0; i <= minSuitCards.length - 1; i++) {
-                        if (minSuitCards[i].currentSuitOrder > card.currentSuitOrder){
-                            card = minSuitCards[i];
-                        }
-                    };
-                    if(card.currentSuitOrder > 2){
-                        cardToPlay = card;
-                        console.log('Just removing this suit from my deck 8)');
                     }else{
                         cardToPlay = this.getSmallestCard(deck);
                         console.log('This was my smallest card, no options with me ;(');
-                    }  
+                    }
                     if(cardToPlay != ''){
                         this.cardPlayed(cardToPlay);
                         break;    
@@ -565,7 +594,7 @@ var Game325Component = React.createClass({displayName: "Game325Component",
                                 minSuit = validMinSuit[i];
                             }
                         };
-                        console.log(validMinSuit);
+                        // console.log(validMinSuit);
                         var minSuitCards = Array();
                         for (var i = deck.length - 1; i >= 0; i--) {
                             if(deck[i].suit == minSuit.suit){
@@ -985,8 +1014,9 @@ var PlayerInfoComponent = React.createClass({displayName: "PlayerInfoComponent",
         var type = this.props.player.type;
         var image = this.props.player.image;
         var position = this.props.position;
-        var handsMade = this.props.player.handsMade;
-        var handsToMake = this.props.player.handsToMake;
+        var scores = this.props.player.scores[this.props.player.scores.length - 1];
+        var handsMade = scores.handsMade;
+        var handsToMake = scores.handsToMake;
         var activePlayerId = this.props.activePlayerId;
         // var msg = this.props.player.msg;
         var msg = this.msg;
@@ -1172,7 +1202,7 @@ var CardComponent = React.createClass({displayName: "CardComponent",
     handleClick : function(card, player, e){
         if(!card.isPlayable){
             console.log('Bhand hai Kya');
-            e.stopPropogation();
+            e.stopPropogation;
             return false;
         }else{
             this.props.cardClicked(card, player);
@@ -1282,8 +1312,8 @@ var CardComponent = React.createClass({displayName: "CardComponent",
             style.transform = 'translateX('+posX+'px) translateY('+posY+'px)';
         }
         
-        var frontClassName = 'card front';
-        var backClassName = 'card back';
+        var frontClassName = 'card frontrotated';
+        var backClassName = 'card frontrotated';
         if((position == 0 && this.state.mounted) || card.state == 'played' || (card.moveTo == 0 && card.state == 'withdrawn') || (card.moveTo == 0 && card.state == 'returned')){
             frontClassName = 'card frontRotated';
             backClassName = 'card backRotated';

@@ -15,7 +15,6 @@ game325.controller('gameReactController', ['$rootScope', '$http', '$scope', '$st
         $state.go('home');
     }
     $(window).resize(function() {
-          // $scope.$digest();
           $scope.reactRender();
     });
     $scope.closeScores = function (){
@@ -49,7 +48,7 @@ game325.controller('gameReactController', ['$rootScope', '$http', '$scope', '$st
     }
     $scope.sendEvent = function(data){
         if($scope.gameType == 'LIVE'){
-            console.log(data);
+            // console.log(data);
             socket.emit('GAME', {data : data});  
         }else{
             $scope.gameEvent(data);
@@ -119,6 +118,7 @@ game325.controller('gameReactController', ['$rootScope', '$http', '$scope', '$st
     $scope.gameEvent = function(data){
         var gameEvent = data.gameEvent;
         var gameData = $scope.game325;
+        gameData.returnCard = false;
         var fnCall;
         switch(gameEvent){
             case "START_GAME":
@@ -169,6 +169,7 @@ game325.controller('gameReactController', ['$rootScope', '$http', '$scope', '$st
                     var x = JSON.stringify(gameData);
                 }
                 else{
+                    Game.prototype.assignActivePlayer.call(gameData);
                     gameData.gameState  ='PLAY_CARD';
                     gameData.gameEvent = 'PLAY_CARD';
                 }
@@ -195,13 +196,17 @@ game325.controller('gameReactController', ['$rootScope', '$http', '$scope', '$st
             }
             $scope.game325 = gameData;
             if($scope.gameType == 'BOTS'){
-                 localStorage.setItem('gameData', JSON.stringify($scope.game325));
+                 // localStorage.setItem('gameData', JSON.stringify($scope.game325));
             }
             $scope.reactRender();
             if($scope.playerId == $scope.game325.activePlayerId){
-                $timeout(function (argument) {
+                var delay = 1000;
+                if($scope.game325.gameEvent == 'DECLARE_WINNER'){
+                    delay = 3600;
+                }
+                $timeout(function () {
                     angular.element('.bottom-player-diabled').css('display', 'none');
-                }, 1000);
+                }, delay);
             }
     }
     if($scope.gameType == 'LIVE'){
@@ -252,7 +257,7 @@ game325.controller('gameReactController', ['$rootScope', '$http', '$scope', '$st
             $state.go('home');
         })
         socket.on('msgRecieved', function (data){
-            console.log('msege');
+            // console.log('msege');
             if(data.player.user){
                 if(data.player.user.type == 'local'){
                     userPic = '/assets/img/avatars.png';
@@ -285,7 +290,7 @@ game325.controller('gameReactController', ['$rootScope', '$http', '$scope', '$st
                 if($scope.game325.players[i].id == data.player.id){
                     temp = i;
                     var fn = function(){
-                        console.log(temp);
+                        // console.log(temp);
                        $scope.game325.players[temp].msg = ''; 
                     }
                     delayService.asyncTask(3000, fn);
@@ -357,7 +362,7 @@ game325.controller('gameReactController', ['$rootScope', '$http', '$scope', '$st
         promiseClose = $timeout(fn, 200);
     };
     $scope.toggleRight = function() {
-        console.log('toggleRightcalled');
+        // console.log('toggleRightcalled');
         $mdSidenav('right').toggle();
         var fn = function(){
             if($(".md-sidenav-right").hasClass("md-closed")){
@@ -404,12 +409,12 @@ game325.directive('ngEnter', function() {
         };
     });
 game325.controller('scoreDialogController',['$scope', '$mdDialog', '$rootScope', function ($scope, $mdDialog, $rootScope){
-    console.log('score request');
+    // console.log('score request');
     $scope.closeDialog = function(){
             $mdDialog.hide();
         };
     $scope.arrPlayers = $rootScope.arrPlayers;
-    console.log($rootScope.arrPlayers);
+    // console.log($rootScope.arrPlayers);
 }]);
 /*game325.directive('gameBody', function (){
     return {

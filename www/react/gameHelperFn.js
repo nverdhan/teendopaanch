@@ -14,6 +14,8 @@ var Player = function(id){
      handsToMake : 0,
      handsMade : 0,
      handsToMakeInLR : 0,
+     handsMadeInLR : 0,
+     totalHandsToMake : 0,
      cardPlayed : {}
     }
 }
