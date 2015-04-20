@@ -13,6 +13,7 @@ var Game325Component = React.createClass({displayName: "Game325Component",
             this.playerIds.push(this.players[i].id); 
         };
         this.playedCards = this.props.game.playedCards;
+        this.props.scope.updateScores(this.players);
         this.next(this.props.game);
     },
     componentWillReceiveProps : function(nextProps){
@@ -1080,10 +1081,12 @@ var PlayedCardsComponent = React.createClass({displayName: "PlayedCardsComponent
                     case 1:
                         var posY = -(2*gameCSSConstants.cardSize.y + 40);
                         var posX = gameCSSConstants.gameWindow.x/3 - gameCSSConstants.cardSize.x/2;
+                        // var posX = 0;
                         break;
                     case 2:
                         var posY = -(2*gameCSSConstants.cardSize.y + 40);
                         var posX = 2*gameCSSConstants.gameWindow.x/3 - gameCSSConstants.cardSize.x/2;
+                        // var posX = gameCSSConstants.gameWindow.x - gameCSSConstants.cardSize.x;
                 }
             }else{
                 var fullDeckWidth = 9*(gameCSSConstants.cardLeftMargin) + gameCSSConstants.cardSize.x;
@@ -1094,11 +1097,13 @@ var PlayedCardsComponent = React.createClass({displayName: "PlayedCardsComponent
                         break;
                     case 1:
                         var posY = -(gameCSSConstants.gameWindow.y - gameCSSConstants.cardSize.y - 60 - 2*gameCSSConstants.gameWindow.padding);
-                        var posX = 0.5*(fullDeckWidth - gameCSSConstants.cardSize.x);
+                        // var posX = 0.5*(fullDeckWidth - gameCSSConstants.cardSize.x);
+                        var posX = 0;
                         break;
                     case 2:
                         var posY = -(gameCSSConstants.gameWindow.y - gameCSSConstants.cardSize.y - 60 - 2*gameCSSConstants.gameWindow.padding);
-                        var posX = gameCSSConstants.gameWindow.x - 0.5*(fullDeckWidth - gameCSSConstants.cardSize.x);
+                        // var posX = gameCSSConstants.gameWindow.x - 0.5*(fullDeckWidth - gameCSSConstants.cardSize.x);
+                        var posX = gameCSSConstants.gameWindow.x - gameCSSConstants.cardSize.x;
                         break;
                 }
             }
@@ -1164,13 +1169,16 @@ var CardComponent = React.createClass({displayName: "CardComponent",
     componentWillLeave : function(){
         this.state.style.transform = 'translateX(0px) translateY(0px)';
     },
-    handleClick : function(card, player){
+    handleClick : function(card, player, e){
         if(!card.isPlayable){
             console.log('Bhand hai Kya');
-            // preventDefault();
+            e.stopPropogation();
             return false;
+        }else{
+            this.props.cardClicked(card, player);
+            angular.element('.bottom-player-diabled').css('display', 'block');
         }
-        this.props.cardClicked(card, player);
+        
     },
     shouldComponentUpdate : function(){
         return this.props.updateCards
@@ -1184,24 +1192,27 @@ var CardComponent = React.createClass({displayName: "CardComponent",
         var card = this.props.card;
         var noOfCards = this.props.noOfCards;
         var fullDeckWidth = 9*(gameCSSConstants.cardLeftMargin) + gameCSSConstants.cardSize.x;
-
+        var deckWidth = noOfCards*(gameCSSConstants.cardLeftMargin) + gameCSSConstants.cardSize.x;
         if(this.state.mounted){
             if(!card.state || card.state == 'deck'){
                 switch(position){
                 case 0:
                     var posY = 0;
                     var posX = 0.5*(gameCSSConstants.gameWindow.x - (noOfCards - 1)*(gameCSSConstants.cardLeftMargin) - gameCSSConstants.cardSize.x);
-                        posX+= (index-1)*(gameCSSConstants.cardLeftMargin);
+                    // var posX = 0;
+                        posX+= (index)*(gameCSSConstants.cardLeftMargin);
                     break;
                 case 1:
                     var posY = -(gameCSSConstants.gameWindow.y - gameCSSConstants.cardSize.y - 60 - 2*gameCSSConstants.gameWindow.padding);
-                    var posX = 0.5*(fullDeckWidth -  (noOfCards - 1)*(gameCSSConstants.cardLeftMargin) - gameCSSConstants.cardSize.x);
-                        posX+= (index-1)*(gameCSSConstants.cardLeftMargin);
+                    // var posX = 0.5*(fullDeckWidth -  (noOfCards - 1)*(gameCSSConstants.cardLeftMargin) - gameCSSConstants.cardSize.x);
+                    var posX = 0;
+                        posX+= (index)*(gameCSSConstants.cardLeftMargin);
                     break;
                 case 2:
                     var posY = -(gameCSSConstants.gameWindow.y - gameCSSConstants.cardSize.y - 60 - 2*gameCSSConstants.gameWindow.padding);
-                    var posX = gameCSSConstants.gameWindow.x -0.5*(fullDeckWidth +  (noOfCards - 1)*(gameCSSConstants.cardLeftMargin) + gameCSSConstants.cardSize.x);
-                        posX+= (index-1)*(gameCSSConstants.cardLeftMargin);
+                    // var posX = gameCSSConstants.gameWindow.x -0.5*(fullDeckWidth +  (noOfCards - 1)*(gameCSSConstants.cardLeftMargin) + gameCSSConstants.cardSize.x);
+                    var posX = gameCSSConstants.gameWindow.x - deckWidth;
+                        posX+= (index+1)*(gameCSSConstants.cardLeftMargin);
                 }   
             }else if(card.state == 'played'){
                 switch(position){
@@ -1271,8 +1282,8 @@ var CardComponent = React.createClass({displayName: "CardComponent",
             style.transform = 'translateX('+posX+'px) translateY('+posY+'px)';
         }
         
-        var frontClassName = 'card frontrotated';
-        var backClassName = 'card frontrotated';
+        var frontClassName = 'card front';
+        var backClassName = 'card back';
         if((position == 0 && this.state.mounted) || card.state == 'played' || (card.moveTo == 0 && card.state == 'withdrawn') || (card.moveTo == 0 && card.state == 'returned')){
             frontClassName = 'card frontRotated';
             backClassName = 'card backRotated';
