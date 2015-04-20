@@ -36,7 +36,10 @@ var game325 = function(){
 	this.cardWithdrawn,
 	this.cardReturned,
 	this.cardMoveFrom,
-	this.cardMoveTo;
+	this.cardMoveTo,
+	this.cardMoveFrom,
+	this.cardMoveTo,
+	this.returnCard;
 }	
 game325.prototype.initDeck = function() {
 	var deck = new Deck();
@@ -128,6 +131,7 @@ game325.prototype.moveWithdrawCard = function(){
 		if(this.players[i].id == otherPlayerId){
 			this.cardPlayed = this.players[i].cards[cardIndex];
 			this.cardMoveFrom = otherPlayerId;
+			this.cardMoveTo = activePlayerId;
 			this.players[i].cards[cardIndex].state = 'withdrawn';
 			this.players[i].cards[cardIndex].animation = true;
 			this.players[i].cards[cardIndex].moveFrom = otherPlayerId;
@@ -136,46 +140,50 @@ game325.prototype.moveWithdrawCard = function(){
 	}
 }
 game325.prototype.withdrawCard = function(){
-	var activePlayerId = this.activePlayerId;
-	var otherPlayerId = this.otherPlayerId;
+	// var activePlayerId = this.activePlayerId;
+	// var otherPlayerId = this.otherPlayerId;
 	var cardIndex = this.cardIndex;
 	for (var i = 0; i < this.players.length; i++) {
-		if(this.players[i].id == otherPlayerId){
+		if(this.players[i].id == this.cardMoveFrom){
 			this.players[i].cards[cardIndex].state = 'deck';
 			this.players[i].cards[cardIndex].animation = false;
 			var card = this.players[i].cards.splice(cardIndex, 1);
 			this.cardPlayed = card[0];
 			this.cardMoveFrom = otherPlayerId;
-			card.moveFrom = '';
-			card.moveTo = '';
+			// card.moveFrom = '';
+			// card.moveTo = '';
+			delete this.cardPlayed.moveFrom;
+			delete this.cardPlayed.moveTo;
 		}
 	}
 	for (var i = this.players.length - 1; i >= 0; i--) {
-		if(this.players[i].id == activePlayerId){
+		if(this.players[i].id == this.cardMoveTo){
 			this.players[i].cards.push(this.cardPlayed);
-			this.cardMoveFrom = activePlayerId;
+			// this.cardMoveFrom = activePlayerId;
 		}
 	}
 }
 game325.prototype.returnCard = function(){
-	var activePlayerId = this.moveFrom;
-	var otherPlayerId = this.moveTo;
+	// var activePlayerId = this.moveFrom;
+	// var otherPlayerId = this.moveTo;
 	var cardIndex = this.cardIndex;
 	for (var i = 0; i < this.players.length; i++) {
-		if(this.players[i].id == activePlayerId){
+		if(this.players[i].id == this.cardMoveTo){
 			this.players[i].cards[cardIndex].state = 'deck';
 			this.players[i].cards[cardIndex].animation = false;
 			var card = this.players[i].cards.splice(cardIndex, 1);
 			this.cardPlayed = card[0];
-			this.cardMoveFrom = activePlayerId;
-			card.moveFrom = '';
-			card.moveTo = '';
+			// this.cardMoveFrom = activePlayerId;
+			// card.moveFrom = '';
+			// card.moveTo = '';
+			delete this.cardPlayed.moveFrom;
+			delete this.cardPlayed.moveTo;
 		}
 	}
 	for (var i = 0; i < this.players.length; i ++){
-		if(this.players[i].id == otherPlayerId){
+		if(this.players[i].id == this.cardMoveFrom){
 			this.players[i].cards.push(this.cardPlayed);
-			this.cardMoveTo = otherPlayerId;
+			// this.cardMoveTo = otherPlayerId;
 			//this.players[i].handsMade++;
 		}
 	}
@@ -187,11 +195,12 @@ game325.prototype.moveReturnCard = function(){
 	for (var i = 0; i < this.players.length; i ++) {
 		if(this.players[i].id == activePlayerId){
 			var card = this.players[i].cards[cardIndex];
+			this.returnCard = true;
 			this.players[i].cards[cardIndex].state = 'returned';
 			this.players[i].cards[cardIndex].animation = true;
 			this.players[i].cards[cardIndex].moveFrom = activePlayerId;
 			this.players[i].cards[cardIndex].moveTo = otherPlayerId;
-			this.players[i].handsMade--;
+			this.players[i].handsMadeInLR--;
 			this.cardPlayed = card;
 			this.cardWithdrawn = card;
 			this.moveFrom = activePlayerId;
@@ -200,7 +209,7 @@ game325.prototype.moveReturnCard = function(){
 	}
 	for (var i = 0; i < this.players.length; i ++){
 		if(this.players[i].id == otherPlayerId){
-			this.players[i].handsMade++;
+			this.players[i].handsMadeInLR++;
 		}
 	}
 }
@@ -257,31 +266,42 @@ game325.prototype.nextRound = function(){
 		// var z = this.gameTurn%3;
 		if(this.players[i].handsToMake == 2){
 			var score = new Score();
+			var lastScore = this.players[i].scores[this.players[i].scores.length - 1];
 			//score.handsToMake = this.players[i].handsToMake;
 			//score.handsMade = this.players[i].handsMade;
 			//this.players[i].scores.push(score);
 			this.players[i].handsToMakeInLR = 2;
 			this.players[i].handsToMake = 3;
+			this.players[i].handsMadeInLR = lastScore.handsMade;
 			score.handsToMake = this.players[i].handsToMake;
 			this.players[i].scores.push(score);
 		}else if(this.players[i].handsToMake == 3){
 			var score = new Score();
+			var lastScore = this.players[i].scores[this.players[i].scores.length - 1];
 			//score.handsToMake = this.players[i].handsToMake;
 			//score.handsMade = this.players[i].handsMade;
 			//this.players[i].scores.push(score);
 			this.players[i].handsToMakeInLR = 3;
 			this.activePlayerId = this.players[i].id;
 			this.players[i].handsToMake = 5;
+			this.players[i].handsMadeInLR = lastScore.handsMade;
 			score.handsToMake = this.players[i].handsToMake;
 			this.players[i].scores.push(score);	
 		}else if(this.players[i].handsToMake == 5){
 			var score = new Score();
+			var lastScore = this.players[i].scores[this.players[i].scores.length - 1];
 			//score.handsMade = this.players[i].handsMade;
 			this.players[i].handsToMakeInLR = 5;
 			this.players[i].handsToMake = 2;
+			this.players[i].handsMadeInLR = lastScore.handsMade;
 			score.handsToMake = this.players[i].handsToMake;
 			this.players[i].scores.push(score);
 		}
+		var totalHandsToMake = 0;
+		for (var k = this.players[i].scores.length - 1; k >= 0; k--) {
+			totalHandsToMake += this.players[i].scores[k].handsToMake;
+		};
+		this.players[i].totalHandsToMake = totalHandsToMake;
 	}
 	for (var i = this.players.length - 1; i >= 0; i--) {
 		// updateScoresInDB(this.players[i]);
@@ -330,40 +350,40 @@ game325.prototype.nextTurn = function() {
 	this.otherPlayerId = this.activePlayerId;
 	this.activePlayerId = this.players[n].id;
 }
-game325.prototype.getBiggestCard = function(card1, card2) {
-	if(card1 == null)
-		return card2;
-	var turnSuit = this.turnSuit;
-	if(card1.suit == this.trump){
-        if(card2.suit == this.trump){
-            if(card1.rank > card2.rank){
-                return card1;
-            }else{
-                return card2;
-            }
-        }else{
-            return card1;
-        }
-    }else if(card2.suit == this.trump){
-        return card2;
-    }else if(card1.suit == turnSuit && card2.suit == turnSuit){
-        if(card1.rank > card2.rank){
-            return card1;
-        }else{
-            return card2;
-        }
-    }else if(card1.suit == turnSuit && card2 != turnSuit){
-        return card1;
-    }else if(card1.suit != turnSuit && card2 == turnSuit){
-        return card2;
-    }else{
-        if(card1.rank > card2.rank){
-            return card1;
-        }else{
-            return card2;
-        }
-    }
-};
+// game325.prototype.getBiggestCard = function(card1, card2) {
+// 	if(card1 == null)
+// 		return card2;
+// 	var turnSuit = this.turnSuit;
+// 	if(card1.suit == this.trump){
+//         if(card2.suit == this.trump){
+//             if(card1.rank > card2.rank){
+//                 return card1;
+//             }else{
+//                 return card2;
+//             }
+//         }else{
+//             return card1;
+//         }
+//     }else if(card2.suit == this.trump){
+//         return card2;
+//     }else if(card1.suit == turnSuit && card2.suit == turnSuit){
+//         if(card1.rank > card2.rank){
+//             return card1;
+//         }else{
+//             return card2;
+//         }
+//     }else if(card1.suit == turnSuit && card2 != turnSuit){
+//         return card1;
+//     }else if(card1.suit != turnSuit && card2 == turnSuit){
+//         return card2;
+//     }else{
+//         if(card1.rank > card2.rank){
+//             return card1;
+//         }else{
+//             return card2;
+//         }
+//     }
+// };
 //check if withdraw cards is applicable for next round
 game325.prototype.withdrawCards = function(){
 	var array = new Array();
@@ -378,7 +398,7 @@ game325.prototype.withdrawCards = function(){
 	for (var i = 0; i < this.players.length; i++){
 		var j = new x();
 		j.id = this.players[i].id;
-		j.value = this.players[i].handsToMakeInLR - this.players[i].handsMade;
+		j.value = this.players[i].handsToMakeInLR - this.players[i].handsMadeInLR;
 		array.push(j);
 	}
 	array.sort(function (a, b){
@@ -444,9 +464,9 @@ function getBiggestCard (card1, card2, turnSuit, trump) {
         }else{
             return card2;
         }
-    }else if(card1.suit == turnSuit && card2 != turnSuit){
+    }else if(card1.suit == turnSuit && card2.suit != turnSuit){
         return card1;
-    }else if(card1.suit != turnSuit && card2 == turnSuit){
+    }else if(card1.suit != turnSuit && card2.suit == turnSuit){
         return card2;
     }else{
         if(card1.rank > card2.rank){

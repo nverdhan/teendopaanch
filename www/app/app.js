@@ -263,7 +263,7 @@ game325.directive('showScores', ['$compile', function($compile){
           '<div class="md-tile-content">'+
             '<div layout="horizontal">'+
             '<h3>'+content.name+'</h3>'+
-            '<h4 class="total-score">Total 3 out of 7 hands made</h4>'+
+            '<h4 class="total-score">Total '+content.handsMade+' out of '+content.totalHandsToMake+' hands made</h4>'+
             '</div>'+
             '<div flex layout="horizontal" class="progress-container" ng-repeat = "game in content.scores"'+
                 'ng-class=\'{"red-theme":game.handsMade<game.handsToMake,"blue-theme":game.handsMade==game.handsToMake,"green-theme":game.handsMade>game.handsToMake}\'>'
