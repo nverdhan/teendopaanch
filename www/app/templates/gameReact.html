@@ -2,10 +2,11 @@
 <div class="push-wrap" id="homepage" ng-show="ready">
     <div ng-show="ready" class="bcktrans" flex layout-fill>
             <div ng-show="ready">
-            	<div id="gameRender" game-body game="game325" data="data" playerId="playerId" type="gameType"></div>	
+            	<div id="gameRender" game-body game="game325" data="data" playerId="playerId" type="gameType"></div>
+                <div class="bottom-player-diabled" style="position:absolute;bottom:0;width:100%;height:30%;"></div>
             </div>
             <div class='sidebutton-bar'>
-                <md-button class="md-fab sidebutton exitgame" aria-label="Scores" style="position:fixed;" ng-click="exitGame()">
+                <md-button class="md-fab sidebutton exitgame" aria-label="Exit" style="position:fixed;" ng-click="exitGame()">
                     <md-icon icon="assets/img/ic_close_24px_teal.svg" style="width: 24px; height: 24px;">
                     </md-icon>
                 </md-button>
@@ -13,7 +14,7 @@
                     <md-icon icon="assets/img/scoreicon.svg" style="width: 24px; height: 24px;">
                     </md-icon>
                 </md-button>
-                <md-button class="md-fab sidebutton chat" aria-label="Scores" style="position:fixed;" ng-click="toggleRight()">
+                <md-button ng-if="gameType == 'LIVE'" class="md-fab sidebutton chat" aria-label="Chat" style="position:fixed;" ng-click="toggleRight()">
                     <md-icon icon="assets/img/ic_chat_24px.svg" style="width: 24px; height: 24px;">
                     </md-icon>
                 </md-button>

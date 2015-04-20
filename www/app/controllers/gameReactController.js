@@ -198,6 +198,11 @@ game325.controller('gameReactController', ['$rootScope', '$http', '$scope', '$st
                  localStorage.setItem('gameData', JSON.stringify($scope.game325));
             }
             $scope.reactRender();
+            if($scope.playerId == $scope.game325.activePlayerId){
+                $timeout(function (argument) {
+                    angular.element('.bottom-player-diabled').css('display', 'none');
+                }, 1000);
+            }
     }
     if($scope.gameType == 'LIVE'){
         //Register Events Only When Game Mode Is Live Type
