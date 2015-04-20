@@ -12,4 +12,4 @@ var scoreScheme = mongoose.Schema({
 	}
 });
 
-module.exports = mongoose.model('Scores', scoreScheme);
+module.exports = mongoose.model('DBScore', scoreScheme);

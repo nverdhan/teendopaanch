@@ -47,6 +47,7 @@ game325.controller('gameReactController', ['$rootScope', '$http', '$scope', '$st
         }
     }
     $scope.sendEvent = function(data){
+        console.log($scope.gameType);
         if($scope.gameType == 'LIVE'){
             // console.log(data);
             socket.emit('GAME', {data : data});  

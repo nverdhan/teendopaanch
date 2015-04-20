@@ -333,6 +333,7 @@ var Game325Component = React.createClass({displayName: "Game325Component",
                         gameEvent : 'NEXT_ROUND'
                     }
                     this.clickHandler(data);
+                    console.log('NEXT');
         }else{
             if(this.type == 'BOTS'){
                 if(this.props.game.gameTurn%30 == 1){

@@ -220,7 +220,6 @@ module.exports = function (app, server){
                         default:
                             null
                         }
-                        console.log(gamex);
                         io.sockets.in(roomId).emit('GAME', {'data' : gamex});
                         if(fnCall == 'PLAY_CARD'){
                             Game.prototype.playCard.call(gamex);

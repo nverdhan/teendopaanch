@@ -1,5 +1,5 @@
 var mongoose = require('mongoose');
-var scores = require('../models/scores');
+var DBScore = require('../models/scores');
 var Deck = require('./cards325');
 var Score = function(){
 	return {
@@ -149,7 +149,7 @@ game325.prototype.withdrawCard = function(){
 			this.players[i].cards[cardIndex].animation = false;
 			var card = this.players[i].cards.splice(cardIndex, 1);
 			this.cardPlayed = card[0];
-			this.cardMoveFrom = otherPlayerId;
+			// this.cardMoveFrom = otherPlayerId;
 			// card.moveFrom = '';
 			// card.moveTo = '';
 			delete this.cardPlayed.moveFrom;
@@ -477,30 +477,32 @@ function getBiggestCard (card1, card2, turnSuit, trump) {
     }
 }
 function updateScoresInDB(player){
-	if(player.type != 'local'){
-		scores.findOne({'userId': player.userId}, function (err, scores){
+	// if(player.type != 'local'){
+	if(player){
+		DBScore.findOne({'userId': player.userId}, function (err, score){
 			if(err)
 				throw err;
-			if(scores){
+			if(score){
 				var n = player.handsToMake - player.handsMade;
 				if (n >= 0) {
-					scores.game325.noOfGamesWon = scores.gameWon+1;
+					score.game325.noOfGamesWon = score.gameWon+1;
 				}
-				scores.game325.noOfGamesPlayed = scores.noOfGamesPlayed+1;
-				scores.game325.points = scores.game325.points+n;
+				score.game325.noOfGamesPlayed = score.noOfGamesPlayed+1;
+				score.game325.points = score.game325.points+n;
 			}else{
-				var score = new scores();
+				var score = new DBScore();
 				score.id = player.id;
 				score.type = player.type;
 				var n = player.handsToMake - player.handsMade;
-				scores.game325.noOfGamesWon = 0;
+				score.game325.noOfGamesWon = 0;
 				if (n >= 0) {
-					scores.game325.noOfGamesWon = 1;
+					score.game325.noOfGamesWon = 1;
 				}
-				scores.game325.noOfGamesPlayed = 1;
-				scores.game325.points = n;
+				score.game325.noOfGamesPlayed = 1;
+				score.game325.points = n;
 				
 			}
+			console.log(score);
 			score.save(function (err){
 				if(err)
 					throw err;
