@@ -142,6 +142,8 @@ module.exports = function (app, server){
                     var gamex = JSON.parse(gameData);
                     var gameEvent = data.data.gameEvent;
                     var fnCall;
+                    console.log(gameEvent);
+                    gamex.returnCard = false;
                     switch(gameEvent){
                         case "START_GAME":
                             fnCall = 'PLAY_CARD';
@@ -184,6 +186,7 @@ module.exports = function (app, server){
                             fnCall = 'RETURN_CARD';
                             gamex.card = data.data.card;
                             //Game.prototype.returnCard.call(gamex);
+                            gamex.returnCard = true;
                             Game.prototype.moveReturnCard.call(gamex);
                             var y = Game.prototype.withdrawCards.call(gamex);
                                 if(y){
@@ -217,6 +220,7 @@ module.exports = function (app, server){
                         default:
                             null
                         }
+                        console.log(gamex);
                         io.sockets.in(roomId).emit('GAME', {'data' : gamex});
                         if(fnCall == 'PLAY_CARD'){
                             Game.prototype.playCard.call(gamex);

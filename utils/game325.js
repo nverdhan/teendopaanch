@@ -304,7 +304,7 @@ game325.prototype.nextRound = function(){
 		this.players[i].totalHandsToMake = totalHandsToMake;
 	}
 	for (var i = this.players.length - 1; i >= 0; i--) {
-		// updateScoresInDB(this.players[i]);
+		updateScoresInDB(this.players[i]);
 	};
 	
 }
