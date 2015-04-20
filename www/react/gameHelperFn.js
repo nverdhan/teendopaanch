@@ -3,7 +3,7 @@ var Player = function(id){
     return {
      id : id,
      name : '',
-     img : '',
+     image : '',
      type : '',
      cards : [],
      scores : [{

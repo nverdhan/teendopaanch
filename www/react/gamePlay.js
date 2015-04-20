@@ -182,7 +182,7 @@ var Game325Component = React.createClass({displayName: "Game325Component",
     },
     placeCardOnBoard : function(){
         var self = this;
-        console.log(this.props.game);
+        // console.log(this.props.game);
         var fn = function () {
             var playerIndex = self.getPlayerIndexFromId(self.props.game.otherPlayerId);
             self.playedCards[playerIndex].display = 'block';
@@ -1036,7 +1036,7 @@ var PlayerInfoComponent = React.createClass({displayName: "PlayerInfoComponent",
             var backgroundPosition = index*45+'px 0px';
         }else{
             var picurl = image;
-            var backgroundPosition = '50% 50%';
+            var backgroundundPosition = '50% 50%';
         }
         var playerStyle = {
                 background: '#fff url('+picurl+')',
@@ -1271,8 +1271,8 @@ var CardComponent = React.createClass({displayName: "CardComponent",
             style.transform = 'translateX('+posX+'px) translateY('+posY+'px)';
         }
         
-        var frontClassName = 'card frontrotated';
-        var backClassName = 'card frontrotated';
+        var frontClassName = 'card fron';
+        var backClassName = 'card back';
         if((position == 0 && this.state.mounted) || card.state == 'played' || (card.moveTo == 0 && card.state == 'withdrawn') || (card.moveTo == 0 && card.state == 'returned')){
             frontClassName = 'card frontRotated';
             backClassName = 'card backRotated';

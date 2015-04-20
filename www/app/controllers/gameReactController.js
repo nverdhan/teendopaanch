@@ -63,17 +63,16 @@ game325.controller('gameReactController', ['$rootScope', '$http', '$scope', '$st
             if(i == 0){
                 player.type = 'you'
                 player.name = 'You';
-                player.img = Session.image;
+                player.image = Session.image;
             }else{
                 player.type = 'bot';
                 player.name = gameVars.botsName[i];
-                player.img = i;
+                player.image = i;
             }
             $scope.players.push(player);
         }
     }
     $scope.updateScores = function (players){
-        console.log('update scrs cakkde');
         $rootScope.arrPlayers = players;
     }
     $scope.showScores = false;
