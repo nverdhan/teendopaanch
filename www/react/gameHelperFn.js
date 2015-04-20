@@ -90,11 +90,6 @@ var findMyBrowser = function(){
     return false;
 }
 var scaleGameBody = function(){
-        if(findMyBrowser() != false){
-            console.log(findMyBrowser());
-        }else{
-            console.log('Browser not found');
-        }
         var win_w = window.innerWidth;
         var effh = window.innerHeight;
         var effw = win_w - 80;
@@ -109,9 +104,6 @@ var scaleGameBody = function(){
                 var topshiftFirefox = gameCSSConstants.gameBody.y*(scalefactor-1)/2;
                 var leftshiftChrome = (effw - gameCSSConstants.gameBody.x*scalefactor)/2 + gameCSSConstants.gameBody.x*scalefactor/2;
             }
-        console.log(scalefactor);
-        console.log(topshiftFirefox);
-        console.log(leftshiftFirefox);
         if(findMyBrowser() == 'Firefox'){
             return {
                 WebkitTransform : 'scale('+scalefactor+','+scalefactor+')',
@@ -123,7 +115,6 @@ var scaleGameBody = function(){
             }
         }else{
             var zoompercent = scalefactor*100;
-            console.log(zoompercent);
             return {
                 zoom: zoompercent+'%',
                 margin: '0 auto',

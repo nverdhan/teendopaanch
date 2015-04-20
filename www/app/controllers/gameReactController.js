@@ -226,7 +226,7 @@ game325.controller('gameReactController', ['$rootScope', '$http', '$scope', '$st
             };
         });
         socket.on('GAME', function (data){
-            console.log('here');
+            // console.log('here');
             $scope.game325 = data.data;
             // $rootScope.arrPlayers = $scope
             $scope.reactRender();
