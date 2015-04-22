@@ -142,7 +142,6 @@ module.exports = function(app, passport) {
 		game.owner = req.user.id;
 		res.render('start');
 	});
-	
     // app.get('/game/:id', function(req, res){
 	// 	var id = res.query('id');
 	// 	res.render('start')
@@ -155,14 +154,22 @@ module.exports = function(app, passport) {
 	});
     
     app.post('/api/auth', function(req, res){
-        // console.log(customSession.get('user'));
-        console.log(req.user);
         if (req.user) {
-            if(req.user.twitter){
-                res.json({'user' : req.user.twitter});
-            }    
-        }else if(req.user.facebook){
-                res.json({'user' : req.user.facebook});
+            if(req.user.facebook){
+                var user = req.user.facebook;
+                user.type = 'fb';
+            }
+            else if(req.user.twitter){
+                var user = req.user.twitter;
+                user.type = 'twitter';
+            }else if(req.user.google){
+                var user = req.user.google;
+                user.type = 'google';
+            }else if(req.user.google){
+                var user = req.user.local;
+                user.type = 'local';
+            }
+            res.json({'user' : user });
         }else {
             res.json({'error' : 401})
         }

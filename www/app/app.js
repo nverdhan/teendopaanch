@@ -71,13 +71,14 @@ game325.controller('gameCtrl', ['$rootScope', '$scope', '$http', '$state', 'Auth
             var user = {
                 name : res.data.user.name,
                 image : res.data.user.img,
-                type : 'fb'
+                type : res.data.user.type
             }
             Session.create(user.name, user.image, user.type);
-            console.log(Session);
+            // console.log(Session);
             var id = JSON.stringify(user);
             $cookieStore.put('userId',id);
-            // $scope.currentUser = res.user;
+            // $scope.OverlayVisible = false;
+            $scope.currentUser = res.user;
             // Session.create(res.status, res.userId)
         }else if(res.status == 'error'){
             $scope.currentUser = null
@@ -299,14 +300,15 @@ game325.directive('profileInfo', ['$compile', function ($compile){
   var x = function(content){
     var content = content.content;
     // console.log(content);
-    if(content.type == 'local'){
-        content.backgroundPosition = 45*content.image+'px 0px';
-        content.image = '/assets/img/avatars.png';
-    }else if(content.type == 'fb'){
-        content.image = content.image;
-        content.backgroundPosition = '50% 50%';
-        // $rootScope.$broadcast(AUTH_EVENTS.loginSuccess);
-    }
+    // if(content.type == 'local'){
+    //     content.backgroundPosition = 45*content.image+'px 0px';
+    //     content.image = '/assets/img/avatars.png';
+    // }else if(content.type == 'fb'){
+    //     content.image = content.image;
+    //     content.backgroundPosition = '50% 50%';
+    //     // $rootScope.$broadcast(AUTH_EVENTS.loginSuccess);
+    // }
+    console.log(content);
     var y = '<div class="ball center" style="background-image:url('+content.image+'); background-position : '+ content.backgroundPosition+'; margin: 0 auto;"></div>'+
           '<h4>'+content.name+'</h4>';
       return y;
@@ -330,14 +332,15 @@ game325.directive('profileInfoHorz', ['$compile', function ($compile){
   var x = function(content){
     var content = content.content;
     // console.log(content);
-    if(content.type == 'local'){
-        content.backgroundPosition = 45*content.image+'px 0px';
-        content.image = '/assets/img/avatars.png';
-    }else if(content.type == 'fb'){
-        content.image = content.image;
-        content.backgroundPosition = '50% 50%';
-        // $rootScope.$broadcast(AUTH_EVENTS.loginSuccess);
-    }
+    // if(content.type == 'local'){
+    //     content.backgroundPosition = 45*content.image+'px 0px';
+    //     content.image = '/assets/img/avatars.png';
+    // }else if(content.type == 'fb'){
+    //     content.image = content.image;
+    //     content.backgroundPosition = '50% 50%';
+    //     // $rootScope.$broadcast(AUTH_EVENTS.loginSuccess);
+    // }
+    console.log(content);
     var y = '<div ng-controller="registerCtrl" class="ball center" style="background-image:url('+content.image+'); background-position : '+ content.backgroundPosition+'; margin: 0 auto;">'+
           '<h4 class="cover-player-name">'+content.name+'<i class="fa fa-sign-out signout-icon" ng-click="logOut()"></i></h4></div>';
       return y;
@@ -501,7 +504,6 @@ game325.controller('registerCtrl', ['$rootScope', '$scope','$cookieStore','$wind
         if($scope.showUserError || $scope.showUserImageError){
            return false; 
         }else{
-            console.log('abc');
             var user = JSON.stringify($scope.user);
             $cookieStore.put('userId',user);
             Session.create($scope.user.name, $scope.user.image, 'local');
