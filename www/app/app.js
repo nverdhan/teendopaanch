@@ -70,7 +70,7 @@ game325.controller('gameCtrl', ['$rootScope', '$scope', '$http', '$state', 'Auth
         if(res.status == 200 && res.data.user){
             var user = {
                 name : res.data.user.name,
-                image : res.data.user.img,
+                image : res.data.user.image,
                 type : res.data.user.type
             }
             Session.create(user.name, user.image, user.type);
@@ -217,30 +217,30 @@ game325.config(['$httpProvider', function ($httpProvider) {
     var requestStarted = function() {
         $rootScope.$broadcast(_START_REQUEST_);
         $rootScope.appLoading = true;
-    };
+    }
     // publish end request notification
     var requestEnded = function() {
         $rootScope.$broadcast(_END_REQUEST_);
         $rootScope.appLoading = false;
-    };
+    }
     // subscribe to start request notification
     var onRequestStarted = function($scope, handler){
         $scope.$on(_START_REQUEST_, function(event){
             handler();
         });
-    };
+    }
     // subscribe to end request notification
     var onRequestEnded = function($scope, handler){
         $scope.$on(_END_REQUEST_, function(event){
             handler();
         });
-    };
+    }
     return {
         requestStarted:  requestStarted,
         requestEnded: requestEnded,
         onRequestStarted: onRequestStarted,
         onRequestEnded: onRequestEnded
-    };
+    }
 // game325.controller('gameCtrl', ['$rootScope', '$scope', '$http', '$state', function($rootScope, $scope, $http, $state){
     // $scope.title = 'GameApp';
     // $scope.uiRouterState = $state;
@@ -299,16 +299,6 @@ game325.directive('showScores', ['$compile', function($compile){
 game325.directive('profileInfo', ['$compile', function ($compile){
   var x = function(content){
     var content = content.content;
-    // console.log(content);
-    // if(content.type == 'local'){
-    //     content.backgroundPosition = 45*content.image+'px 0px';
-    //     content.image = '/assets/img/avatars.png';
-    // }else if(content.type == 'fb'){
-    //     content.image = content.image;
-    //     content.backgroundPosition = '50% 50%';
-    //     // $rootScope.$broadcast(AUTH_EVENTS.loginSuccess);
-    // }
-    console.log(content);
     var y = '<div class="ball center" style="background-image:url('+content.image+'); background-position : '+ content.backgroundPosition+'; margin: 0 auto;"></div>'+
           '<h4>'+content.name+'</h4>';
       return y;
@@ -340,7 +330,6 @@ game325.directive('profileInfoHorz', ['$compile', function ($compile){
     //     content.backgroundPosition = '50% 50%';
     //     // $rootScope.$broadcast(AUTH_EVENTS.loginSuccess);
     // }
-    console.log(content);
     var y = '<div ng-controller="registerCtrl" class="ball center" style="background-image:url('+content.image+'); background-position : '+ content.backgroundPosition+'; margin: 0 auto;">'+
           '<h4 class="cover-player-name">'+content.name+'<i class="fa fa-sign-out signout-icon" ng-click="logOut()"></i></h4></div>';
       return y;
@@ -449,8 +438,9 @@ game325.controller('registerCtrl', ['$rootScope', '$scope','$cookieStore','$wind
         }else if(Session.type == 'fb'){
             $scope.user.image = Session.image;
             $scope.user.backgroundPosition = '50% 50%';
-            // $rootScope.$broadcast(AUTH_EVENTS.loginSuccess);
+            
         }
+        $rootScope.$broadcast(AUTH_EVENTS.loginSuccess);
     }else{
         $scope.showLoggedInProfile = false;
         $scope.loginFB = true;

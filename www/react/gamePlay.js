@@ -909,9 +909,14 @@ var TrumpCardComponent = React.createClass({displayName: "TrumpCardComponent",
         this.props.click(e.props.trump);
     },
     render : function (){
+        // return (
+        //     React.createElement("div", {className: "card trump-cards", style: this.props.style, onClick: this.handleClick.bind(null, this) })
+        //     )
         return (
-            React.createElement("div", {className: "card trump-cards", style: this.props.style, onClick: this.handleClick.bind(null, this) })
-            )
+                    React.createElement("div", {className: "card trump-cards", onClick: this.handleClick.bind(null, this)}, 
+                        React.createElement("a", {className: "card", style: this.props.style}) 
+                    )
+                )
     }
 });
 var PlayerComponent = React.createClass({displayName: "PlayerComponent",
@@ -1311,8 +1316,8 @@ var CardComponent = React.createClass({displayName: "CardComponent",
             style.transform = 'translateX('+posX+'px) translateY('+posY+'px)';
         }
         
-        var frontClassName = 'card frontrotated';
-        var backClassName = 'card frontrotated';
+        var frontClassName = 'card front';
+        var backClassName = 'card back';
         if((position == 0 && this.state.mounted) || card.state == 'played' || (card.moveTo == 0 && card.state == 'withdrawn') || (card.moveTo == 0 && card.state == 'returned')){
             frontClassName = 'card frontRotated';
             backClassName = 'card backRotated';

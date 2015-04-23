@@ -141,6 +141,10 @@ game325.controller('errDialogController',['$rootScope', '$scope', '$mdDialog', '
       $rootScope.$broadcast('NEW_GAME');
       $mdDialog.hide();
     }
+    $scope.nextRound = function(){
+      $rootScope.$broadcast('NEXT_ROUND');
+      $mdDialog.hide();
+    }
 }])
 game325.controller('coverController', ['$rootScope', '$http', '$scope', '$state', '$stateParams','AuthService', 'startGameService' ,'gameService', 'socket', '$timeout', 'delayService', '$mdSidenav', '$anchorScroll', '$location', '$mdDialog','$cookieStore','AUTH_EVENTS','Session', 'errService', function ($rootScope, $http, $scope, $state, $stateParams, AuthService, startGameService, gameService, socket, $timeout ,delayService, $mdSidenav, $anchorScroll, $location, $mdDialog, $cookieStore, AUTH_EVENTS, Session, errService){
   $scope.className='';

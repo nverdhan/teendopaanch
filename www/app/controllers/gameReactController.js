@@ -11,6 +11,7 @@ game325.controller('gameReactController', ['$rootScope', '$http', '$scope', '$st
     $scope.withDrawEnabled = false;
     $scope.chatMsg;
     $scope.user = Session;
+    $scope.gameRound = 0;
     if(!Session.name){
         $state.go('home');
     }
@@ -47,12 +48,38 @@ game325.controller('gameReactController', ['$rootScope', '$http', '$scope', '$st
         }
     }
     $scope.sendEvent = function(data){
-        console.log($scope.gameType);
         if($scope.gameType == 'LIVE'){
             // console.log(data);
             socket.emit('GAME', {data : data});  
         }else{
-            $scope.gameEvent(data);
+            if(data.gameEvent == 'NEXT_ROUND'){
+                $scope.gameRound++;
+                if($scope.gameRound == $scope.totalGames){
+                    $mdDialog.show({
+                      template:
+                        '<md-dialog>' +
+                        '  <md-content> <h2 class="md-title"> End of round '+$scope.gameRound+' </h2>'+
+                         '  <div class="md-actions">' +
+                         '<md-button ng-click="newGame()"> New Game</md-button>'+
+                         '  </div>' +
+                        '</md-content></md-dialog>',
+                        controller: 'errDialogController'
+                    });
+                }else{
+                    $mdDialog.show({
+                      template:
+                        '<md-dialog>' +
+                        '  <md-content> <h2 class="md-title"> End of round '+$scope.gameRound+' </h2>'+
+                         '  <div class="md-actions">' +
+                         '<md-button ng-click="nextRound()"> Next </md-button>'+
+                         '  </div>' +
+                        '</md-content></md-dialog>',
+                        controller: 'errDialogController'
+                    });    
+                }
+            }else{
+                $scope.gameEvent(data);
+            }
         }
     }
     $scope.initPlayers = function(){
@@ -236,9 +263,7 @@ game325.controller('gameReactController', ['$rootScope', '$http', '$scope', '$st
             };
         });
         socket.on('GAME', function (data){
-            // console.log('here');
             $scope.game325 = data.data;
-            // $rootScope.arrPlayers = $scope
             $scope.reactRender();
             if($scope.playerId == $scope.game325.activePlayerId){
                 $timeout(function (argument) {
@@ -259,11 +284,9 @@ game325.controller('gameReactController', ['$rootScope', '$http', '$scope', '$st
             $scope.game325 = data.data;
         });
         socket.on('NO_PLAYER_LEFT', function (data) {
-            // body...
             $state.go('home');
         })
         socket.on('msgRecieved', function (data){
-            // console.log('msege');
             if(data.player.user){
                 if(data.player.user.type == 'local'){
                     userPic = '/assets/img/avatars.png';
@@ -310,15 +333,15 @@ game325.controller('gameReactController', ['$rootScope', '$http', '$scope', '$st
         //BOTS PLAY MODE
         var gameData = localStorage.getItem("gameData");
         var gameData = JSON.parse(gameData);
-        var txt = "Do you want to continue with previously saved Game ?";
+        var msg = "Continue last game ?";
         if(gameData){
             $mdDialog.show({
               template:
                 '<md-dialog>' +
-                '  <md-content> <h2 class="md-title"> Continue Previously Saved Game? </h2> <p> You are about to be disconnected from other players.'+
+                '  <md-content> <h2 class="md-title">'+msg+'</h2>'+
                  '  <div class="md-actions">' +
                  '<md-button ng-click="loadGame()"> Yes. </md-button>'+
-                 '<md-button ng-click="newGame()"> No Start New Game </md-button>'+
+                 '<md-button ng-click="newGame()"> No </md-button>'+
                  '  </div>' +
                 '</md-content></md-dialog>',
                 controller: 'errDialogController'
@@ -331,6 +354,13 @@ game325.controller('gameReactController', ['$rootScope', '$http', '$scope', '$st
         $scope.loadGame();
         $scope.reactRender();
       });
+    $scope.$on('NEXT_ROUND', function () {
+        // $scope.loadGame();
+        var data = {
+            gameEvent : 'NEXT_ROUND'
+        }
+        $scope.gameEvent(data);
+    })
     $scope.$on('NEW_GAME', function(){
         $scope.startNewGame();
       });

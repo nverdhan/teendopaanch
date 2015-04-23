@@ -1,8 +1,7 @@
 <!DOCTYPE html>
 <html ng-app="game325" ng-controller="gameCtrl">
     <head>
-
-    <title>{{title}}</title>
+    <title>Teen Do Paanch Cards Game</title>
     <meta name="viewport" content="width=device-width">
     <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
     <meta content="utf-8" http-equiv="encoding">
@@ -74,6 +73,7 @@
     </div>
     <!--div class="lightbox" id="searchDialog" ng-class="{true: 'open'}[searchDialogVisible]"></div-->
 </div>
-    <div flex class="content" ng-view ui-view></div>
+<div flex class="content" ng-view ui-view></div>
+<div class="overlay loading" ng-show="appLoading" ng-cloak data-app-loading="{{ appLoading }}" data-status='loading'></div>
     <!-- <div class="view-main" ></div>  -->
 </body>

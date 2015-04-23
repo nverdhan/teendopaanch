@@ -2,6 +2,13 @@ var Game = require('../utils/game325');
 var Player = require('../utils/player');
 var players = [];
 var randomstring = require("randomstring");
+var User = function  (name, image, type){
+    return {
+        name : name,
+        image : image,
+        type : type
+    }
+}
 module.exports = function(app, passport) {
     var client = app.get('redisClient');
     var customSession = app.get('sessionStore');
@@ -156,19 +163,23 @@ module.exports = function(app, passport) {
     app.post('/api/auth', function(req, res){
         if (req.user) {
             if(req.user.facebook){
-                var user = req.user.facebook;
-                user.type = 'fb';
+                console.log(req.user.facebook.img)
+                var user = new User(req.user.facebook.name, req.user.facebook.img, 'fb');
             }
             else if(req.user.twitter){
-                var user = req.user.twitter;
-                user.type = 'twitter';
+                var user = new User(req.user.twitter.name, req.user.twitter.img, 'twitter');
+                // var user = req.user.twitter;
+                // user.type = 'twitter';
             }else if(req.user.google){
-                var user = req.user.google;
-                user.type = 'google';
+                var user = new User(req.user.google.name, req.user.google.img, 'google');
+                // var user = req.user.google;
+                // user.type = 'google';
             }else if(req.user.google){
-                var user = req.user.local;
-                user.type = 'local';
+                // var user = req.user.local;
+                // user.type = 'local';
+                var user = new User(req.user.local.name, req.user.local.img, 'local');
             }
+            console.log(user);
             res.json({'user' : user });
         }else {
             res.json({'error' : 401})
