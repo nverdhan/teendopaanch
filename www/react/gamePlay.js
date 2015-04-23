@@ -112,9 +112,6 @@ var Game325Component = React.createClass({displayName: "Game325Component",
     },
     next : function (data){
         var gameEvent = data.gameEvent;
-        // this.arrangeCards();
-        console.log(gameEvent);
-        console.log(this.props.game.activePlayerId + '===' + this.props.game.otherPlayerId);
         switch(gameEvent){
             case 'PLAY_CARD':
                 if(this.props.game.returnCard){
@@ -968,7 +965,7 @@ var PlayerComponent = React.createClass({displayName: "PlayerComponent",
         var cards = this.props.player.cards.map(function (card, index){
             var cardStyle = getCardPic(card);
             var cardKey = card.rank+'.'+card.suit;
-            return React.createElement(CardComponent, {playerIds: self.props.playerIds, updateCards : updateCards, scope: self.props.scope, key: cardKey, card: card, index: index, position: self.props.position, playerId: self.props.player.id, noOfCards: noOfCards, cardClicked: self.handleCardClick, cardStyle: cardStyle, suit : self.props.suit, trump : self.props.trump})
+            return React.createElement(CardComponent, {playerIds: self.props.playerIds, updateCards : updateCards, scope: self.props.scope, key: cardKey, card: card, index: index, position: self.props.position, playerId: self.props.player.id, noOfCards: noOfCards, cardClicked: self.handleCardClick, cardStyle: cardStyle, suit : self.props.suit, trump : self.props.trump, cardWillbeRecieved : self.props.cardWillbeRecieved})
         });
         return (
             React.createElement("div", null, 

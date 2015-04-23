@@ -98,53 +98,6 @@ Game.prototype.updateHandsToMake = function() {
         }
     }
 }
-/*Game.prototype.withdrawCard = function(){
-	var activePlayerId = this.activePlayerId;
-	var otherPlayerId = this.otherPlayerId;
-	var cardIndex = this.cardIndex;
-	console.log(cardIndex);
-	for (var i = 0; i < this.players.length; i++) {
-		if(this.players[i].id == otherPlayerId){
-			var card = this.players[i].cards.splice(cardIndex, 1);
-			this.cardPlayed = card[0];
-			this.cardMoveFrom = otherPlayerId;
-		}
-	};
-	for (var i = this.players.length - 1; i >= 0; i--) {
-		if(this.players[i].id == activePlayerId){
-			this.players[i].cards.push(this.cardPlayed);
-			this.cardMoveFrom = activePlayerId;
-		}
-	};
-}
-Game.prototype.returnCard = function(){
-	var activePlayerId = this.activePlayerId;
-	var otherPlayerId = this.otherPlayerId;
-	var card = this.card;
-	var cardIndex;
-	for (var i = 0; i < this.players.length; i ++) {
-		if(this.players[i].id == activePlayerId){
-			for (var j= this.players[i].cards.length - 1; j >= 0; j--) {
-				if(this.players[i].cards[j].suit == card.suit && this.players[i].cards[j].rank == card.rank){
-					cardIndex = j;
-				}
-			}
-			var card = this.players[i].cards.splice(cardIndex, 1);
-			this.cardPlayed = card[0];
-			this.players[i].handsMade--;
-			this.cardMoveFrom = activePlayerId;
-			this.cardWithdrawn = card;
-		}
-	}
-	for (var i = 0; i < this.players.length; i ++) {
-		if(this.players[i].id == otherPlayerId){
-			this.players[i].cards.push(this.cardPlayed);
-			this.players[i].handsMade++;
-			this.cardMoveTo = otherPlayerId;
-			console.log(this.players[i].cards.length);
-		}
-	}
-}*/
 Game.prototype.moveWithdrawCard = function(){
 	var activePlayerId = this.activePlayerId;
 	var otherPlayerId = this.otherPlayerId;
@@ -157,6 +110,8 @@ Game.prototype.moveWithdrawCard = function(){
 			this.players[i].cards[cardIndex].animation = true;
 			this.players[i].cards[cardIndex].moveFrom = otherPlayerId;
 			this.players[i].cards[cardIndex].moveTo = activePlayerId;
+			this.players[i].cardWillbeRecieved = true;
+
 		}
 	}
 }
@@ -180,10 +135,11 @@ Game.prototype.withdrawCard = function(){
 		if(this.players[i].id == activePlayerId){
 			this.players[i].cards.push(this.cardPlayed);
 			this.cardMoveFrom = activePlayerId;
+			this.players[i].cardWillbeRecieved = false;
 		}
 	}
 }
-game325.prototype.returnCard = function(){
+Game.prototype.returnCard = function(){
 	var activePlayerId = this.moveFrom;
 	var otherPlayerId = this.moveTo;
 	var cardIndex = this.cardIndex;
@@ -192,7 +148,6 @@ game325.prototype.returnCard = function(){
 			this.players[i].cards[cardIndex].state = 'deck';
 			this.players[i].cards[cardIndex].animation = false;
 			var card = this.players[i].cards.splice(cardIndex, 1);
-			console.log(card)
 			this.cardPlayed = card[0];
 			this.cardMoveFrom = activePlayerId;
 			card.moveFrom = '';
@@ -203,11 +158,11 @@ game325.prototype.returnCard = function(){
 		if(this.players[i].id == otherPlayerId){
 			this.players[i].cards.push(this.cardPlayed);
 			this.cardMoveTo = otherPlayerId;
-			//this.players[i].handsMade++;
+			this.players[i].cardWillbeRecieved = false;
 		}
 	}
 }
-game325.prototype.moveReturnCard = function(){
+Game.prototype.moveReturnCard = function(){
 	var activePlayerId = this.activePlayerId;
 	var otherPlayerId = this.otherPlayerId;
 	var cardIndex = this.cardIndex;
@@ -228,6 +183,7 @@ game325.prototype.moveReturnCard = function(){
 	for (var i = 0; i < this.players.length; i ++){
 		if(this.players[i].id == otherPlayerId){
 			this.players[i].handsMade++;
+			this.players[i].cardWillbeRecieved = true;
 		}
 	}
 }
@@ -252,21 +208,14 @@ Game.prototype.playCard = function(){
 }
 Game.prototype.nextRound = function(){
 	for (var i = this.players.length - 1; i >= 0; i--){
-		// var z = this.gameTurn%3;
 		if(this.players[i].handsToMake == 2){
 			var score = new Score();
-			//score.handsToMake = this.players[i].handsToMake;
-			//score.handsMade = this.players[i].handsMade;
-			//this.players[i].scores.push(score);
 			this.players[i].handsToMakeInLR = 2;
 			this.players[i].handsToMake = 3;
 			score.handsToMake = this.players[i].handsToMake;
 			this.players[i].scores.push(score);
 		}else if(this.players[i].handsToMake == 3){
 			var score = new Score();
-			//score.handsToMake = this.players[i].handsToMake;
-			//score.handsMade = this.players[i].handsMade;
-			//this.players[i].scores.push(score);
 			this.players[i].handsToMakeInLR = 3;
 			this.activePlayerId = this.players[i].id;
 			this.players[i].handsToMake = 5;
@@ -274,17 +223,15 @@ Game.prototype.nextRound = function(){
 			this.players[i].scores.push(score);	
 		}else if(this.players[i].handsToMake == 5){
 			var score = new Score();
-			//score.handsMade = this.players[i].handsMade;
 			this.players[i].handsToMakeInLR = 5;
 			this.players[i].handsToMake = 2;
 			score.handsToMake = this.players[i].handsToMake;
 			this.players[i].scores.push(score);
 		}
 	}
-	for (var i = this.players.length - 1; i >= 0; i--) {
-		updateScoresInDB(this.players[i]);
-	};
-	
+	// for (var i = this.players.length - 1; i >= 0; i--) {
+	// 	updateScoresInDB(this.players[i]);
+	// }
 }
 Game.prototype.getTurnWinner = function() {
 	var self = this;
@@ -327,40 +274,7 @@ Game.prototype.nextTurn = function() {
 	this.otherPlayerId = this.activePlayerId;
 	this.activePlayerId = this.players[n].id;
 }
-Game.prototype.getBiggestCard = function(card1, card2) {
-	if(card1 == null)
-		return card2;
-	var turnSuit = this.turnSuit;
-	if(card1.suit == this.trump){
-        if(card2.suit == this.trump){
-            if(card1.rank > card2.rank){
-                return card1;
-            }else{
-                return card2;
-            }
-        }else{
-            return card1;
-        }
-    }else if(card2.suit == this.trump){
-        return card2;
-    }else if(card1.suit == turnSuit && card2.suit == turnSuit){
-        if(card1.rank > card2.rank){
-            return card1;
-        }else{
-            return card2;
-        }
-    }else if(card1.suit == turnSuit && card2 != turnSuit){
-        return card1;
-    }else if(card1.suit != turnSuit && card2 == turnSuit){
-        return card2;
-    }else{
-        if(card1.rank > card2.rank){
-            return card1;
-        }else{
-            return card2;
-        }
-    }
-};
+
 //check if withdraw cards is applicable for next round
 Game.prototype.withdrawCards = function(){
 	var array = new Array();
@@ -441,9 +355,9 @@ function getBiggestCard (card1, card2, turnSuit, trump) {
         }else{
             return card2;
         }
-    }else if(card1.suit == turnSuit && card2 != turnSuit){
+    }else if(card1.suit == turnSuit && card2.suit != turnSuit){
         return card1;
-    }else if(card1.suit != turnSuit && card2 == turnSuit){
+    }else if(card1.suit != turnSuit && card2.suit == turnSuit){
         return card2;
     }else{
         if(card1.rank > card2.rank){

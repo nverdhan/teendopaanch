@@ -147,6 +147,7 @@ Game.prototype.withdrawCard = function(){
 		if(this.players[i].id == this.cardMoveTo){
 			// console.log('Push done');
 			this.players[i].cards.push(this.cardPlayed);
+			this.players[i].cardWillbeMovedFrom = null;
 			// this.activePlayerId = this.cardMoveFrom;
 			// this.cardMoveFrom = activePlayerId;
 		}
@@ -168,6 +169,11 @@ Game.prototype.moveWithdrawCard = function(){
 			this.players[i].cards[cardIndex].moveTo = activePlayerId;
 		}
 	}
+	for (var i = this.players.length - 1; i >= 0; i--) {
+		if(this.players[i].id == activePlayerId){
+			this.players[i].cardWillbeMovedFrom = otherPlayerId; // To adjust card index while rendering -- Fake It by Seether
+		}
+	};
 	// this.moveFrom = otherPlayerId;
 	// this.moveTo = activePlayerId;
 }
@@ -193,6 +199,7 @@ Game.prototype.returnCard = function(){
 		if(this.players[i].id == this.cardMoveFrom){
 			// console.log('Push done');
 			this.players[i].cards.push(this.cardPlayed);
+			this.players[i].cardWillbeMovedFrom = null;
 			// this.cardMoveTo = otherPlayerId;
 			// this.players[i].handsMadeInLR++;
 		}
@@ -224,6 +231,7 @@ Game.prototype.moveReturnCard = function(){
 	for (var i = 0; i < this.players.length; i ++){
 		if(this.players[i].id == otherPlayerId){
 			this.players[i].handsMadeInLR++;
+			this.players[i].cardWillbeMovedFrom = activePlayerId; // To adjust card index while rendering -- Fake It by Seether
 		}
 	}
 }
