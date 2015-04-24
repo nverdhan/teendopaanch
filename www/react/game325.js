@@ -38,7 +38,8 @@ var Game = function(){
 	this.cardMoveTo,
 	this.moveFrom,
 	this.moveTo,
-	this.returnCard
+	this.returnCard,
+	this.cardWillBeMovedFrom
 }	
 Game.prototype.initDeck = function() {
 	var deck = new Deck();
@@ -147,13 +148,14 @@ Game.prototype.withdrawCard = function(){
 		if(this.players[i].id == this.cardMoveTo){
 			// console.log('Push done');
 			this.players[i].cards.push(this.cardPlayed);
+			this.players[i].cardWillBeMovedFrom = null;
 			// this.activePlayerId = this.cardMoveFrom;
 			// this.cardMoveFrom = activePlayerId;
 		}
 	}
 }
 Game.prototype.moveWithdrawCard = function(){
-	// console.log('moveWithdrawCard Called 1');
+	console.log('moveWithdrawCard Called 1');
 	var activePlayerId = this.activePlayerId;
 	var otherPlayerId = this.otherPlayerId;
 	var cardIndex = this.cardIndex;
@@ -166,6 +168,11 @@ Game.prototype.moveWithdrawCard = function(){
 			this.players[i].cards[cardIndex].animation = true;
 			this.players[i].cards[cardIndex].moveFrom = otherPlayerId;
 			this.players[i].cards[cardIndex].moveTo = activePlayerId;
+		}
+	// }
+	// for (var i = this.players.length - 1; i >= 0; i--) {
+		if(this.players[i].id == activePlayerId){
+			this.players[i].cardWillBeMovedFrom = otherPlayerId;
 		}
 	}
 	// this.moveFrom = otherPlayerId;
@@ -193,6 +200,7 @@ Game.prototype.returnCard = function(){
 		if(this.players[i].id == this.cardMoveFrom){
 			// console.log('Push done');
 			this.players[i].cards.push(this.cardPlayed);
+			this.players[i].cardWillBeMovedFrom = null;
 			// this.cardMoveTo = otherPlayerId;
 			// this.players[i].handsMadeInLR++;
 		}
@@ -224,6 +232,7 @@ Game.prototype.moveReturnCard = function(){
 	for (var i = 0; i < this.players.length; i ++){
 		if(this.players[i].id == otherPlayerId){
 			this.players[i].handsMadeInLR++;
+			this.players[i].cardWillBeMovedFrom = activePlayerId;
 		}
 	}
 }

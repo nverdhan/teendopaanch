@@ -16,7 +16,8 @@ var Player = function(id){
      handsToMakeInLR : 0,
      handsMadeInLR : 0,
      totalHandsToMake : 0,
-     cardPlayed : {}
+     cardPlayed : {},
+     cardWillBeMovedFrom : null
     }
 }
 var GameStatus = {

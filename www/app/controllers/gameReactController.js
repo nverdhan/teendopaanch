@@ -63,17 +63,43 @@ game325.controller('gameReactController', ['$rootScope', '$http', '$scope', '$st
                          '<md-button ng-click="newGame()"> New Game</md-button>'+
                          '  </div>' +
                         '</md-content></md-dialog>',
+                        clickOutsideToClose : false,
+                        escapeToClose : false,
                         controller: 'errDialogController'
                     });
                 }else{
+                    var t = '';
+                    t+='<table><tr>';
+                    t+='<td>Round</td>';
+                    console.log($scope.game325.players[0].scores)
+                    for (var i = 0; i < $scope.game325.players[0].scores.length; i++) {
+                        var k = i+1;
+                        $scope.gameRound = k;
+                        t+='<td>'+k+'</td>';
+                    };
+                    t+='</tr>';
+                    for (var i = 0;i < $scope.game325.players.length; i++) {
+                        if(i==0){
+                            t+='<tr><td>You</td>';
+                        }else{
+                            t+='<tr><td>'+$scope.game325.players[i].name+'</td>';
+                        }
+                        for (var j = 0; j < $scope.game325.players[i].scores.length; j++) {
+                            t+='<td>'+$scope.game325.players[i].scores[j].handsToMake+'/'+$scope.game325.players[i].scores[j].handsMade+'</td>';
+                        }
+                        t+='</tr>';
+                    };
+                    t+='</table>';
                     $mdDialog.show({
                       template:
                         '<md-dialog>' +
-                        '  <md-content> <h2 class="md-title"> End of round '+$scope.gameRound+' </h2>'+
+                        '  <md-content> <h2 class="md-title"> End of round '+$scope.gameRound+' </h2>'+t+
                          '  <div class="md-actions">' +
-                         '<md-button ng-click="nextRound()"> Next </md-button>'+
+                         '<md-button ng-click="nextRound()"> Continue </md-button>'+
                          '  </div>' +
                         '</md-content></md-dialog>',
+                        clickOutsideToClose : false,
+                        escapeToClose : false,
                         controller: 'errDialogController'
                     });    
                 }
@@ -344,6 +370,8 @@ game325.controller('gameReactController', ['$rootScope', '$http', '$scope', '$st
                  '<md-button ng-click="newGame()"> No </md-button>'+
                  '  </div>' +
                 '</md-content></md-dialog>',
+                clickOutsideToClose : false,
+                escapeToClose : false,
                 controller: 'errDialogController'
             });
         }else{
@@ -419,6 +447,8 @@ game325.controller('gameReactController', ['$rootScope', '$http', '$scope', '$st
                  '<md-button ng-click="closeDialog()"> Continue playing </md-button>'+
                  '  </div>' +
                 '</md-content></md-dialog>',
+                clickOutsideToClose : false,
+                escapeToClose : false,
                 controller: 'errDialogController'
             });
     }

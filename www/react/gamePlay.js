@@ -113,8 +113,8 @@ var Game325Component = React.createClass({displayName: "Game325Component",
     next : function (data){
         var gameEvent = data.gameEvent;
         // this.arrangeCards();
-        console.log(gameEvent);
-        console.log(this.props.game.activePlayerId + '===' + this.props.game.otherPlayerId);
+        // console.log(gameEvent);
+        // console.log(this.props.game.activePlayerId + '===' + this.props.game.otherPlayerId);
         switch(gameEvent){
             case 'PLAY_CARD':
                 if(this.props.game.returnCard){
@@ -739,8 +739,7 @@ var Game325Component = React.createClass({displayName: "Game325Component",
         };
         return deck;
     },
-    factorial: function(x) {
-        // console.log(x);
+    factorial: function(x){
         if(x==0) {
             return 1;
         }
@@ -909,9 +908,6 @@ var TrumpCardComponent = React.createClass({displayName: "TrumpCardComponent",
         this.props.click(e.props.trump);
     },
     render : function (){
-        // return (
-        //     React.createElement("div", {className: "card trump-cards", style: this.props.style, onClick: this.handleClick.bind(null, this) })
-        //     )
         return (
                     React.createElement("div", {className: "card trump-cards", onClick: this.handleClick.bind(null, this)}, 
                         React.createElement("a", {className: "card", style: this.props.style}) 
@@ -924,7 +920,7 @@ var PlayerComponent = React.createClass({displayName: "PlayerComponent",
         return {
             player : null,
             mounted : false,
-            style : {                     
+            style : {    
                     width : 100,
                     height : 50,
                     left : 0,
@@ -936,6 +932,9 @@ var PlayerComponent = React.createClass({displayName: "PlayerComponent",
     componentDidMount : function (){
         if(this.props.player.id == 0){
         }
+    },
+    shouldComponentUpdate : function (argument){
+        return true;
     },
     handleCardClick : function (card, player) {
             this.props.cardPlayed(card, player);
@@ -968,12 +967,11 @@ var PlayerComponent = React.createClass({displayName: "PlayerComponent",
         if(player.msg){
             updateCards = false;
         }
-        // var isActiveCard = this.getActiveStatus()
         this.getActiveStatus();
         var cards = this.props.player.cards.map(function (card, index){
             var cardStyle = getCardPic(card);
             var cardKey = card.rank+'.'+card.suit;
-            return React.createElement(CardComponent, {playerIds: self.props.playerIds, updateCards : updateCards, scope: self.props.scope, key: cardKey, card: card, index: index, position: self.props.position, playerId: self.props.player.id, noOfCards: noOfCards, cardClicked: self.handleCardClick, cardStyle: cardStyle, suit : self.props.suit, trump : self.props.trump})
+            return React.createElement(CardComponent, {playerIds: self.props.playerIds, updateCards : updateCards, scope: self.props.scope, key: cardKey, card: card, index: index, position: self.props.position, playerId: self.props.player.id, noOfCards: noOfCards, cardClicked: self.handleCardClick, cardStyle: cardStyle, suit : self.props.suit, trump : self.props.trump, cardWillBeMovedFrom : self.props.player.cardWillBeMovedFrom})
         });
         return (
             React.createElement("div", null, 
@@ -1017,7 +1015,11 @@ var PlayerInfoComponent = React.createClass({displayName: "PlayerInfoComponent",
         var id = this.props.player.id;
         var name = this.props.player.name;
         var type = this.props.player.type;
-        var image = this.props.player.image;
+        if(type == 'local' || type == 'bot' || type == 'you'){
+            var image = this.props.player.img;    
+        }else{
+           var image = this.props.player.image; 
+        }
         var position = this.props.position;
         var scores = this.props.player.scores[this.props.player.scores.length - 1];
         var handsMade = scores.handsMade;
@@ -1042,7 +1044,6 @@ var PlayerInfoComponent = React.createClass({displayName: "PlayerInfoComponent",
                 self.setState({msg : self.props.player.msg});
             }
             this.timeoutObj = this.timeout(3000, fn);
-            // delayService.asyncTask(3000, fn);
         }else{
                 profileClasses = cx({
                     'players-profile' : true,
@@ -1078,9 +1079,6 @@ var PlayerInfoComponent = React.createClass({displayName: "PlayerInfoComponent",
                 background: '#fff url('+picurl+')',
                 backgroundPosition : backgroundPosition
             };
-            //var msg = this.state.msg;
-            // var msg = this.msg;
-            // console.log(this.msg);
         return (
             React.createElement("div", {className: className}, 
                 React.createElement("div", {className: profileClasses}, 
@@ -1194,11 +1192,16 @@ var CardComponent = React.createClass({displayName: "CardComponent",
         var fn = function (){
             self.setState({mounted : true})
         }
-        if(this.props.card.animation != false){
-            delayService.asyncTask(t, fn);  
-        }else{
+        if(this.props.card.cardWillBeMovedFrom){
             fn();
+        }else{
+            if(this.props.card.animation != false){
+                delayService.asyncTask(t, fn);  
+            }else{
+                fn();
+            } 
         }
+        
         
     },
     componentWillLeave : function(){
@@ -1215,7 +1218,10 @@ var CardComponent = React.createClass({displayName: "CardComponent",
         }
     },
     shouldComponentUpdate : function(){
-        return this.props.updateCards
+        return true;
+    },
+    componentWillReceiveProps : function (nextProps, nextState) {
+        this.props = nextProps;
     },
     render : function (){
         var style = this.state.style;
@@ -1225,6 +1231,18 @@ var CardComponent = React.createClass({displayName: "CardComponent",
         var position = this.props.position;
         var card = this.props.card;
         var noOfCards = this.props.noOfCards;
+        var moveToPosition = this.props.playerIds.indexOf(card.moveTo);
+        var moveFromPosition = this.props.playerIds.indexOf(card.moveFrom);
+        var cardWillBeMovedFrom = this.props.cardWillBeMovedFrom;
+        var movingCardPosition = this.props.playerIds.indexOf(cardWillBeMovedFrom);
+        if(movingCardPosition > -1){
+            if(position != 2){
+                if(card.moveFrom!=2){
+                    noOfCards = noOfCards+1;
+                }
+            }
+            card.animation = false;
+        }
         var fullDeckWidth = 9*(gameCSSConstants.cardLeftMargin) + gameCSSConstants.cardSize.x;
         var deckWidth = noOfCards*(gameCSSConstants.cardLeftMargin) + gameCSSConstants.cardSize.x;
         if(this.state.mounted){
@@ -1233,18 +1251,18 @@ var CardComponent = React.createClass({displayName: "CardComponent",
                 case 0:
                     var posY = 0;
                     var posX = 0.5*(gameCSSConstants.gameWindow.x - (noOfCards - 1)*(gameCSSConstants.cardLeftMargin) - gameCSSConstants.cardSize.x);
-                    // var posX = 0;
                         posX+= (index)*(gameCSSConstants.cardLeftMargin);
                     break;
                 case 1:
                     var posY = -(gameCSSConstants.gameWindow.y - gameCSSConstants.cardSize.y - 60 - 2*gameCSSConstants.gameWindow.padding);
-                    // var posX = 0.5*(fullDeckWidth -  (noOfCards - 1)*(gameCSSConstants.cardLeftMargin) - gameCSSConstants.cardSize.x);
+                    if(movingCardPosition == 0){
+                        index = index+1;
+                    }
                     var posX = 0;
                         posX+= (index)*(gameCSSConstants.cardLeftMargin);
                     break;
                 case 2:
                     var posY = -(gameCSSConstants.gameWindow.y - gameCSSConstants.cardSize.y - 60 - 2*gameCSSConstants.gameWindow.padding);
-                    // var posX = gameCSSConstants.gameWindow.x -0.5*(fullDeckWidth +  (noOfCards - 1)*(gameCSSConstants.cardLeftMargin) + gameCSSConstants.cardSize.x);
                     var posX = gameCSSConstants.gameWindow.x - deckWidth;
                         posX+= (index+1)*(gameCSSConstants.cardLeftMargin);
                 }   
@@ -1263,53 +1281,50 @@ var CardComponent = React.createClass({displayName: "CardComponent",
                     var posX = 2*gameCSSConstants.gameWindow.x/3 - gameCSSConstants.cardSize.x/2;
                 }
             }else if(card.state == 'withdrawn'){
-                var moveToPosition = this.props.playerIds.indexOf(card.moveTo);
-                var moveFromPosition = this.props.playerIds.indexOf(card.moveFrom);
                 var index = 10;
                 switch(moveToPosition){
                     case 0:
                         var posY = 0;
                         var posX = 0.5*(gameCSSConstants.gameWindow.x - (noOfCards - 1)*(gameCSSConstants.cardLeftMargin) - gameCSSConstants.cardSize.x);
-                            posX+= (index-1)*(gameCSSConstants.cardLeftMargin);
+                            posX+= (index-0.5)*(gameCSSConstants.cardLeftMargin);
                         break;
                     case 1:
                         if(moveFromPosition == 0){
-                            index = -1;
+                            index = 0;
                         }
                         var posY = -(gameCSSConstants.gameWindow.y - gameCSSConstants.cardSize.y - 60 - 2*gameCSSConstants.gameWindow.padding);
                         var posX = 0.5*(fullDeckWidth -  (noOfCards - 1)*(gameCSSConstants.cardLeftMargin) - gameCSSConstants.cardSize.x);
-                            posX+= (index-1)*(gameCSSConstants.cardLeftMargin);
+                            posX+= (index)*(gameCSSConstants.cardLeftMargin);
                         break;
                     case 2:
-                        index = -1;
+                        index = 0;
                         var posY = -(gameCSSConstants.gameWindow.y - gameCSSConstants.cardSize.y - 60 - 2*gameCSSConstants.gameWindow.padding);
                         var posX = gameCSSConstants.gameWindow.x -0.5*(fullDeckWidth +  (noOfCards - 1)*(gameCSSConstants.cardLeftMargin) + gameCSSConstants.cardSize.x);
-                            posX+= (index-1)*(gameCSSConstants.cardLeftMargin);
+                            posX+= (index-0.5)*(gameCSSConstants.cardLeftMargin);
                         break;
                 }
             }else if(card.state == 'returned'){
                 var index = 10;
-                var moveToPosition = this.props.playerIds.indexOf(card.moveTo);
-                var moveFromPosition = this.props.playerIds.indexOf(card.moveFrom);
                 switch(moveToPosition){
                 case 0:
                     var posY = 0;
                     var posX = 0.5*(gameCSSConstants.gameWindow.x - (noOfCards - 1)*(gameCSSConstants.cardLeftMargin) - gameCSSConstants.cardSize.x);
-                        posX+= (index-1)*(gameCSSConstants.cardLeftMargin);
+                    var posX = 0.5*(gameCSSConstants.gameWindow.x - (noOfCards - 1)*(gameCSSConstants.cardLeftMargin) - gameCSSConstants.cardSize.x);
+                        posX+= (index-0.5)*(gameCSSConstants.cardLeftMargin);
                     break;
                 case 1:
-                    if(moveToPosition == 0){
+                    if(moveFromPosition == 0){
                         index = 0;
                     }
                     var posY = -(gameCSSConstants.gameWindow.y - gameCSSConstants.cardSize.y - 60 - 2*gameCSSConstants.gameWindow.padding);
                     var posX = 0.5*(fullDeckWidth -  (noOfCards - 1)*(gameCSSConstants.cardLeftMargin) - gameCSSConstants.cardSize.x);
-                        posX+= (index-1)*(gameCSSConstants.cardLeftMargin);
+                        posX+= (index+0.5)*(gameCSSConstants.cardLeftMargin);
                     break;
                 case 2:
                     index = 0;
                     var posY = -(gameCSSConstants.gameWindow.y - gameCSSConstants.cardSize.y - 60 - 2*gameCSSConstants.gameWindow.padding);
                     var posX = gameCSSConstants.gameWindow.x -0.5*(fullDeckWidth +  (noOfCards - 1)*(gameCSSConstants.cardLeftMargin) + gameCSSConstants.cardSize.x);
-                        posX+= (index-1)*(gameCSSConstants.cardLeftMargin);
+                        posX+= (index+0.5)*(gameCSSConstants.cardLeftMargin);
                     break;
                 }
             }
