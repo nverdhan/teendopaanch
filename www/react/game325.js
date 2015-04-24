@@ -174,6 +174,11 @@ Game.prototype.moveWithdrawCard = function(){
 			this.players[i].cardWillBeMovedFrom = otherPlayerId;
 		}
 	}
+	for (var i = this.players.length - 1; i >= 0; i--) {
+		if(this.players[i].id == activePlayerId){
+			this.players[i].cardWillbeMovedFrom = otherPlayerId; // To adjust card index while rendering -- Fake It by Seether
+		}
+	};
 	// this.moveFrom = otherPlayerId;
 	// this.moveTo = activePlayerId;
 }
@@ -231,7 +236,7 @@ Game.prototype.moveReturnCard = function(){
 	for (var i = 0; i < this.players.length; i ++){
 		if(this.players[i].id == otherPlayerId){
 			this.players[i].handsMadeInLR++;
-			this.players[i].cardWillBeMovedFrom = activePlayerId;
+			this.players[i].cardWillbeMovedFrom = activePlayerId; // To adjust card index while rendering -- Fake It by Seether
 		}
 	}
 }

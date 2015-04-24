@@ -112,9 +112,6 @@ var Game325Component = React.createClass({displayName: "Game325Component",
     },
     next : function (data){
         var gameEvent = data.gameEvent;
-        // this.arrangeCards();
-        // console.log(gameEvent);
-        // console.log(this.props.game.activePlayerId + '===' + this.props.game.otherPlayerId);
         switch(gameEvent){
             case 'PLAY_CARD':
                 if(this.props.game.returnCard){
@@ -1008,7 +1005,7 @@ var PlayerInfoComponent = React.createClass({displayName: "PlayerInfoComponent",
           });
           return {
                    promise:promise, 
-                   cancel:function(){clearTimeout(timeout );} //return a canceller as well
+                   cancel:function(){clearTimeout(timeout);} //return a canceller as well
                  };
     },
     render : function () {
