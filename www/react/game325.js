@@ -39,7 +39,6 @@ var Game = function(){
 	this.moveFrom,
 	this.moveTo,
 	this.returnCard,
-	this.cardWillBeMovedFrom
 }	
 Game.prototype.initDeck = function() {
 	var deck = new Deck();
@@ -179,7 +178,7 @@ Game.prototype.moveWithdrawCard = function(){
 	// this.moveTo = activePlayerId;
 }
 Game.prototype.returnCard = function(){
-	console.log('returnCard Called 1');
+	// console.log('returnCard Called 1');
 	// var activePlayerId = this.moveFrom;
 	// var otherPlayerId = this.moveTo;
 	var cardIndex = this.cardIndex;

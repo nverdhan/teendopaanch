@@ -14,7 +14,8 @@ var player = function(){
      handsToMakeInLR : 0,
      handsMadeInLR : 0,
      totalHandsToMake : 0,
-     cardPlayed : {}
+     cardPlayed : {},
+     cardWillBeMovedFrom : null
     }
 }
 module.exports = player;

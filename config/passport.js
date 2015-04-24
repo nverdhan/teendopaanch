@@ -1,7 +1,7 @@
 
 var passport = require('passport');
 // var LocalStrategy    = require('passport-local').Strategy;
-var TwitterStrategy  = require('passport-twitter').Strategy;
+// var TwitterStrategy  = require('passport-twitter').Strategy;
 var FacebookStrategy = require('passport-facebook').Strategy;
 
 var User = require('../models/user');
@@ -9,8 +9,8 @@ var configAuth = require('./auth');
 
 
 module.exports = function(app, passport) {
-    var client = app.get('redisClient');
-    var customSession = app.get('sessionStore');
+    // var client = app.get('redisClient');
+    // var customSession = app.get('sessionStore');
 
     // used to serialize the user for the session
     passport.serializeUser(function(user, done) {
@@ -44,18 +44,17 @@ module.exports = function(app, passport) {
         process.nextTick(function() {
 
             User.findOne({ 'facebook.id' : profile.id }, function(err, user) {
-                console.log(profile);
                 // if there is an error, stop everything and return that
                 // ie an error connecting to the database
                 if (err)
                     return done(err);
                 // if the user is found then log them in
                 if (user) {
-                    var c = JSON.stringify(user.facebook);
-                    client.set('userInfo:'+user.id, c, function (err, userInfo){
-                        if(err)
-                            throw err;
-                    });
+                    // var c = JSON.stringify(user.facebook);
+                    // client.set('userInfo:'+user.id, c, function (err, userInfo){
+                    //     if(err)
+                    //         throw err;
+                    // });
                     return done(null, user); // user found, return that user
                     customSession.set({'user' : user});
                 } else {
@@ -71,11 +70,11 @@ module.exports = function(app, passport) {
                     newUser.save(function(err) {
                         if (err)
                             throw err;
-                        var c = JSON.stringify(newUser.facebook);
-                        client.set('userInfo:'+newUser.facebook.id, c, function (err, userInfo){
-                            if(err)
-                                throw err;
-                        });
+                        // var c = JSON.stringify(newUser.facebook);
+                        // client.set('userInfo:'+newUser.facebook.id, c, function (err, userInfo){
+                        //     if(err)
+                        //         throw err;
+                        // });
                         return done(null, newUser);
                         customSession.set({'user' : user});
                     });

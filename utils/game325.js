@@ -137,6 +137,9 @@ game325.prototype.moveWithdrawCard = function(){
 			this.players[i].cards[cardIndex].moveFrom = otherPlayerId;
 			this.players[i].cards[cardIndex].moveTo = activePlayerId;
 		}
+		if(this.players[i].id == activePlayerId){
+			this.players[i].cardWillBeMovedFrom = otherPlayerId;
+		}
 	}
 }
 game325.prototype.withdrawCard = function(){
@@ -160,6 +163,7 @@ game325.prototype.withdrawCard = function(){
 		if(this.players[i].id == this.cardMoveTo){
 			this.players[i].cards.push(this.cardPlayed);
 			// this.cardMoveFrom = activePlayerId;
+			this.players[i].cardWillBeMovedFrom = null;
 		}
 	}
 }
@@ -183,6 +187,7 @@ game325.prototype.returnCard = function(){
 	for (var i = 0; i < this.players.length; i ++){
 		if(this.players[i].id == this.cardMoveFrom){
 			this.players[i].cards.push(this.cardPlayed);
+			this.players[i].cardWillBeMovedFrom = null;
 			// this.cardMoveTo = otherPlayerId;
 			//this.players[i].handsMade++;
 		}
@@ -210,6 +215,7 @@ game325.prototype.moveReturnCard = function(){
 	for (var i = 0; i < this.players.length; i ++){
 		if(this.players[i].id == otherPlayerId){
 			this.players[i].handsMadeInLR++;
+			this.players[i].cardWillBeMovedFrom = activePlayerId;
 		}
 	}
 }
