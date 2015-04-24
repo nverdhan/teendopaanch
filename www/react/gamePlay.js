@@ -964,6 +964,9 @@ var PlayerComponent = React.createClass({displayName: "PlayerComponent",
         if(player.msg){
             updateCards = false;
         }
+        if(position == 1){
+            console.log(this.props.cardWillBeMovedFrom);
+        }
         this.getActiveStatus();
         var cards = this.props.player.cards.map(function (card, index){
             var cardStyle = getCardPic(card);
@@ -992,9 +995,6 @@ var PlayerInfoComponent = React.createClass({displayName: "PlayerInfoComponent",
         }else{
             this.msg = nextProps.player.msg;
         }
-    },
-    componentShouldUpdate : function(nextProps, nextState){
-        return (this.props.activePlayerId!=nextProps.activePlayerId || nextProps.msg.length > 0);
     },
     timeout : function (ms, fn) {
         var timeout, promise;
@@ -1231,6 +1231,9 @@ var CardComponent = React.createClass({displayName: "CardComponent",
         var moveToPosition = this.props.playerIds.indexOf(card.moveTo);
         var moveFromPosition = this.props.playerIds.indexOf(card.moveFrom);
         var cardWillBeMovedFrom = this.props.cardWillBeMovedFrom;
+        if(position == 1){
+            console.log(cardWillBeMovedFrom)
+        }
         var movingCardPosition = this.props.playerIds.indexOf(cardWillBeMovedFrom);
         if(movingCardPosition > -1){
             if(position != 2){
@@ -1253,6 +1256,7 @@ var CardComponent = React.createClass({displayName: "CardComponent",
                 case 1:
                     var posY = -(gameCSSConstants.gameWindow.y - gameCSSConstants.cardSize.y - 60 - 2*gameCSSConstants.gameWindow.padding);
                     if(movingCardPosition == 0){
+                        console.log('Hereeee');
                         index = index+1;
                     }
                     var posX = 0;

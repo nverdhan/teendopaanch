@@ -1,5 +1,7 @@
 // var game325 = angular.module('game325', ['ng','ui.router','ngAria','ngMaterial','ngAnimate','btford.socket-io','ngAnimate','alAngularHero']);
-
+if(!window.location.origin) {
+  window.location.origin = window.location.protocol + "//" + window.location.hostname + (window.location.port ? ':' + window.location.port: '');
+}
 var host = window.location.host;
 
 var game325 = angular.module('game325', ['ng','ui.router','ngAria','ngMaterial','ngAnimate','btford.socket-io','ngAnimate', 'ngCookies']);
@@ -29,7 +31,7 @@ game325.filter('unsafe', function($sce) {
 });
 game325.factory('socket', function(socketFactory){
     // return socketFactory({ioSocket : io.connect('http://127.0.0.1:3000')});
-    return socketFactory({ioSocket : io.connect(host)});
+    return socketFactory({ioSocket : io.connect(window.location.origin)});
 });
 game325.run(['$rootScope', '$state', 'socket', function($rootScope, $state, socket){
     $rootScope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams){

@@ -15,6 +15,10 @@ body {
     user-select: none;
     -o-user-select: none;
 }
+th, td {
+   padding: 12px;
+   border-bottom: 1px solid #eee;
+}
 .inner {
     position: absolute;
     left: 0;
