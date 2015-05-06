@@ -107,7 +107,7 @@ var scaleGameBody = function(){
                 var topshiftFirefox = gameCSSConstants.gameBody.y*(scalefactor-1)/2;
                 var leftshiftChrome = (effw - gameCSSConstants.gameBody.x*scalefactor)/2 + gameCSSConstants.gameBody.x*scalefactor/2;
             }
-        if(findMyBrowser() == 'Firefox'){
+        if(findMyBrowser() == 'Firefox' ){
             return {
                 WebkitTransform : 'scale('+scalefactor+','+scalefactor+')',
                 msTransform : 'scale('+scalefactor+','+scalefactor+')',

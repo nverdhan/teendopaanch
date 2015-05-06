@@ -103,7 +103,7 @@ var Game325Component = React.createClass({displayName: "Game325Component",
         }
     },
     arrangeCards : function(){
-        console.log('cards arranged!');
+        // console.log('cards arranged!');
         for (var i = this.props.game.players.length - 1; i >= 0; i--) {
             if(this.props.game.players[i].id == this.playerId){
                 this.props.game.players[i].cards = sortDeck(this.props.game.players[i].cards);
@@ -676,12 +676,76 @@ var Game325Component = React.createClass({displayName: "Game325Component",
                     // socket.emit('GAME', {data : data});
                 break;
             case 'RETURN_CARD':
-                var cardIndex = Math.floor(Math.random()*11);
+                var e = this.props.game.activePlayerId;
+                var deck = this.props.game.players[e].cards;
+                var trump = this.props.game.trump;
+                var minSuit = '';
+                var suitCount = [{
+                                    suit: 'S',
+                                    count: 0
+                                },
+                                {
+                                    suit: 'H',
+                                    count: 0
+                                },
+                                {
+                                    suit: 'D',
+                                    count: 0
+                                },
+                                {
+                                    suit: 'C',
+                                    count: 0
+                                }];
+                for (var i = 0; i < deck.length; i++){
+                    for (var j = suitCount.length - 1; j >= 0; j--) {
+                        if(deck[i].suit == suitCount[j].suit){
+                            suitCount[j].count++;
+                        }
+                    };
+                }
+                var validMinSuit = Array();
+                for (var i = suitCount.length - 1; i >= 0; i--) {
+                    if(suitCount[i].count!=0 && suitCount[i].suit!=trump) {
+                        validMinSuit.push(suitCount[i]);
+                    }
+                };
+                minSuit = validMinSuit[validMinSuit.length - 1];
+                for (var i = validMinSuit.length - 1; i >= 0; i--) {
+                    if(validMinSuit[i].count < minSuit.count){
+                        minSuit = validMinSuit[i];
+                    }
+                };
+                var minSuitCardIndex = Array();
+                for (var i = deck.length - 1; i >= 0; i--) {
+                    if(deck[i].suit == minSuit.suit){
+                        minSuitCardIndex.push(i);
+                    }
+                };
+                var cardIndex = minSuitCardIndex[0];
+                for (var i = 0; i <= minSuitCardIndex.length - 1; i++) {
+                    if (deck[minSuitCardIndex[i]].rank < deck[cardIndex].rank){
+                                cardIndex = minSuitCardIndex[i];
+                    }
+                };
+                if(deck[cardIndex].rank < 11){
+                    var selectedCardIndex = cardIndex
+                }else{
+                    var smallestIndex = deck.length - 1;
+                    for (var i = deck.length - 1; i >= 1; i--) {
+                        if(deck[smallestIndex].suit == trump && deck[i].suit!=trump){
+                            smallestIndex = i;
+                        }
+                        if(deck[i].rank < deck[smallestIndex].rank && deck[i].suit != trump){
+                            smallestIndex = i;
+                        }
+                    };
+                    var selectedCardIndex = smallestIndex;
+                }
                 var self = this;
                 var data = {
                         gameState : 'RETURN_CARD',
                         gameEvent : 'RETURN_CARD',
-                        card : cardIndex,
+                        card : selectedCardIndex,
                     }
                 var fn = function () {
                     self.clickHandler(data);
@@ -965,7 +1029,7 @@ var PlayerComponent = React.createClass({displayName: "PlayerComponent",
             updateCards = false;
         }
         if(position == 1){
-            console.log(this.props.cardWillBeMovedFrom);
+            // console.log(this.props.cardWillBeMovedFrom);
         }
         this.getActiveStatus();
         var cards = this.props.player.cards.map(function (card, index){
@@ -1232,7 +1296,7 @@ var CardComponent = React.createClass({displayName: "CardComponent",
         var moveFromPosition = this.props.playerIds.indexOf(card.moveFrom);
         var cardWillBeMovedFrom = this.props.cardWillBeMovedFrom;
         if(position == 1){
-            console.log(cardWillBeMovedFrom)
+            // console.log(cardWillBeMovedFrom)
         }
         var movingCardPosition = this.props.playerIds.indexOf(cardWillBeMovedFrom);
         if(movingCardPosition > -1){
@@ -1332,15 +1396,15 @@ var CardComponent = React.createClass({displayName: "CardComponent",
             style.transform = 'translateX('+posX+'px) translateY('+posY+'px)';
         }
         
-        var frontClassName = 'card front';
-        var backClassName = 'card back';
+        var frontClassName = 'card frontRotated';
+        var backClassName = 'card frontRotated';
         if((position == 0 && this.state.mounted) || card.state == 'played' || (card.moveTo == 0 && card.state == 'withdrawn') || (card.moveTo == 0 && card.state == 'returned')){
             frontClassName = 'card frontRotated';
             backClassName = 'card backRotated';
         }
         if(card.moveTo != 0 && (card.state == 'withdrawn' || card.state == 'returned')){
-            var frontClassName = 'card front';
-            var backClassName = 'card back';
+            var frontClassName = 'card frontRotated';
+            var backClassName = 'card frontRotated';
         }
         isActiveClassName = 'card';
         if(position == 0 && !this.props.card.isPlayable){

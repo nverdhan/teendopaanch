@@ -711,6 +711,7 @@ md-radio-group.favgame-select{
   -moz-transition: width 120ms linear, background 120ms linear;
   -o-transition: width 120ms linear, background 120ms linear;
   -webkit-transition: width 120ms linear, background 120ms linear;
+  -ms-transition: width 120ms linear, background 120ms linear;
   /*-webkit-transition-delay: 0.1s, 0.3s;*/
   transition: width 120ms linear, background 120ms linear;
 }
@@ -743,8 +744,10 @@ md-radio-group.favgame-select{
   -moz-transform: translateY(0);
   -ms-transform: translateY(0);
   -webkit-transform: translateY(0);
+  -ms-transform: translateY(0);
   transform: translateY(0);
   -moz-transition: all 0.1s ease 1s;
+  -ms-transition: all 0.1s ease 1s;
   -o-transition: all 0.1s ease 1s;
   -webkit-transition: all 0.1s ease;
   -webkit-transition-delay: 1s;
@@ -757,6 +760,7 @@ md-radio-group.favgame-select{
   -webkit-transform: translateY(10px);
   transform: translateY(10px);
   -moz-transition: all 0.1s ease;
+  -ms-transition: all 0.1s ease;
   -o-transition: all 0.1s ease;
   -webkit-transition: all 0.1s ease;
   transition: all 0.1s ease;
@@ -767,6 +771,7 @@ md-radio-group.favgame-select{
   -moz-transition: all 0.4s ease;
   -o-transition: all 0.4s ease;
   -webkit-transition: all 0.4s ease;
+  -ms-transition: all 0.4s ease;
   transition: all 0.4s ease;
   width: 50%;
   top: 0;
@@ -775,6 +780,7 @@ md-radio-group.favgame-select{
   margin-left: 50%;
   box-sizing: border-box;
   -moz-box-sizing: border-box;
+  -ms-box-sizing: border-box;
 }
 .showcase-panels-container .showcase-panel-content.left {
   padding: 30px 0 30px 30px;
@@ -784,6 +790,7 @@ md-radio-group.favgame-select{
   opacity: 1;
   -moz-transition: all 0.4s ease 1s;
   -o-transition: all 0.4s ease 1s;
+  -ms-transition: all 0.4s ease 1s;
   -webkit-transition: all 0.4s ease;
   -webkit-transition-delay: 1s;
   transition: all 0.4s ease 1s;
@@ -824,6 +831,7 @@ h3 {
     -moz-transition: all 0.2s ease 0.2s;
     -o-transition: all 0.2s ease 0.2s;
     -webkit-transition: all 0.2s ease 0.2s;
+    -ms-transition: all 0.2s ease 0.2s;
     transition: all 0.2s ease 0.2s;
   }
   .footerselected .showcase-panels-container, .gameselected .showcase-panels-container, .preload .showcase-panels-container{
@@ -833,6 +841,7 @@ h3 {
     margin: 0;
     -moz-transition: all 0.1s ease 0s;
     -o-transition: all 0.1s ease 0s;
+    -ms-transition: all 0.1s ease 0s;
     -webkit-transition: all 0.1s ease 0s;
     transition: all 0.1s ease 0s;
   }
@@ -910,6 +919,7 @@ h3 {
   -moz-transition: all 0.1s ease 0s;
     -o-transition: all 0.1s ease 0s;
     -webkit-transition: all 0.1s ease 0s;
+    -ms-transition: all 0.1s ease 0s;
     transition: all 0.1s ease 0s;
   
 }  
@@ -920,6 +930,7 @@ h3 {
     -moz-transition: all 0.2s ease 0.1s;
     -o-transition: all 0.2s ease 0.1s;
     -webkit-transition: all 0.2s ease 0.1s;
+    -ms-transition: all 0.2s ease 0.1s;
     transition: all 0.2s ease 0.1s;
 }
 .gameselected .item{
@@ -929,6 +940,9 @@ h3 {
 .home-showlater{
     align-items: center;
     display: flex;
+    display: -ms-flexbox;
+    -ms-flex-direction: row;
+
     flex-flow: row nowrap;
     height: 100%;
     justify-content: center;
@@ -944,8 +958,10 @@ h3 {
 .win-loaded .home-showlater{
   opacity: 1;
   -moz-transition: all 0.5s ease 0.2s;
+  -ms-transition: all 0.5s ease 0.2s;
   -o-transition: all 0.5s ease 0.2s;
   -webkit-transition: all 0.5s ease 0.2s;
+  -ms-transition: all 0.5s ease 0.2s;
   transition: all 0.5s ease 0.2s;
 }
 .home-text{
@@ -963,6 +979,8 @@ h3 {
 .home-panel{
     align-items: center;
     display: flex;
+    display: -ms-flexbox;
+    -ms-flex-direction: column;
     flex-flow: column nowrap;
     width: 300px;
     height: 450px;
@@ -970,11 +988,13 @@ h3 {
     backface-visibility: hidden;
     display: inline-block;
     transform: translateZ(0px);
+    -ms-transform: translateZ(0px);
     transition-duration: 0.3s;
     transition-property: transform;
     cursor: pointer;
     -moz-perspective: 1000px;
     -webkit-perspective: 1000px;
+    -ms-perspective: 1000px;
     perspective: 1000px;
     margin: 30px;
     /*-moz-transform-style: preserve-3d;
@@ -990,19 +1010,23 @@ h3 {
 }
 .home-panel:hover{
   transform: translateY(-5px);
+  -ms-transform: translateY(-5px);
 }
 
 .home-panel:hover:before{
   opacity: 1;
     transform: translateY(5px);
+    -ms-transform: translateY(5px);
 }
 .onlineselected .home-panel:hover{
   transform: translateY(0px);
+  -ms-transform: translateY(0px);
 }
 
 .onlineselected .home-panel:hover:before{
   opacity: 1;
     transform: translateY(0px);
+    -ms-transform: translateY(0px);
 }
 .onlineselected .home-panel:before{
   background: none;
@@ -1030,13 +1054,16 @@ h3 {
 .home-right{
     -moz-transform-style: preserve-3d;
     -webkit-transform-style: preserve-3d;
+    -ms-transform-style: preserve-3d;
     transform-style: preserve-3d;
     -moz-backface-visibility: hidden;
     -webkit-backface-visibility: hidden;
+    -ms-backface-visibility: hidden;
     backface-visibility: hidden;
     -moz-transition: all 0.5s;
     -o-transition: all 0.5s;
     -webkit-transition: all 0.5s;
+    -ms-transition: all 0.5s;
     transition: transform 0.5s, width 0.4s ease 0.2s, height 0.4s ease 0.2s;
 }
 .panel-side{
@@ -1066,8 +1093,13 @@ h3 {
     -moz-transform: rotateX(0deg) rotateY(-180deg) translateX(0);
     -moz-transform-style: preserve-3d;
     -moz-backface-visibility: hidden;
+    -ms-transform: rotateX(0deg) rotateY(-180deg) translateX(0);
+    -ms-transform-style: preserve-3d;
+    -ms-backface-visibility: hidden;
     transform: rotateX(0deg) rotateY(-180deg)  translateX(0);
+    -ms-transform: rotateX(0deg) rotateY(-180deg)  translateX(0);
     transform-style: preserve-3d;
+    -ms-transform-style: preserve-3d;
     backface-visibility: hidden;
     transition: transform 0.4s ease-out 0.4s;
 }
@@ -1078,15 +1110,22 @@ h3 {
     -moz-transform: rotateX(0deg) rotateY(0deg) translateX(0);
     -moz-transform-style: preserve-3d;
     -moz-backface-visibility: hidden;
+    -ms-transform: rotateX(0deg) rotateY(0deg) translateX(0);
+    -ms-transform-style: preserve-3d;
+    -ms-backface-visibility: hidden;
     transform: rotateX(0deg) rotateY(0deg)  translateX(0);
+    -ms-transform: rotateX(0deg) rotateY(0deg)  translateX(0);
     transform-style: preserve-3d;
     backface-visibility: hidden;
+    -ms-backface-visibility: hidden;
     transition: transform 0.4s ease-out 0.4s;
+    -ms-transition: transform 0.4s ease-out 0.4s;
 }
 .onlineselected .home-right{
     width: 80%;
     height: 80%;
     transition: width 0.4s ease 0.6s,height 0.4s ease 0.6s;
+    -ms-transition: width 0.4s ease 0.6s,height 0.4s ease 0.6s;
 }
 .onlineselected .home-right .flip{
     -webkit-transform: rotateX(0deg) rotateY(180deg) translateX(0);
@@ -1095,10 +1134,17 @@ h3 {
     -moz-transform: rotateX(0deg) rotateY(180deg) translateX(0);
     -moz-transform-style: preserve-3d;
     -moz-backface-visibility: hidden;
+    -ms-transform: rotateX(0deg) rotateY(180deg) translateX(0);
+    -ms-transform-style: preserve-3d;
+    -ms-backface-visibility: hidden;
     transform: rotateX(0deg) rotateY(180deg)  translateX(0);
+    -ms-transform: rotateX(0deg) rotateY(180deg)  translateX(0);
     transform-style: preserve-3d;
+    -ms-transform-style: preserve-3d;
     backface-visibility: hidden;
+    -ms-backface-visibility: hidden;
     transition: transform 0.4s ease-out;
+    -ms-transition: transform 0.4s ease-out;
 }
 .onlineselected .home-right .flop{
     -webkit-transform: rotateX(0deg) rotateY(0deg) translateX(0);
@@ -1107,10 +1153,17 @@ h3 {
     -moz-transform: rotateX(0deg) rotateY(0deg) translateX(0);
     -moz-transform-style: preserve-3d;
     -moz-backface-visibility: hidden;
+    -ms-transform: rotateX(0deg) rotateY(0deg) translateX(0);
+    -ms-transform-style: preserve-3d;
+    -ms-backface-visibility: hidden;
     transform: rotateX(0deg) rotateY(0deg)  translateX(0);
+    -ms-transform: rotateX(0deg) rotateY(0deg)  translateX(0);
     transform-style: preserve-3d;
+    -ms-transform-style: preserve-3d;
     backface-visibility: hidden;
+    -ms-backface-visibility: hidden;
     transition: transform 0.4s ease-out;
+    -ms-transition: transform 0.4s ease-out;
     cursor: auto;
 }
 .home-left{
@@ -1127,18 +1180,34 @@ h3 {
     background-size: cover;*/
   /*transform:;*/
   transform: rotateY(0);
+  -ms-transform: rotateY(0);
   transition: width 0.2s ease-out 0.4s, transform 0.4s ease 0.4s;
+  -ms-transition: width 0.2s ease-out 0.4s, transform 0.4s ease 0.4s;
+}
+.home-right .flip{
+    background: rgba(255,255,255,1);
+    background: url('../../assets/img/sam.png') center center no-repeat, -moz-radial-gradient(center, ellipse cover, rgba(255,255,255,1) 0%, rgba(254,255,245,1) 27%, rgba(252,255,235,1) 48%, rgba(255,248,219,1) 100%);
+    background: url('../../assets/img/sam.png') center center no-repeat, -webkit-gradient(radial, center center, 0px, center center, 100%, color-stop(0%, rgba(255,255,255,1)), color-stop(27%, rgba(254,255,245,1)), color-stop(48%, rgba(252,255,235,1)), color-stop(100%, rgba(255,248,219,1)));
+    background: url('../../assets/img/sam.png') center center no-repeat, -webkit-radial-gradient(center, ellipse cover, rgba(255,255,255,1) 0%, rgba(254,255,245,1) 27%, rgba(252,255,235,1) 48%, rgba(255,248,219,1) 100%);
+    background: url('../../assets/img/sam.png') center center no-repeat, -o-radial-gradient(center, ellipse cover, rgba(255,255,255,1) 0%, rgba(254,255,245,1) 27%, rgba(252,255,235,1) 48%, rgba(255,248,219,1) 100%);
+    background: url('../../assets/img/sam.png') center center no-repeat, -ms-radial-gradient(center, ellipse cover, rgba(255,255,255,1) 0%, rgba(254,255,245,1) 27%, rgba(252,255,235,1) 48%, rgba(255,248,219,1) 100%);
+    background: url('../../assets/img/sam.png') center center no-repeat, radial-gradient(ellipse at center, rgba(255,255,255,1) 0%, rgba(254,255,245,1) 27%, rgba(252,255,235,1) 48%, rgba(255,248,219,1) 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#fff8db', GradientType=1 );
 }
 .onlineselected .home-left{
     width: 0;
     transform: rotateY(-180deg);
     transition: width 0.2s ease-out 0.4s, transform 0.4s ease 0s;
+    -ms-transform: rotateY(-180deg);
+    -ms-transition: width 0.2s ease-out 0.4s, transform 0.4s ease 0s;
   
 }
 .home-right .flop{
     align-items: center;
     display: flex;
+    display: -ms-flexbox;
     flex-flow: row wrap;
+    -ms-flex-direction: row;
     height: 100%;
     justify-content: space-around;
     overflow-x: hidden;
